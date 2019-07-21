@@ -1,0 +1,23 @@
+Title: '{RandColor}{PluginName}'
+Content: ''
+Buttons:
+   xiaokai:
+      Type: Make
+      Text: §e关于作者
+      ImageType: true
+      Image: null
+      Content: §b作者：§a帅逼凯{n}§bQQ：§a2508543202{n}§bEmail：§aWinfxk@qq.com{n}{n}§6很感谢您能喜欢这款菜单插件！{n}§6您的每一分支持都是我前进的动力！{n}§6若在使用过程中出现任何BUG，请联系我！{n}§6若您有什么好的点子，请务必告诉我！
+      bt1: 确定
+      bt2: 取消
+      Money: 0
+      Command: null
+   help:
+      Type: Make
+      Text: §e获取帮助
+      ImageType: true
+      Image: null
+      Content: §b更多帮助请访问§9https://github.com/xkmp/MiniatureS-Java{n}{RandColor}您也可以联系作者！{n}{RandColor}作者QQ：{RandColor}2508543202{n}{RandColor}作者邮箱：{RandColor}Winfxk@qq.com{n}插件帮助文件已导出至本插件数据目录，若有需要请自行查阅{n}您也可访问http://doc.epicfx.cn/Docs/MiniatureS/MiniatureS自定义控件介绍.docx
+      bt1: 确定
+      bt2: 取消
+      Money: 0
+      Command: null
