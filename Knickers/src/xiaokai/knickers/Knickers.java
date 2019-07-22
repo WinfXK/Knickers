@@ -2,16 +2,18 @@ package xiaokai.knickers;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.LinkedHashMap;
 
+import cn.nukkit.Player;
+import cn.nukkit.command.Command;
+import cn.nukkit.command.CommandSender;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.plugin.PluginManager;
-import cn.nukkit.utils.Config;
 import cn.nukkit.utils.TextFormat;
 import xiaokai.knickers.event.Monitor;
 import xiaokai.knickers.event.PlayerEvent;
+import xiaokai.knickers.form.MakeForm;
+import xiaokai.knickers.mtp.Belle;
 import xiaokai.knickers.mtp.Kick;
-import xiaokai.knickers.mtp.MyPlayer;
 import xiaokai.tool.Tool;
 
 /**
@@ -22,7 +24,18 @@ public class Knickers extends PluginBase {
 	/**
 	 * 插件缓存数据集合
 	 */
-	public static Kick kick;
+	protected static Kick kick;
+
+	@Override
+	public boolean onCommand(CommandSender player, Command command, String label, String[] args) {
+		new Thread() {
+			public void run() {
+				Belle.exMaterials((Player) player);
+			}
+		}.start();
+		MakeForm.Main((Player) player);
+		return true;
+	}
 
 	/**
 	 * 明人不说暗话！这就是插件启动事件
@@ -44,15 +57,6 @@ public class Knickers extends PluginBase {
 	 */
 	public static String getMoneyName() {
 		return kick.config.getString("货币单位");
-	}
-
-	/**
-	 * 插件主配置文件
-	 * 
-	 * @return
-	 */
-	public static Config getConfigs() {
-		return kick.config;
 	}
 
 	/**
@@ -86,9 +90,5 @@ public class Knickers extends PluginBase {
 	 */
 	public static Knickers getPY() {
 		return kick.mis;
-	}
-
-	public static LinkedHashMap<String, MyPlayer> getMyPlayer() {
-		return kick.PlayerDataMap;
 	}
 }

@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import cn.nukkit.Player;
 import cn.nukkit.utils.Config;
 import xiaokai.knickers.Knickers;
+import xiaokai.tool.Tool;
 import xiaokai.tool.Update;
 
 /**
@@ -45,7 +46,7 @@ public class Kick {
 	 * 要初始化的表单ID键值
 	 */
 	public String[] FormIDName = { "主页", "添加按钮创建界面", "添加按钮输入数据界面", "删除按钮时显示按钮列表的界面", "删除按钮时提示时候删除的界面",
-			"显示在线玩家列表以供玩家传送的界面", "在Tpa传送的时候，目标玩家点击确定取消的界面", "{Msg}型命令执行界面" };
+			"显示在线玩家列表以供玩家传送的界面", "在Tpa传送的时候，目标玩家点击确定取消的界面", "{Msg}型命令执行界面", "子页4", "设置页面", "子页0", "子页1", "子页3", "子页2" };
 	/**
 	 * 表单ID存储位置
 	 */
@@ -89,8 +90,15 @@ public class Kick {
 			@Override
 			public void run() {
 				super.run();
-				if (config.getBoolean("检测更新"))
-					(new Update(knickers)).start();
+				while (true) {
+					if (config.getBoolean("检测更新"))
+						(new Update(knickers)).start();
+					try {
+						sleep(Tool.ObjectToInt(kick.config.get("检测更新间隔"), 500) * 1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		}.start();
 		Message = new Message(this);

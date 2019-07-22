@@ -1,23 +1,29 @@
 Title: '{RandColor}{PluginName}'
 Content: ''
 Buttons:
-   xiaokai:
-      Type: Make
-      Text: §e关于作者
-      ImageType: true
-      Image: null
-      Content: §b作者：§a帅逼凯{n}§bQQ：§a2508543202{n}§bEmail：§aWinfxk@qq.com{n}{n}§6很感谢您能喜欢这款菜单插件！{n}§6您的每一分支持都是我前进的动力！{n}§6若在使用过程中出现任何BUG，请联系我！{n}§6若您有什么好的点子，请务必告诉我！
-      bt1: 确定
-      bt2: 取消
-      Money: 0
-      Command: null
-   help:
-      Type: Make
-      Text: §e获取帮助
-      ImageType: true
-      Image: null
-      Content: §b更多帮助请访问§9https://github.com/xkmp/MiniatureS-Java{n}{RandColor}您也可以联系作者！{n}{RandColor}作者QQ：{RandColor}2508543202{n}{RandColor}作者邮箱：{RandColor}Winfxk@qq.com{n}插件帮助文件已导出至本插件数据目录，若有需要请自行查阅{n}您也可访问http://doc.epicfx.cn/Docs/MiniatureS/MiniatureS自定义控件介绍.docx
-      bt1: 确定
-      bt2: 取消
-      Money: 0
-      Command: null
+  YouAreSB:
+    Money: 0.0
+    IconPath: null
+    Player: Winfxk
+    Type: Tip
+    Command: me 大家好，经过§e§l§n不§6§l§n懈§a§l§n努§4§l§n力，我终于变成了§e§l§n丑§9§l§n逼§r！！！
+    Content: §a恭喜您！您已经成功变成丑比！{n}{n}{n}
+    Title: §a恭喜
+    Text: §6点击变丑
+    creaTime: '2019-07-22 16:38:46'
+    IconType: 0
+    Key: YouAreSB
+    TipType: Modal
+  ShuaiBiKai:
+    Money: 0.0
+    IconPath: null
+    Player: Winfxk
+    Type: Tip
+    Command: me §e§l§n帅§9§l§n逼§4§l§n凯§r万岁
+    Content: '§e首先感谢您对我们的支持！{n}§6作者：帅逼凯{n}§9QQ: 2508543202{n}§4有任何问题都可以来联系我们哦！'
+    Title: §a感谢使用
+    Text: §9关于作者
+    creaTime: '2019-07-22 16:42:33'
+    IconType: 0
+    Key: ShuaiBiKai
+    TipType: Modal

@@ -146,9 +146,9 @@ public class AddButton {
 		/**
 		 * 添加一个点击后弹出服务器在线玩家列表，供玩家传送的按钮
 		 * 
-		 * @param Title   界面的标题
-		 * @param Content 界面的文本内容
-		 * @param isOK    是否需要目标玩家确定才传送
+		 * @param Title    界面的标题
+		 * @param Content  界面的文本内容
+		 * @param isAffirm 是否需要目标玩家确定才传送
 		 * @return
 		 */
 		public boolean addTeleport(String Title, String Content, boolean isAffirm) {
@@ -237,7 +237,6 @@ public class AddButton {
 		private MyPlayer my;
 		private FormResponseCustom data;
 		private String ButtonText;
-		private double Money;
 
 		/**
 		 * 监听创建按钮填写按钮数据的类
@@ -263,11 +262,6 @@ public class AddButton {
 			ButtonText = data.getInputResponse(0);
 			if (ButtonText == null || ButtonText.isEmpty())
 				return MakeForm.Tip(player, "请输入按钮文本内容");
-			String s = data.getInputResponse(6);
-			s = (s == null || s.isEmpty()) ? "0" : s;
-			if (!Tool.isInteger(s))
-				return MakeForm.Tip(player, "§4扣除的费用数必须为大于零的纯数字！");
-			Money = Double.valueOf(s);
 			this.data = data;
 			switch (my.AddButtonType) {
 			case "传送到在线玩家":
@@ -298,6 +292,11 @@ public class AddButton {
 			String ConfigName = (SB != null && !SB.isEmpty()) ? SB : data.getDropdownResponse(3).getElementContent();
 			if (ConfigName == null || ConfigName.isEmpty())
 				return MakeForm.Tip(player, "§4请输入要打开的界面的名字！\n\n不知道该怎么输入的话请瞎几把输入");
+			String s = data.getInputResponse(6);
+			s = (s == null || s.isEmpty()) ? "0" : s;
+			if (!Tool.isInteger(s))
+				return MakeForm.Tip(player, "§4扣除的费用数必须为大于零的纯数字！");
+			double Money = Double.valueOf(s);
 			return (new AddButton.Add(player, my.CacheFile, ButtonText, data.getInputResponse(5), Money,
 					data.getStepSliderResponse(7).getElementID(), data.getInputResponse(8))).addOpen(Title, Content,
 							ConfigName);
@@ -314,6 +313,11 @@ public class AddButton {
 			String PlayerType = (id == 0 ? "Player" : (id == 1 ? "PlayerByOp" : "Console"));
 			if (Cmd == null || Cmd.isEmpty())
 				return MakeForm.Tip(player, "§4请输入想要执行的命令");
+			String s = data.getInputResponse(5);
+			s = (s == null || s.isEmpty()) ? "0" : s;
+			if (!Tool.isInteger(s))
+				return MakeForm.Tip(player, "§4扣除的费用数必须为大于零的纯数字！");
+			double Money = Double.valueOf(s);
 			return (new AddButton.Add(player, my.CacheFile, ButtonText, Cmd, Money,
 					data.getStepSliderResponse(6).getElementID(), data.getInputResponse(7)))
 							.addCommand(data.getInputResponse(2), data.getInputResponse(3), PlayerType);
@@ -331,6 +335,11 @@ public class AddButton {
 			yString = (yString == null || yString.isEmpty()) ? String.valueOf(player.getY()) : yString;
 			String zString = data.getInputResponse(4);
 			zString = (zString == null || zString.isEmpty()) ? String.valueOf(player.getZ()) : zString;
+			String s = data.getInputResponse(6);
+			s = (s == null || s.isEmpty()) ? "0" : s;
+			if (!Tool.isInteger(s))
+				return MakeForm.Tip(player, "§4扣除的费用数必须为大于零的纯数字！");
+			double Money = Double.valueOf(s);
 			double x, y, z;
 			if (Tool.isInteger(xString) && Tool.isInteger(yString) && Tool.isInteger(zString)) {
 				x = Double.valueOf(xString);
@@ -349,10 +358,15 @@ public class AddButton {
 		 * @return
 		 */
 		private boolean Teleport() {
+			String s = data.getInputResponse(5);
+			s = (s == null || s.isEmpty()) ? "0" : s;
+			if (!Tool.isInteger(s))
+				return MakeForm.Tip(player, "§4扣除的费用数必须为大于零的纯数字！");
+			double Money = Double.valueOf(s);
 			return (new AddButton.Add(player, my.CacheFile, ButtonText, data.getInputResponse(4), Money,
 					data.getStepSliderResponse(6).getElementID(), data.getInputResponse(7))).addTeleport(
 							data.getInputResponse(1), data.getInputResponse(2),
-							data.getStepSliderResponse(4).getElementID() == 1);
+							data.getStepSliderResponse(3).getElementID() == 1);
 		}
 
 		/**
@@ -361,6 +375,11 @@ public class AddButton {
 		 * @return
 		 */
 		private boolean Tip() {
+			String s = data.getInputResponse(6);
+			s = (s == null || s.isEmpty()) ? "0" : s;
+			if (!Tool.isInteger(s))
+				return MakeForm.Tip(player, "§4扣除的费用数必须为大于零的纯数字！");
+			double Money = Double.valueOf(s);
 			return (new AddButton.Add(player, my.CacheFile, ButtonText, data.getInputResponse(3), Money,
 					data.getStepSliderResponse(6).getElementID(), data.getInputResponse(7))).addTip(
 							data.getInputResponse(1), data.getInputResponse(2),

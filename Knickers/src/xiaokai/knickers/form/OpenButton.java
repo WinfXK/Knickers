@@ -86,6 +86,251 @@ public class OpenButton {
 		}
 	}
 
+	/**
+	 * 当点击的按钮时点击后打开界面的按钮
+	 * 
+	 * @return
+	 */
+	private boolean openUI() {
+		carryCommand(player, Item);
+		String string = Item.get("Config") == null ? null : String.valueOf(Item.get("Config"));
+		if (string == null || string.isEmpty())
+			return MakeForm.Tip(player, Kick.kick.Message.getSon("界面", "打开按钮失败", new String[] { "{Player}", "{Error}" },
+					new Object[] { player.getName(), "无法获取菜单配置文件" }));
+		File file = new File(new File(kick.mis.getDataFolder(), Kick.MenuConfigPath), string);
+		if (!file.exists())
+			return MakeForm.Tip(player, Kick.kick.Message.getSon("界面", "打开按钮失败", new String[] { "{Player}", "{Error}" },
+					new Object[] { player.getName(), "菜单配置文件不存在！" }));
+		if (delMoney(player, Item))
+			return MakeForm.OpenMenu(player, file, true);
+		return false;
+	}
+
+	/**
+	 * 处理玩家点击的按钮时Tp按钮的事件
+	 * 
+	 * @return
+	 */
+	private boolean openTp() {
+		carryCommand(player, Item);
+		if (Item.get("World") == null) {
+			kick.mis.getLogger().error("一个按钮的数据可能发生了错误！按钮类型为：传送，数据错误项：无法获取目标世界名称！请检查");
+			return MakeForm.Tip(player, Kick.kick.Message.getSon("界面", "打开按钮失败", new String[] { "{Player}", "{Error}" },
+					new Object[] { player.getName(), "无法获取目标世界名称！" }));
+		}
+		String World = String.valueOf(Item.get("World"));
+		Level level = Server.getInstance().getLevelByName(World);
+		if (level == null) {
+			kick.mis.getLogger().error("一个按钮的数据可能发生了错误！按钮类型为：传送，数据错误项：无法获取目标世界对象！请检查");
+			return MakeForm.Tip(player, Kick.kick.Message.getSon("界面", "打开按钮失败", new String[] { "{Player}", "{Error}" },
+					new Object[] { player.getName(), "无法获取目标世界对象！" }));
+		}
+		if (delMoney(player, Item))
+			player.teleport(
+					new Position(ObjToDou(Item.get("X")), ObjToDou(Item.get("Y")), ObjToDou(Item.get("Z")), level));
+		return true;
+	}
+
+	/**
+	 * 处理玩家点击的按钮为TIP按钮的时间
+	 * 
+	 * @return
+	 */
+	private boolean openTip() {
+		carryCommand(player, Item);
+		if (delMoney(player, Item))
+			return MakeForm.Tip(player,
+					msg.getText(Item.get("Title"), new String[] { "{Player}" }, new Object[] { player.getName() }),
+					msg.getText(Item.get("Content"), new String[] { "{Player}" }, new Object[] { player.getName() }),
+					true, !Item.get("TipType").equals("Simple"));
+		return false;
+	}
+
+	/**
+	 * 检查点击的按钮是否需要扣费，如果需要，则讲究扣费
+	 * 
+	 * @param player 要检查扣费的玩家对象
+	 * @param Item   玩家点击的按钮数据对象
+	 * @return
+	 */
+	private static boolean delMoney(Player player, Map<String, Object> Item) {
+		double Money = 0;
+		String mString = String.valueOf(Item.get("Money") == null ? 0 : Item.get("Money"));
+		if (mString != null && !mString.isEmpty() && Tool.isInteger(mString))
+			Money = Double.valueOf(mString);
+		if (Money <= 0)
+			return true;
+		Plugin MoneyAPI = Server.getInstance().getPluginManager().getPlugin("EconomyAPI");
+		if (MoneyAPI == null || !MoneyAPI.isEnabled()) {
+			Kick.kick.mis.getLogger().warning("§6EconomyAPI§4未安装或未启用！忽略本次扣费。");
+			return true;
+		}
+		if (me.onebone.economyapi.EconomyAPI.getInstance().myMoney(player) < Money)
+			return MakeForm.Tip(player, "§4提示", Kick.kick.Message.getMessage("金币不足", new String[] { "{Player}" },
+					new Object[] { player.getName() }), false, true);
+		me.onebone.economyapi.EconomyAPI.getInstance().reduceMoney(player, Money);
+		return true;
+	}
+
+	/**
+	 * 设置玩家点击按钮后处罚的命令
+	 * 
+	 * @param player 点击按钮的玩家对象
+	 * @param Item   玩家点击跌按钮的数据
+	 * @return
+	 */
+	private static boolean carryCommand(Player player, Map<String, Object> Item) {
+		String Command = String.valueOf(Item.get("Command") == null ? "" : Item.get("Command"));
+		if (Command == null || Command.isEmpty())
+			return false;
+		return Server.getInstance().dispatchCommand(player, Command);
+	}
+
+	/**
+	 * 将Object对象转换为double对象
+	 * 
+	 * @param d
+	 * @return
+	 */
+	private static double ObjToDou(Object d) {
+		try {
+			return Double.valueOf(String.valueOf(d));
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+
+	/**
+	 * 处理玩家点击的是Tpa类型的按钮
+	 * 
+	 * @author Winfxk
+	 *
+	 */
+	public static class Tpa {
+		private Player player;
+		private Kick kick;
+
+		/**
+		 * 创建玩家列表
+		 * 
+		 * @param player 要显示这个列表的玩家对象
+		 * @param kick   Kick对象
+		 */
+		public Tpa(Player player, Kick kick) {
+			this.player = player;
+			this.kick = kick;
+		}
+
+		/**
+		 * 处理玩家点击Tpa按钮后，但是需要请求，发送请求给玩家，玩家点击后的处理时间
+		 * 
+		 * @param data    返回的数据
+		 * @param player2 处理请求的玩家对象
+		 * @return
+		 */
+		public boolean isOK(FormResponseSimple data, Player player2) {
+			if (data != null && data.getClickedButtonId() == 0)
+				return Tp(player2);
+			return MakeForm.Tip(player,
+					kick.Message.getSun("界面", "Tpa界面", "传送请求被拒绝", new String[] { "{Player}", "{TpaPlayer}", "{Msg}" },
+							new Object[] { player2.getName(), player.getName(), data != null ? "§4拒绝" : "§7取消" }));
+		}
+
+		/**
+		 * 处理玩家点击的是哪一个玩家
+		 * 
+		 * @param data
+		 * @return
+		 */
+		public boolean start(FormResponseSimple data) {
+			MyPlayer myPlayer = Kick.kick.PlayerDataMap.get(player.getName());
+			List<Player> Plist = myPlayer.players;
+			Player player2 = Plist.size() > data.getClickedButtonId() ? Plist.get(data.getClickedButtonId()) : null;
+			carryCommand(player, myPlayer.Item);
+			if (!Tool.ObjToBool(myPlayer.Item.get("isAffirm")))
+				return Tp(player2);
+			SimpleForm form = new SimpleForm(kick.formID.getID(6),
+					kick.Message.getSun("界面", "Tpa界面", "发请求的标题", new String[] { "{Player}", "{TpaPlayer}" },
+							new Object[] { player2.getName(), player.getName() }),
+					kick.Message.getSun("界面", "Tpa界面", "发请求的内容", new String[] { "{Player}", "{TpaPlayer}" },
+							new Object[] { player2.getName(), player.getName() }));
+			form.addButton(kick.Message.getSun("界面", "Tpa界面", "发请求确认按钮", new String[] { "{Player}", "{TpaPlayer}" },
+					new Object[] { player2.getName(), player.getName() }));
+			form.addButton(kick.Message.getSun("界面", "Tpa界面", "发请求取消按钮", new String[] { "{Player}", "{TpaPlayer}" },
+					new Object[] { player2.getName(), player.getName() }));
+			MyPlayer myPlayer2player2 = Kick.kick.PlayerDataMap.get(player2.getName());
+			myPlayer2player2.TpaPlayer = player;
+			Kick.kick.PlayerDataMap.put(player2.getName(), myPlayer2player2);
+			form.sendPlayer(player2);
+			return false;
+		}
+
+		/**
+		 * 开始传送玩家
+		 * 
+		 * @param player2 要传送到的玩家坐标
+		 */
+		public boolean Tp(Player player2) {
+			if (player2 != null && player2.isOnline()) {
+				player.teleport(new Position(player2.getX(), player2.getY(), player2.getZ(), player2.getLevel()));
+				player.sendMessage(
+						kick.Message.getSun("界面", "Tpa界面", "传送提示", new String[] { "{Player}", "{TpaPlayer}" },
+								new Object[] { player2.getName(), player.getName() }));
+				return true;
+			} else
+				MakeForm.Tip(player,
+						kick.Message.getSun("界面", "Tpa界面", "玩家不在线", new String[] { "{Player}", "{TpaPlayer}" },
+								new Object[] { player2.getName(), player.getName() }));
+			return true;
+		}
+
+		/**
+		 * 创建按钮给玩家点击
+		 * 
+		 * @param Key    按钮的Key
+		 * @param config 按钮所在的Config对象
+		 * @return
+		 */
+		public boolean make(String Key, Config config, Map<String, Object> Item) {
+			MyPlayer myPlayer = Kick.kick.PlayerDataMap.get(player.getName());
+			myPlayer.Key = Key;
+			Map<UUID, Player> Players = Server.getInstance().getOnlinePlayers();
+			if (Players.size() < 2)
+				return MakeForm.Tip(player, kick.Message.getSun("界面", "Tpa界面", "无玩家在线", new String[] { "{Player}" },
+						new Object[] { player.getName() }));
+			List<Player> Plist = new ArrayList<Player>();
+			List<String> kList = new ArrayList<String>();
+			SimpleForm form = new SimpleForm(kick.formID.getID(5),
+					kick.Message.getSun("界面", "Tpa界面", "玩家列表标题", new String[] { "{Player}", "{BackTitle}" },
+							new Object[] { player.getName(),
+									kick.Message.getText(config.getString("Title"), new String[] { "{Player}" },
+											new Object[] { player.getName() }) }),
+					kick.Message.getSun("界面", "Tpa界面", "玩家列表内容", new String[] { "{Player}" },
+							new Object[] { player.getName() }));
+			for (UUID uuid : Players.keySet()) {
+				Player player2 = Players.get(uuid);
+				if (player2.getName().equals(player.getName()))
+					continue;
+				Plist.add(player2);
+				kList.add(player2.getName());
+				form.addButton(Tool.getRandColor() + player2.getName());
+			}
+			if (Plist.size() < 1)
+				return MakeForm.Tip(player, kick.Message.getSun("界面", "Tpa界面", "无玩家在线", new String[] { "{Player}" },
+						new Object[] { player.getName() }));
+			carryCommand(player, Item);
+			if (delMoney(player, Item)) {
+				myPlayer.keyList = kList;
+				myPlayer.players = Plist;
+				myPlayer.Item = Item;
+				kick.PlayerDataMap.put(player.getName(), myPlayer);
+				form.sendPlayer(player);
+				return true;
+			}
+			return false;
+		}
+	}
+
 	@SuppressWarnings("unchecked")
 	public static class onCommand {
 		private Player player;
@@ -186,242 +431,6 @@ public class OpenButton {
 			if (Commander.toLowerCase().equals("playerbyop") && !isOP)
 				player.setOp(false);
 			return cmd;
-		}
-	}
-
-	/**
-	 * 当点击的按钮时点击后打开界面的按钮
-	 * 
-	 * @return
-	 */
-	private boolean openUI() {
-		MyPlayer myPlayer = Kick.kick.PlayerDataMap.get(player.getName());
-		carryCommand(player, myPlayer.Item);
-		String string = Item.get("Config") == null ? null : String.valueOf(Item.get("Config"));
-		if (string == null || string.isEmpty())
-			return MakeForm.Tip(player, Kick.kick.Message.getSon("界面", "打开按钮失败", new String[] { "{Player}", "{Error}" },
-					new Object[] { player.getName(), "无法获取菜单配置文件" }));
-		File file = new File(new File(kick.mis.getDataFolder(), Kick.MenuConfigPath), string);
-		if (!file.exists())
-			return MakeForm.Tip(player, Kick.kick.Message.getSon("界面", "打开按钮失败", new String[] { "{Player}", "{Error}" },
-					new Object[] { player.getName(), "菜单配置文件不存在！" }));
-		if (delMoney(player, Item))
-			return MakeForm.OpenMenu(player, file);
-		return false;
-	}
-
-	/**
-	 * 处理玩家点击的按钮时Tp按钮的事件
-	 * 
-	 * @return
-	 */
-	private boolean openTp() {
-		MyPlayer myPlayer = Kick.kick.PlayerDataMap.get(player.getName());
-		carryCommand(player, myPlayer.Item);
-		if (Item.get("World") == null) {
-			kick.mis.getLogger().error("一个按钮的数据可能发生了错误！按钮类型为：传送，数据错误项：无法获取目标世界名称！请检查");
-			return MakeForm.Tip(player, Kick.kick.Message.getSon("界面", "打开按钮失败", new String[] { "{Player}", "{Error}" },
-					new Object[] { player.getName(), "无法获取目标世界名称！" }));
-		}
-		String World = String.valueOf(Item.get("World"));
-		Level level = Server.getInstance().getLevelByName(World);
-		if (level == null) {
-			kick.mis.getLogger().error("一个按钮的数据可能发生了错误！按钮类型为：传送，数据错误项：无法获取目标世界对象！请检查");
-			return MakeForm.Tip(player, Kick.kick.Message.getSon("界面", "打开按钮失败", new String[] { "{Player}", "{Error}" },
-					new Object[] { player.getName(), "无法获取目标世界对象！" }));
-		}
-		if (delMoney(player, Item))
-			player.teleport(
-					new Position(ObjToDou(Item.get("X")), ObjToDou(Item.get("Y")), ObjToDou(Item.get("Z")), level));
-		return true;
-	}
-
-	/**
-	 * 处理玩家点击的按钮为TIP按钮的时间
-	 * 
-	 * @return
-	 */
-	private boolean openTip() {
-		MyPlayer myPlayer = Kick.kick.PlayerDataMap.get(player.getName());
-		carryCommand(player, myPlayer.Item);
-		if (delMoney(player, Item))
-			return MakeForm.Tip(player,
-					msg.getText(Item.get("Title"), new String[] { "{Player}" }, new Object[] { player.getName() }),
-					msg.getText(Item.get("Content"), new String[] { "{Player}" }, new Object[] { player.getName() }),
-					true, !Item.get("TipType").equals("Simple"));
-		return false;
-	}
-
-	/**
-	 * 检查点击的按钮是否需要扣费，如果需要，则讲究扣费
-	 * 
-	 * @param player 要检查扣费的玩家对象
-	 * @param Item   玩家点击的按钮数据对象
-	 * @return
-	 */
-	private static boolean delMoney(Player player, Map<String, Object> Item) {
-		double Money = 0;
-		String mString = String.valueOf(Item.get("Money") == null ? 0 : Item.get("Money"));
-		if (mString != null && !mString.isEmpty() && Tool.isInteger(mString))
-			Money = Double.valueOf(mString);
-		if (Money <= 0)
-			return true;
-		Plugin MoneyAPI = Server.getInstance().getPluginManager().getPlugin("EconomyAPI");
-		if (MoneyAPI == null || !MoneyAPI.isEnabled()) {
-			Kick.kick.mis.getLogger().warning("§6EconomyAPI§4未安装或未启用！忽略本次扣费。");
-			return true;
-		}
-		if (me.onebone.economyapi.EconomyAPI.getInstance().myMoney(player) < Money)
-			return MakeForm.Tip(player, "§4提示", Kick.kick.Message.getMessage("金币不足", new String[] { "{Player}" },
-					new Object[] { player.getName() }), false, true);
-		me.onebone.economyapi.EconomyAPI.getInstance().reduceMoney(player, Money);
-		return true;
-	}
-
-	/**
-	 * 设置玩家点击按钮后处罚的命令
-	 * 
-	 * @param player 点击按钮的玩家对象
-	 * @param Item   玩家点击跌按钮的数据
-	 * @return
-	 */
-	private static boolean carryCommand(Player player, Map<String, Object> Item) {
-		String Command = String.valueOf(Item.get("Command") == null ? "" : Item.get("Command"));
-		if (Command == null || Command.isEmpty())
-			return false;
-		return Server.getInstance().dispatchCommand(player, Command);
-	}
-
-	/**
-	 * 将Object对象转换为double对象
-	 * 
-	 * @param d
-	 * @return
-	 */
-	private static double ObjToDou(Object d) {
-		try {
-			return Double.valueOf(String.valueOf(d));
-		} catch (Exception e) {
-			return 0;
-		}
-	}
-
-	/**
-	 * 处理玩家点击的是Tpa类型的按钮
-	 * 
-	 * @author Winfxk
-	 *
-	 */
-	public static class Tpa {
-		private Player player;
-		private Kick kick;
-
-		/**
-		 * 创建玩家列表
-		 * 
-		 * @param player 要显示这个列表的玩家对象
-		 * @param kick   Kick对象
-		 */
-		public Tpa(Player player, Kick kick) {
-			this.player = player;
-		}
-
-		/**
-		 * 处理玩家点击Tpa按钮后，但是需要请求，发送请求给玩家，玩家点击后的处理时间
-		 * 
-		 * @param data    返回的数据
-		 * @param player2 处理请求的玩家对象
-		 * @return
-		 */
-		public boolean isOK(FormResponseSimple data, Player player2) {
-			if (data.getClickedButtonId() == 0)
-				return Tp(player2);
-			return MakeForm.Tip(player, kick.Message.getSun("界面", "Tpa界面", "传送请求被拒绝",
-					new String[] { "{Player}", "{TpaPlayer}" }, new Object[] { player2.getName(), player.getName() }));
-		}
-
-		/**
-		 * 处理玩家点击的是哪一个玩家
-		 * 
-		 * @param data
-		 * @return
-		 */
-		public boolean start(FormResponseSimple data) {
-			MyPlayer myPlayer = Kick.kick.PlayerDataMap.get(player.getName());
-			List<Player> Plist = myPlayer.players;
-			Player player2 = Plist.size() <= data.getClickedButtonId() ? Plist.get(data.getClickedButtonId()) : null;
-			carryCommand(player, myPlayer.Item);
-			if (!Tool.ObjToBool(myPlayer.Item.get("isAffirm")))
-				return Tp(player2);
-			SimpleForm form = new SimpleForm(kick.formID.getID(6),
-					kick.Message.getSun("界面", "Tpa界面", "发请求的标题", new String[] { "{Player}", "{TpaPlayer}" },
-							new Object[] { player2.getName(), player.getName() }),
-					kick.Message.getSun("界面", "Tpa界面", "发请求的内容", new String[] { "{Player}", "{TpaPlayer}" },
-							new Object[] { player2.getName(), player.getName() }));
-			form.addButton(kick.Message.getSun("界面", "Tpa界面", "发请求确认按钮", new String[] { "{Player}", "{TpaPlayer}" },
-					new Object[] { player2.getName(), player.getName() }));
-			form.addButton(kick.Message.getSun("界面", "Tpa界面", "发请求取消按钮", new String[] { "{Player}", "{TpaPlayer}" },
-					new Object[] { player2.getName(), player.getName() }));
-			MyPlayer myPlayer2player2 = Kick.kick.PlayerDataMap.get(player2.getName());
-			myPlayer2player2.TpaPlayer = player2;
-			Kick.kick.PlayerDataMap.put(player2.getName(), myPlayer2player2);
-			form.sendPlayer(player2);
-			return false;
-		}
-
-		/**
-		 * 开始传送玩家
-		 * 
-		 * @param player2 要传送到的玩家坐标
-		 */
-		public boolean Tp(Player player2) {
-			MyPlayer myPlayer = Kick.kick.PlayerDataMap.get(player.getName());
-			if (player2 != null && player2.isOnline())
-				if (delMoney(player, myPlayer.Item)) {
-					player.teleport(player2.getLocation());
-					player.sendMessage(
-							kick.Message.getSun("界面", "Tpa界面", "传送提示", new String[] { "{Player}", "{TpaPlayer}" },
-									new Object[] { player2.getName(), player.getName() }));
-					return true;
-				} else
-					MakeForm.Tip(player,
-							kick.Message.getSun("界面", "Tpa界面", "玩家不在线", new String[] { "{Player}", "{TpaPlayer}" },
-									new Object[] { player2.getName(), player.getName() }));
-			return true;
-		}
-
-		/**
-		 * 创建按钮给玩家点击
-		 * 
-		 * @param Key    按钮的Key
-		 * @param config 按钮所在的Config对象
-		 * @return
-		 */
-		public boolean make(String Key, Config config, Map<String, Object> Item) {
-			MyPlayer myPlayer = Kick.kick.PlayerDataMap.get(player.getName());
-			myPlayer.Key = Key;
-			Map<UUID, Player> Players = Server.getInstance().getOnlinePlayers();
-			List<Player> Plist = new ArrayList<Player>();
-			List<String> kList = new ArrayList<String>();
-			SimpleForm form = new SimpleForm(kick.formID.getID(5),
-					kick.Message.getSun("界面", "Tpa界面", "玩家列表标题", new String[] { "{Player}", "{BackTitle}" },
-							new Object[] { player.getName(),
-									kick.Message.getText(config.getString("Title"), new String[] { "{Player}" },
-											new Object[] { player.getName() }) }),
-					kick.Message.getSun("界面", "Tpa界面", "玩家列表内容", new String[] { "{Player}" },
-							new Object[] { player.getName() }));
-			for (UUID uuid : Players.keySet()) {
-				Player player2 = Players.get(uuid);
-				Plist.add(player2);
-				kList.add(player2.getName());
-				form.addButton(Tool.getRandColor() + player2.getName());
-			}
-			myPlayer.keyList = kList;
-			myPlayer.players = Plist;
-			myPlayer.Item = Item;
-			kick.PlayerDataMap.put(player.getName(), myPlayer);
-			form.sendPlayer(player);
-			return true;
 		}
 	}
 }

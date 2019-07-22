@@ -4,7 +4,6 @@ import java.io.File;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +13,7 @@ import cn.nukkit.utils.Config;
 import xiaokai.knickers.mtp.Kick;
 import xiaokai.knickers.mtp.Message;
 import xiaokai.knickers.mtp.MyPlayer;
+import xiaokai.tool.CustomForm;
 import xiaokai.tool.ModalForm;
 import xiaokai.tool.SimpleForm;
 import xiaokai.tool.Tool;
@@ -23,42 +23,83 @@ import xiaokai.tool.Tool;
  */
 @SuppressWarnings("unchecked")
 public class MakeForm {
-	public static boolean Setting(Player player) {
-		return true;
-	}
-
-	public static boolean OpenMenu(Player player, File file) {
-		return OpenMenu(player, file, false);
-	}
-
-	public static boolean OpenMenu(Player player, File file, boolean isBack) {
+	/**
+	 * 打开一个界面，这个界面是用来设置系统配置的
+	 * 
+	 * @param player
+	 * @return
+	 */
+	protected static boolean Setting(Player player) {
 		Kick kick = Kick.kick;
-		Message msg = kick.Message;
-		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
-		
+		if (!Kick.isAdmin(player))
+			return MakeForm.Tip(player, kick.Message.getMessage("权限不足"));
+		CustomForm form = new CustomForm(kick.formID.getID(9), Tool.getColorFont(kick.mis.getName() + "-Setting"));
+		form.addInput("快捷工具的物品ID", kick.config.get("快捷工具"), "请输入物品ID或物品名称，如： " + kick.config.get("快捷工具"));
+		form.addInput("服务器货币名称", kick.config.get("货币单位"), kick.config.get("货币单位"));
+		form.addToggle("插件启动时检测更新", kick.config.getBoolean("检测更新"));
+		int s = Float
+				.valueOf(
+						Tool.isInteger(kick.config.get("检测更新间隔")) ? String.valueOf(kick.config.get("检测更新间隔")) : "21600")
+				.intValue();
+		form.addInput("服务器自动更新间隔（单位：秒）", s, "服务器在后台多久检测更新一次，如：" + s);
+		s = Float.valueOf(
+				Tool.isInteger(kick.config.get("屏蔽玩家双击间隔")) ? String.valueOf(kick.config.get("屏蔽玩家双击间隔")) : "500")
+				.intValue();
+		form.addInput("屏蔽玩家双击时间（单位：毫秒）", s, "服务器在后台多久检测更新一次，如：" + s);
+		form.addToggle("仅允许白名单管理菜单", kick.config.getBoolean("仅允许白名单管理菜单"));
+		String string = "";
+		List<Object> list = kick.config.getList("白名单");
+		if (list.size() > 0)
+			for (int i = 0; i < list.size(); i++)
+				string += list.get(i) + (((i + 1) < list.size()) ? ";" : "");
+		form.addInput("菜单管理白名单\n如将“仅允许白名单管理菜单”选项关闭则此项可以忽略\n多个玩家请使用;分割", string);
+		form.sendPlayer(player);
 		return true;
 	}
 
 	/**
-	 * 创建菜单主页
+	 * 打开一个界面
 	 * 
-	 * @param player
+	 * @param player 要显示这个界面的玩家对象
+	 * @param file   要打开的界面的文件对象
+	 * @return
 	 */
-	public static boolean Main(Player player) {
+	public static boolean OpenMenu(Player player, File file) {
+		return OpenMenu(player, file, false);
+	}
+
+	/**
+	 * 打开一个界面
+	 * 
+	 * @param player 要显示这个界面的玩家对象
+	 * @param file   要打开的界面的文件对象
+	 * @param isBack 是否存储该页为上一页
+	 * @return
+	 */
+	public static boolean OpenMenu(Player player, File file, boolean isBack) {
+		return OpenMenu(player, file, isBack, false);
+	}
+
+	/**
+	 * 打开一个界面
+	 * 
+	 * @param player 要显示这个界面的玩家对象
+	 * @param file   要打开的界面的文件对象
+	 * @param isBack 是否存储该页为上一页
+	 * @param isMain 是否是主页
+	 * @return
+	 */
+	public static boolean OpenMenu(Player player, File file, boolean isBack, boolean isMain) {
 		Kick kick = Kick.kick;
 		Message msg = kick.Message;
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
-		if (myPlayer.loadTime == null
-				|| Duration.between(myPlayer.loadTime, Instant.now()).toMillis() > kick.config.getInt("屏蔽玩家双击间隔"))
-			myPlayer.loadTime = Instant.now();
-		else
-			return false;
-		File file = new File(kick.mis.getDataFolder(), kick.MainFileName);
-		myPlayer.OpenMenuList = Arrays.asList(file);
+		if (isBack)
+			myPlayer.OpenMenuList.add(file);
 		myPlayer.BackFile = file;
 		Config config = new Config(file, Config.YAML);
 		List<Map<String, Object>> Items = new ArrayList<Map<String, Object>>();
-		SimpleForm form = new SimpleForm(kick.formID.getID(0),
+		int ID = isMain ? kick.formID.getID(0) : getID(myPlayer);
+		SimpleForm form = new SimpleForm(ID,
 				msg.getText(config.getString("Title", ""), new String[] { "{Player}" },
 						new Object[] { player.getName() }),
 				msg.getText(config.getString("Content", ""), new String[] { "{Player}" },
@@ -81,13 +122,46 @@ public class MakeForm {
 		if (form.getButtonSize() < 1)
 			form.setContent(form.getContent() + (form.getContent() != null && !form.getContent().isEmpty() ? "\n" : "")
 					+ msg.getMessage("没有按钮时提示", new String[] { "{Player}" }, new Object[] { player.getName() }));
+		if (myPlayer.OpenMenuList == null || myPlayer.OpenMenuList.size() < 1 || isMain) {
+			form.addButton(msg.getSon("界面", "取消按钮", new String[] { "{Player}" }, new Object[] { player.getName() }));
+		} else
+			form.addButton(msg.getSon("界面", "返回上级", new String[] { "{Player}" }, new Object[] { player.getName() }));
 		if (Kick.isAdmin(player))
 			form.addButton(Tool.getRandColor() + "添加按钮").addButton(Tool.getRandColor() + "删除按钮")
 					.addButton(Tool.getRandColor() + "系统设置");
 		myPlayer.Items = Items;
+		myPlayer.isMain = isMain;
 		kick.PlayerDataMap.put(player.getName(), myPlayer);
 		form.sendPlayer(player);
 		return true;
+	}
+
+	/**
+	 * 创建菜单主页
+	 * 
+	 * @param player
+	 */
+	public static boolean Main(Player player) {
+		Kick kick = Kick.kick;
+		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
+		if (myPlayer.loadTime == null
+				|| Duration.between(myPlayer.loadTime, Instant.now()).toMillis() > kick.config.getInt("屏蔽玩家双击间隔"))
+			myPlayer.loadTime = Instant.now();
+		else
+			return false;
+		myPlayer.OpenMenuList = new ArrayList<File>();
+		return OpenMenu(player, new File(kick.mis.getDataFolder(), kick.MainFileName), true, true);
+	}
+
+	public static int getID(MyPlayer myPlayer) {
+		int i = myPlayer.Formid;
+		if (i >= 0 && i <= 3) {
+			i++;
+		} else
+			i = 0;
+		myPlayer.Formid = i;
+		Kick.kick.PlayerDataMap.put(myPlayer.player.getName(), myPlayer);
+		return Kick.kick.formID.getID("子页" + i);
 	}
 
 	/**

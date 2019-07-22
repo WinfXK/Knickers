@@ -63,6 +63,18 @@ public class MyPlayer {
 	 * 在执行命令按钮里面临时存储执行命令的对象
 	 */
 	public String Commander;
+	/**
+	 * 是否是主页
+	 */
+	public boolean isMain;
+	/**
+	 * 表单ID顺序
+	 */
+	public int Formid = 0;
+	/**
+	 * 删除的时候的文件列表
+	 */
+	public List<File> DelFileList;
 
 	public MyPlayer(Player player) {
 		this.player = player;

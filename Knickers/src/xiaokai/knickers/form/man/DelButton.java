@@ -69,8 +69,9 @@ public class DelButton {
 		if (!Buttons.containsKey(key))
 			return MakeForm.Tip(player, "§4这个界面没有发现这个按钮的存在！");
 		Map<String, Object> map = (Map<String, Object>) Buttons.get(key);
-		SimpleForm form = new SimpleForm(kick.formID.getID(4),
-				Kick.kick.Message.getText(String.valueOf(map.get("Text"))), "§4确定要删除这个按钮吗？");
+		myPlayer.Item = map;
+		SimpleForm form = new SimpleForm(kick.formID.getID(4), kick.Message.getText(String.valueOf(map.get("Text"))),
+				"§4确定要删除这个按钮吗？");
 		String string = "";
 		for (String ike : map.keySet()) {
 			String s = Tool.getRandColor();
@@ -82,6 +83,7 @@ public class DelButton {
 		if (String.valueOf(map.get("Type")).toLowerCase().equals("open"))
 			form.addButton("§4确定并删除子菜单");
 		form.sendPlayer(player);
+		kick.PlayerDataMap.put(player.getName(), myPlayer);
 		return true;
 	}
 
@@ -90,18 +92,19 @@ public class DelButton {
 		Kick kick = Kick.kick;
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		File file = myPlayer.CacheFile;
-		List<String> Items = myPlayer.keyList;
-		String Key = Items.get(id);
+		String Key = String.valueOf(myPlayer.Item.get("Key"));
 		Config config = new Config(file, Config.YAML);
 		Map<String, Object> Buttons = (config.get("Buttons") != null && (config.get("Buttons") instanceof Map))
 				? (HashMap<String, Object>) config.get("Buttons")
 				: new HashMap<String, Object>();
-		if (id == 3) {
+		if (id == 2) {
 			Map<String, Object> map = (Map<String, Object>) Buttons.get(Key);
 			String Type = String.valueOf(map.get("Type"));
-			if (Type.toLowerCase().equals("open"))
-				delFile(new File(new File(kick.mis.getDataFolder(), Kick.MenuConfigPath),
+			if (Type.toLowerCase().equals("open")) {
+				myPlayer.DelFileList = new ArrayList<File>();
+				delFile(myPlayer, new File(new File(kick.mis.getDataFolder(), Kick.MenuConfigPath),
 						String.valueOf(map.get("Config"))));
+			}
 			Buttons.remove(Key);
 		} else if (id == 0)
 			Buttons.remove(Key);
@@ -114,9 +117,10 @@ public class DelButton {
 		return MakeForm.OpenMenu(player, file);
 	}
 
-	public static void delFile(File file) {
-		if (!file.exists())
+	public static void delFile(MyPlayer myPlayer, File file) {
+		if (!file.exists() || myPlayer.DelFileList.contains(file))
 			return;
+		myPlayer.DelFileList.add(file);
 		Config config = new Config(file, Config.YAML);
 		Map<String, Object> Buttons = (config.get("Buttons") != null && (config.get("Buttons") instanceof Map))
 				? (HashMap<String, Object>) config.get("Buttons")
@@ -126,7 +130,7 @@ public class DelButton {
 				Map<String, Object> map = (Map<String, Object>) Buttons.get(ike);
 				String Type = String.valueOf(map.get("Type"));
 				if (Type.toLowerCase().equals("open"))
-					delFile(new File(new File(Kick.kick.mis.getDataFolder(), Kick.MenuConfigPath),
+					delFile(myPlayer, new File(new File(Kick.kick.mis.getDataFolder(), Kick.MenuConfigPath),
 							String.valueOf(map.get("Config"))));
 			}
 		file.delete();

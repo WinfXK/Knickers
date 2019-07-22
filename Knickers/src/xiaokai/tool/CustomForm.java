@@ -294,8 +294,8 @@ public class CustomForm {
 	 * @param Hint    编辑框为空时显示的内容
 	 * @return
 	 */
-	public CustomForm addInput(String text, Object Default, String Hint) {
-		list.add(new ElementInput(text, Hint, String.valueOf(Default)));
+	public CustomForm addInput(String text, Object Default, Object Hint) {
+		list.add(new ElementInput(text, String.valueOf(Hint), String.valueOf(Default)));
 		return this;
 	}
 

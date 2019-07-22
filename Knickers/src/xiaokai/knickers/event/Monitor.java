@@ -2,7 +2,6 @@ package xiaokai.knickers.event;
 
 import cn.nukkit.Player;
 import cn.nukkit.event.EventHandler;
-import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.player.PlayerFormRespondedEvent;
 import cn.nukkit.form.response.FormResponse;
@@ -26,18 +25,24 @@ public class Monitor implements Listener {
 		this.kick = kick;
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
+	@EventHandler
 	public void onPlayerForm(PlayerFormRespondedEvent e) {
+		FormResponse data = e.getResponse();
+		int ID = e.getFormID();
+		FormID fId = kick.formID;
 		Player player = e.getPlayer();
+		if (player != null && ID == fId.getID(6)) {
+			(new OpenButton.Tpa(kick.PlayerDataMap.get(player.getName()).TpaPlayer, kick))
+					.isOK(e.wasClosed() ? null : (FormResponseSimple) data, player);
+			return;
+		}
 		if (player == null || e.wasClosed() || e.getResponse() == null
 				|| (!(e.getResponse() instanceof FormResponseCustom) && !(e.getResponse() instanceof FormResponseSimple)
 						&& !(e.getResponse() instanceof FormResponseModal)))
 			return;
-		FormResponse data = e.getResponse();
-		int ID = e.getFormID();
-		FormID fId = kick.formID;
-		if (ID == fId.getID(0))
-			(new Dispose(kick, player)).Main((FormResponseSimple) data);
+		if (ID == fId.getID(0) || ID == fId.getID(8) || ID == fId.getID(10) || ID == fId.getID(11)
+				|| ID == fId.getID(12) || ID == fId.getID(13))
+			(new Dispose(kick, player)).start((FormResponseSimple) data);
 		else if (ID == fId.getID(1))
 			(new AddButton.Dispose(kick, player)).start((FormResponseSimple) data);
 		else if (ID == fId.getID(2))
@@ -48,10 +53,9 @@ public class Monitor implements Listener {
 			DelButton.start(player, (FormResponseSimple) data);
 		else if (ID == fId.getID(5))
 			(new OpenButton.Tpa(player, kick)).start((FormResponseSimple) data);
-		else if (ID == fId.getID(6))
-			(new OpenButton.Tpa(kick.PlayerDataMap.get(player.getName()).TpaPlayer, kick))
-					.isOK((FormResponseSimple) data, player);
 		else if (ID == fId.getID(7))
 			(new OpenButton.onCommand(player)).PY((FormResponseCustom) data);
+		else if (ID == fId.getID(9))
+			(new Dispose(kick, player)).Setting((FormResponseCustom) data);
 	}
 }

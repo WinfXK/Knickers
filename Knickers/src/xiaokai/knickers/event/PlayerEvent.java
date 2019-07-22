@@ -21,7 +21,10 @@ public class PlayerEvent implements Listener {
 	public PlayerEvent(Kick kick) {
 		this.kick = kick;
 	}
-
+/**
+ * 玩家脑残了点击东西
+ * @param e
+ */
 	@EventHandler
 	public void onClick(PlayerInteractEvent e) {
 		Player player = e.getPlayer();
