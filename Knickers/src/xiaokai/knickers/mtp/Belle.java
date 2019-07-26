@@ -66,20 +66,33 @@ public class Belle {
 				kick.formIdConfig.set(formidKey, Tool.getRand());
 				kick.formIdConfig.save();
 			}
+		DumperOptions dumperOptions = new DumperOptions();
+		dumperOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+		LinkedHashMap<String, Object> map;
+		Yaml yaml = new Yaml(dumperOptions);
+		String content;
 		for (String FileNae : kick.isLoadFileName)
 			try {
 				kick.mis.getLogger().info("§6正在检查文件" + FileNae);
-				String content = Utils.readFile(this.getClass().getResourceAsStream("/resources/" + FileNae));
-				DumperOptions dumperOptions = new DumperOptions();
-				dumperOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-				Yaml yaml = new Yaml(dumperOptions);
-				LinkedHashMap<String, Object> map = new ConfigSection(yaml.loadAs(content, LinkedHashMap.class));
+				content = Utils.readFile(this.getClass().getResourceAsStream("/resources/" + FileNae));
+				map = new ConfigSection(yaml.loadAs(content, LinkedHashMap.class));
 				Config config = new Config(new File(kick.mis.getDataFolder(), FileNae), Config.YAML);
 				Map<String, Object> cg = config.getAll();
 				isMap(map, cg, config);
 			} catch (IOException e) {
 				kick.mis.getLogger().info("§4在检查数据中遇到错误！请尝试删除该文件§9[§d" + FileNae + "§9]\n§f" + e.getMessage());
 			}
+		file = new File(kick.mis.getDataFolder(), Kick.MenuConfigPath);
+		for (String Fn : file.list()) {
+			File fns = new File(file, Fn);
+			if (fns.isFile())
+				try {
+					content = Utils.readFile(fns);
+					map = new ConfigSection(yaml.loadAs(content, LinkedHashMap.class));
+				} catch (Exception e) {
+					kick.mis.getLogger().error("§4已发现§6" + fns.getName() + "§4存在错误！请检查！" + e.getMessage());
+				}
+		}
 	}
 
 	public void isMap(Map<String, Object> map, Map<String, Object> cg, Config config) {
