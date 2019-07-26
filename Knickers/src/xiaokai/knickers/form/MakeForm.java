@@ -33,26 +33,27 @@ public class MakeForm {
 		Kick kick = Kick.kick;
 		if (!Kick.isAdmin(player))
 			return MakeForm.Tip(player, kick.Message.getMessage("权限不足"));
+		Config config = kick.config;
 		CustomForm form = new CustomForm(kick.formID.getID(9), Tool.getColorFont(kick.mis.getName() + "-Setting"));
-		form.addInput("快捷工具的物品ID", kick.config.get("快捷工具"), "请输入物品ID或物品名称，如： " + kick.config.get("快捷工具"));
-		form.addInput("服务器货币名称", kick.config.get("货币单位"), kick.config.get("货币单位"));
-		form.addToggle("插件启动时检测更新", kick.config.getBoolean("检测更新"));
-		int s = Float
-				.valueOf(
-						Tool.isInteger(kick.config.get("检测更新间隔")) ? String.valueOf(kick.config.get("检测更新间隔")) : "21600")
+		form.addInput("快捷工具的物品ID", config.get("快捷工具"), "请输入物品ID或物品名称，如： " + config.get("快捷工具"));
+		form.addInput("服务器货币名称", config.get("货币单位"), config.get("货币单位"));
+		form.addToggle("插件启动时检测更新", config.getBoolean("检测更新"));
+		int s = Float.valueOf(Tool.isInteger(config.get("检测更新间隔")) ? String.valueOf(config.get("检测更新间隔")) : "21600")
 				.intValue();
 		form.addInput("服务器自动更新间隔（单位：秒）", s, "服务器在后台多久检测更新一次，如：" + s);
-		s = Float.valueOf(
-				Tool.isInteger(kick.config.get("屏蔽玩家双击间隔")) ? String.valueOf(kick.config.get("屏蔽玩家双击间隔")) : "500")
+		s = Float.valueOf(Tool.isInteger(config.get("屏蔽玩家双击间隔")) ? String.valueOf(config.get("屏蔽玩家双击间隔")) : "500")
 				.intValue();
 		form.addInput("屏蔽玩家双击时间（单位：毫秒）", s, "服务器在后台多久检测更新一次，如：" + s);
-		form.addToggle("仅允许白名单管理菜单", kick.config.getBoolean("仅允许白名单管理菜单"));
+		form.addToggle("仅允许白名单管理菜单", config.getBoolean("仅允许白名单管理菜单"));
 		String string = "";
-		List<Object> list = kick.config.getList("白名单");
+		List<Object> list = config.getList("白名单");
 		if (list.size() > 0)
 			for (int i = 0; i < list.size(); i++)
 				string += list.get(i) + (((i + 1) < list.size()) ? ";" : "");
 		form.addInput("菜单管理白名单\n如将“仅允许白名单管理菜单”选项关闭则此项可以忽略\n多个玩家请使用;分割", string);
+		form.addToggle("是否撤销玩家使用快捷工具打开菜单产生的事件", config.getBoolean("打开撤销"));
+		form.addInput("自动检查玩家是否拥有快捷工具的时间间隔\n当这个值小于等于零时不启用该功能", config.getInt("定时检查快捷工具间隔"));
+		form.addToggle("是否允许玩家丢弃快捷工具", config.getBoolean("是否允许玩家丢弃快捷工具"));
 		form.sendPlayer(player);
 		return true;
 	}
@@ -95,7 +96,6 @@ public class MakeForm {
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		if (isBack)
 			myPlayer.OpenMenuList.add(file);
-		myPlayer.BackFile = file;
 		Config config = new Config(file, Config.YAML);
 		List<Map<String, Object>> Items = new ArrayList<Map<String, Object>>();
 		int ID = isMain ? kick.formID.getID(0) : getID(myPlayer);
@@ -122,13 +122,17 @@ public class MakeForm {
 		if (form.getButtonSize() < 1)
 			form.setContent(form.getContent() + (form.getContent() != null && !form.getContent().isEmpty() ? "\n" : "")
 					+ msg.getMessage("没有按钮时提示", new String[] { "{Player}" }, new Object[] { player.getName() }));
-		if (myPlayer.OpenMenuList == null || myPlayer.OpenMenuList.size() < 1 || isMain) {
+		if (myPlayer.OpenMenuList == null || myPlayer.OpenMenuList.size() < 1 || isMain
+				|| file.getAbsolutePath()
+						.equals(new File(kick.mis.getDataFolder(), kick.MainFileName).getAbsolutePath())
+				|| (myPlayer.BackFile != null && file.getAbsolutePath().equals(myPlayer.BackFile.getAbsolutePath()))) {
 			form.addButton(msg.getSon("界面", "取消按钮", new String[] { "{Player}" }, new Object[] { player.getName() }));
 		} else
 			form.addButton(msg.getSon("界面", "返回上级", new String[] { "{Player}" }, new Object[] { player.getName() }));
 		if (Kick.isAdmin(player))
 			form.addButton(Tool.getRandColor() + "添加按钮").addButton(Tool.getRandColor() + "删除按钮")
 					.addButton(Tool.getRandColor() + "系统设置");
+		myPlayer.BackFile = file;
 		myPlayer.Items = Items;
 		myPlayer.isMain = isMain;
 		kick.PlayerDataMap.put(player.getName(), myPlayer);
@@ -197,7 +201,7 @@ public class MakeForm {
 	 * @return <b>back</b>
 	 */
 	public static boolean Tip(Player player, String Title, String Content, boolean back) {
-		return Tip(player, Title, Content, back, false);
+		return Tip(player, Title, Content, back, true);
 	}
 
 	/**

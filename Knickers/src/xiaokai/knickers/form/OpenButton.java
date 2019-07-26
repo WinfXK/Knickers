@@ -371,7 +371,7 @@ public class OpenButton {
 		private boolean make(String Command, String Commander, Map<String, Object> Item) {
 			MyPlayer myPlayer = Kick.kick.PlayerDataMap.get(player.getName());
 			Kick kick = Kick.kick;
-			String[] Commands = Command.split("\\{Msg\\}");
+			String[] Commands = Command.split("\\{msg\\}");
 			CustomForm form = new CustomForm(kick.formID.getID(7), kick.Message.getSun("界面", "执行命令", "标题",
 					new String[] { "{Player}" }, new Object[] { player.getName() }));
 			List<String> def = (Item.get("Msg") == null || !(Item.get("Msg") instanceof List)) ? new ArrayList<String>()
@@ -380,8 +380,7 @@ public class OpenButton {
 					? new ArrayList<String>()
 					: (ArrayList<String>) Item.get("Hint");
 			for (int i = 0; i < Commands.length - 1; i++)
-				form.addInput(Commands[i],
-						def.size() < 1 ? "" : ((def.size() < i) ? def.get(i) : def.get(def.size() - 1)),
+				form.addInput(def.size() < 1 ? "" : ((def.size() < i) ? def.get(i) : def.get(def.size() - 1)), "",
 						Hints.size() < 1 ? "" : (Hints.size() < i) ? Hints.get(i) : Hints.get(Hints.size() - 1));
 			myPlayer.Commnds = Arrays.asList(Commands);
 			myPlayer.Commander = Commander;
@@ -404,12 +403,14 @@ public class OpenButton {
 				Command = Kick.kick.Message.getText(Command, new String[] { "{Player}" },
 						new Object[] { player.getName() });
 				Command = (Command.lastIndexOf("}") == Command.length() - 1) ? Command + " " : Command;
-				if (Command.contains("{Msg}")) {
+				System.out.println(Command);
+				if (Command.contains("{msg}")) {
 					return make(Command, Commander, Item);
 				} else
 					return carryCommand(player, Command, Commander);
 			}
-			return false;
+			return MakeForm.Tip(player, Kick.kick.Message.getSun("界面", "执行命令", "打开失败",
+					new String[] { "{Player}", "{Error}" }, new Object[] { player.getName(), "获取的命令为空！" }));
 		}
 
 		/**

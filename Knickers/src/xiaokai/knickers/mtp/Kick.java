@@ -2,7 +2,12 @@ package xiaokai.knickers.mtp;
 
 import java.io.File;
 import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.UUID;
+
 import cn.nukkit.Player;
+import cn.nukkit.Server;
+import cn.nukkit.command.CommandSender;
 import cn.nukkit.utils.Config;
 import xiaokai.knickers.Knickers;
 import xiaokai.tool.Tool;
@@ -91,12 +96,36 @@ public class Kick {
 			public void run() {
 				super.run();
 				while (true) {
-					if (config.getBoolean("检测更新"))
-						(new Update(knickers)).start();
 					try {
 						sleep(Tool.ObjectToInt(kick.config.get("检测更新间隔"), 500) * 1000);
+						if (config.getBoolean("检测更新"))
+							(new Update(knickers)).start();
 					} catch (InterruptedException e) {
-						e.printStackTrace();
+						mis.getLogger().warning("自动检查更新遇到错误！" + e.getMessage());
+					}
+				}
+			}
+		}.start();
+		new Thread() {
+			@Override
+			public void run() {
+				super.run();
+				while (true) {
+					try {
+						Object object = config.get("定时检查快捷工具间隔");
+						String s = object == null ? "" : String.valueOf(object);
+						int time = Tool.ObjectToInt(s, 60);
+						if (time > 0) {
+							Map<UUID, Player> Players = Server.getInstance().getOnlinePlayers();
+							for (UUID u : Players.keySet()) {
+								Player player = Players.get(u);
+								if (player.isOnline())
+									Belle.exMaterials(player);
+							}
+						}
+						sleep((time < 1 ? 60 : time) * 1000);
+					} catch (InterruptedException e) {
+						mis.getLogger().warning("自动检查更玩家快捷工具遇到错误！" + e.getMessage());
 					}
 				}
 			}
@@ -104,7 +133,15 @@ public class Kick {
 		Message = new Message(this);
 	}
 
+	public static boolean isAdmin(CommandSender player) {
+		if (!player.isPlayer())
+			return true;
+		return isAdmin((Player) player);
+	}
+
 	public static boolean isAdmin(Player player) {
+		if (!player.isPlayer())
+			return true;
 		if (Kick.kick.config.getBoolean("仅允许白名单管理菜单"))
 			return Kick.kick.config.getList("白名单").contains(player.getName());
 		return player.isOp();
