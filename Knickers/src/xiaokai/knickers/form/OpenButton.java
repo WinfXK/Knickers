@@ -119,7 +119,23 @@ public class OpenButton {
 					new Object[] { player.getName(), "无法获取目标世界名称！" }));
 		}
 		String World = String.valueOf(Item.get("World"));
-		Level level = Server.getInstance().getLevelByName(World);
+		Level level = null;
+		Map<Integer, Level> levels = Server.getInstance().getLevels();
+		for (Integer i : levels.keySet())
+			if (levels.get(i).getFolderName().equals(World))
+				level = levels.get(i);
+		if (level == null)
+			for (Integer i : levels.keySet())
+				if (levels.get(i).getFolderName().toLowerCase().equals(World.toLowerCase()))
+					level = levels.get(i);
+		if (level == null)
+			for (Integer i : levels.keySet())
+				if (levels.get(i).getFolderName().contains(World))
+					level = levels.get(i);
+		if (level == null)
+			for (Integer i : levels.keySet())
+				if (levels.get(i).getFolderName().toLowerCase().contains(World.toLowerCase()))
+					level = levels.get(i);
 		if (level == null) {
 			kick.mis.getLogger().error("一个按钮的数据可能发生了错误！按钮类型为：传送，数据错误项：无法获取目标世界对象！请检查");
 			return MakeForm.Tip(player, Kick.kick.Message.getSon("界面", "打开按钮失败", new String[] { "{Player}", "{Error}" },

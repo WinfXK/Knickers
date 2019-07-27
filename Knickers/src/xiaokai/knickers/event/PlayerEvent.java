@@ -1,9 +1,11 @@
 package xiaokai.knickers.event;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.BlockBreakEvent;
+import cn.nukkit.event.inventory.InventoryMoveItemEvent;
 import cn.nukkit.event.player.PlayerDropItemEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.event.player.PlayerInteractEvent.Action;
@@ -26,8 +28,16 @@ public class PlayerEvent implements Listener {
 		this.kick = kick;
 	}
 
+	public void onIMI(InventoryMoveItemEvent e) {
+		Server.getInstance().broadcastMessage("asdasd");
+		Item item = e.getItem();
+		if (e.getAction().equals(cn.nukkit.event.inventory.InventoryMoveItemEvent.Action.DROP)
+				&& Belle.isMaterials(item) && !kick.config.getBoolean("是否允许玩家将快捷工具装箱"))
+			e.setCancelled();
+	}
+
 	@EventHandler
-	public void onSB(PlayerDropItemEvent e) {
+	public void onDropItem(PlayerDropItemEvent e) {
 		Item item = e.getItem();
 		if (kick.config.getBoolean("是否允许玩家丢弃快捷工具") || !Belle.isMaterials(item))
 			return;
@@ -62,8 +72,7 @@ public class PlayerEvent implements Listener {
 	public void onClick(PlayerInteractEvent e) {
 		Player player = e.getPlayer();
 		Action ac = e.getAction();
-		if ((ac == Action.LEFT_CLICK_AIR || ac == Action.LEFT_CLICK_BLOCK || ac == Action.RIGHT_CLICK_AIR
-				|| ac == Action.RIGHT_CLICK_BLOCK) && Belle.isMaterials(e.getItem())) {
+		if (!ac.equals(Action.PHYSICAL) && Belle.isMaterials(e.getItem())) {
 			MakeForm.Main(player);
 			if (kick.config.getBoolean("打开撤销"))
 				e.setCancelled();

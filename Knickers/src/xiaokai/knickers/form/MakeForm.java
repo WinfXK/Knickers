@@ -148,12 +148,14 @@ public class MakeForm {
 	public static boolean Main(Player player) {
 		Kick kick = Kick.kick;
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
+		myPlayer = myPlayer == null ? new MyPlayer(player) : myPlayer;
 		if (myPlayer.loadTime == null
 				|| Duration.between(myPlayer.loadTime, Instant.now()).toMillis() > kick.config.getInt("屏蔽玩家双击间隔"))
 			myPlayer.loadTime = Instant.now();
 		else
 			return false;
 		myPlayer.OpenMenuList = new ArrayList<File>();
+		kick.PlayerDataMap.put(player.getName(), myPlayer);
 		return OpenMenu(player, new File(kick.mis.getDataFolder(), kick.MainFileName), true, true);
 	}
 
