@@ -396,8 +396,8 @@ public class OpenButton {
 					? new ArrayList<String>()
 					: (ArrayList<String>) Item.get("Hint");
 			for (int i = 0; i < Commands.length - 1; i++)
-				form.addInput(def.size() < 1 ? "" : ((def.size() < i) ? def.get(i) : def.get(def.size() - 1)), "",
-						Hints.size() < 1 ? "" : (Hints.size() < i) ? Hints.get(i) : Hints.get(Hints.size() - 1));
+				form.addInput( def.size()< i + 1  ? "" : def.get(i), "",
+						Hints.size() < i + 1 ? "" : Hints.get(i));
 			myPlayer.Commnds = Arrays.asList(Commands);
 			myPlayer.Commander = Commander;
 			kick.PlayerDataMap.put(player.getName(), myPlayer);
