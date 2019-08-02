@@ -10,6 +10,7 @@ import cn.nukkit.Server;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.utils.Config;
 import xiaokai.knickers.Knickers;
+import xiaokai.knickers.appliance.Appliance;
 import xiaokai.tool.Tool;
 import xiaokai.tool.Update;
 
@@ -36,13 +37,17 @@ public class Kick {
 	 */
 	public String MainFileName = "Main.yml";
 	/**
-	 * 表单ID存储类
-	 */
-	public FormID formID;
-	/**
 	 * 消息文件存储文件名
 	 */
 	public String MsgName = "Message.yml";
+	/**
+	 * 自定义工具的配置文件
+	 */
+	public String ApplianceName = "Appliance.yml";
+	/**
+	 * 表单ID存储类
+	 */
+	public FormID formID;
 	/**
 	 * 消息文件类
 	 */
@@ -80,6 +85,14 @@ public class Kick {
 	 * 在启动服务器时检查文件夹是否创建，要检查的列表
 	 */
 	public static final String[] LoadDirList = { MenuConfigPath };
+	/**
+	 * 自定义可以工具打开界面的处理类</br>
+	 * ....</br>
+	 * ？？？？？</br>
+	 * <b>What</b>？？？</br>
+	 * 我咋感觉我有点不会说话了，这特么说的什么鬼！
+	 */
+	public Appliance App;
 
 	public Kick(Knickers knickers) {
 		kick = this;
@@ -91,15 +104,26 @@ public class Kick {
 		config = new Config(new File(knickers.getDataFolder(), ConfigName), Config.YAML);
 		formID = new FormID(this);
 		formID.setConfig(formIdConfig.getAll());
+		Message = new Message(this);
+		App = new Appliance(this);
+		startThread();
+	}
+
+	/**
+	 * 上面太多了看着难受，启动几个线程 </br>
+	 * 检测更新间隔 </br>
+	 * 定时检查快捷工具间隔
+	 */
+	private void startThread() {
 		new Thread() {
 			@Override
 			public void run() {
 				super.run();
 				while (true) {
 					try {
-						sleep(Tool.ObjectToInt(kick.config.get("检测更新间隔"), 500) * 1000);
+						sleep(Tool.ObjectToInt(config.get("检测更新间隔"), 500) * 1000);
 						if (config.getBoolean("检测更新"))
-							(new Update(knickers)).start();
+							(new Update(mis)).start();
 					} catch (InterruptedException e) {
 						mis.getLogger().warning("自动检查更新遇到错误！" + e.getMessage());
 					}
@@ -130,7 +154,6 @@ public class Kick {
 				}
 			}
 		}.start();
-		Message = new Message(this);
 	}
 
 	public static boolean isAdmin(CommandSender player) {

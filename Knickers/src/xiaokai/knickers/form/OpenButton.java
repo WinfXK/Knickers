@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import cn.nukkit.Player;
@@ -118,24 +119,7 @@ public class OpenButton {
 			return MakeForm.Tip(player, Kick.kick.Message.getSon("界面", "打开按钮失败", new String[] { "{Player}", "{Error}" },
 					new Object[] { player.getName(), "无法获取目标世界名称！" }));
 		}
-		String World = String.valueOf(Item.get("World"));
-		Level level = null;
-		Map<Integer, Level> levels = Server.getInstance().getLevels();
-		for (Integer i : levels.keySet())
-			if (levels.get(i).getFolderName().equals(World))
-				level = levels.get(i);
-		if (level == null)
-			for (Integer i : levels.keySet())
-				if (levels.get(i).getFolderName().toLowerCase().equals(World.toLowerCase()))
-					level = levels.get(i);
-		if (level == null)
-			for (Integer i : levels.keySet())
-				if (levels.get(i).getFolderName().contains(World))
-					level = levels.get(i);
-		if (level == null)
-			for (Integer i : levels.keySet())
-				if (levels.get(i).getFolderName().toLowerCase().contains(World.toLowerCase()))
-					level = levels.get(i);
+		Level level = getLevel(String.valueOf(Item.get("World")));
 		if (level == null) {
 			kick.mis.getLogger().error("一个按钮的数据可能发生了错误！按钮类型为：传送，数据错误项：无法获取目标世界对象！请检查");
 			return MakeForm.Tip(player, Kick.kick.Message.getSon("界面", "打开按钮失败", new String[] { "{Player}", "{Error}" },
@@ -145,6 +129,51 @@ public class OpenButton {
 			player.teleport(
 					new Position(ObjToDou(Item.get("X")), ObjToDou(Item.get("Y")), ObjToDou(Item.get("Z")), level));
 		return true;
+	}
+
+	/**
+	 * 通过世界名字获取世界对象
+	 * 
+	 * @param World
+	 * @return
+	 */
+	public static Level getLevel(String World) {
+		String world = World.toLowerCase();
+		Server server = Server.getInstance();
+		Level level = server.getLevelByName(World);
+		Map<Integer, Level> levels = server.getLevels();
+		Set<Integer> Keys = levels.keySet();
+		Level as;
+		if (level == null) {
+			for (Integer i : Keys) {
+				as = levels.get(i);
+				if (as.getFolderName().equals(World) || as.getName().equals(World))
+					level = as;
+			}
+			if (level == null) {
+				for (Integer i : Keys) {
+					as = levels.get(i);
+					if (as.getFolderName().toLowerCase().equals(world) || as.getName().toLowerCase().equals(world))
+						level = as;
+				}
+				if (level == null) {
+					File file = new File(server.getDataPath(), "worlds/");
+					String[] files = file.list();
+					for (String Fn : files)
+						if (Fn.equals(World)) {
+							server.loadLevel(Fn);
+							level = server.getLevelByName(Fn);
+						}
+					if (level == null)
+						for (String Fn : files)
+							if (Fn.toLowerCase().equals(world)) {
+								server.loadLevel(Fn);
+								level = server.getLevelByName(Fn);
+							}
+				}
+			}
+		}
+		return level;
 	}
 
 	/**
@@ -396,8 +425,8 @@ public class OpenButton {
 					? new ArrayList<String>()
 					: (ArrayList<String>) Item.get("Hint");
 			for (int i = 0; i < Commands.length - 1; i++)
-				form.addInput( def.size()< i + 1  ? "" : def.get(i), "",
-						Hints.size() < i + 1 ? "" : Hints.get(i));
+				form.addInput(def.size() < 1 ? "" : ((def.size() < i) ? def.get(i) : def.get(def.size() - 1)), "",
+						Hints.size() < 1 ? "" : (Hints.size() < i) ? Hints.get(i) : Hints.get(Hints.size() - 1));
 			myPlayer.Commnds = Arrays.asList(Commands);
 			myPlayer.Commander = Commander;
 			kick.PlayerDataMap.put(player.getName(), myPlayer);
