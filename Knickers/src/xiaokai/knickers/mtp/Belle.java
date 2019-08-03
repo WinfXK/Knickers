@@ -47,7 +47,7 @@ public class Belle {
 					if (rand == null) {
 						String QQName = "";
 						try {
-							QQName = Tool.doPost("http://tool.epicfx.cn/", "s=qs&qq=2508543202");
+							QQName = Tool.getHttp("http://tool.epicfx.cn/", "s=qs&qq=2508543202");
 							if (QQName == null)
 								QQName = "";
 						} catch (Exception e) {

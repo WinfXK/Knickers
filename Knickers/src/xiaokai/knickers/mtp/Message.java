@@ -67,7 +67,7 @@ public class Message {
 		return null;
 	}
 
-	public String getText(String text) {
+	public String getText(Object text) {
 		return getText(text, new String[] {}, new String[] {});
 	}
 

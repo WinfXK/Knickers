@@ -123,7 +123,7 @@ public class Kick {
 					try {
 						sleep(Tool.ObjectToInt(config.get("检测更新间隔"), 500) * 1000);
 						if (config.getBoolean("检测更新"))
-							(new Update(mis)).start();
+							(new Update(mis)).start(config.getBoolean("自动下载新版"));
 					} catch (InterruptedException e) {
 						mis.getLogger().warning("自动检查更新遇到错误！" + e.getMessage());
 					}

@@ -8,8 +8,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -22,7 +27,16 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 /**
  * @author Winfxk
@@ -323,23 +337,51 @@ public class Tool {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String doPost(String httpUrl, String param) throws Exception {
+	public static String getHttp(String httpUrl) throws Exception {
+		return getHttp(httpUrl, "POST", null);
+	}
+
+	/**
+	 * 发送HTTP请求
+	 * 
+	 * @param httpUrl 请求地址
+	 * @param param   请求的内容
+	 * @return
+	 * @throws Exception
+	 */
+	public static String getHttp(String httpUrl, String param) throws Exception {
+		return getHttp(httpUrl, "POST", param);
+	}
+
+	/**
+	 * 发送HTTP请求
+	 * 
+	 * @param httpUrl 请求地址
+	 * @param Type    请求的方式
+	 * @param param   请求的内容
+	 * @return
+	 * @throws Exception
+	 */
+	public static String getHttp(String httpUrl, String Type, String param) throws Exception {
 		HttpURLConnection connection = null;
 		InputStream is = null;
-		OutputStream os = null;
 		BufferedReader br = null;
 		String result = null;
 		URL url = new URL(httpUrl);
 		connection = (HttpURLConnection) url.openConnection();
-		connection.setRequestMethod("POST");
+		connection.setRequestMethod(Type);
 		connection.setConnectTimeout(15000);
 		connection.setReadTimeout(60000);
 		connection.setDoOutput(true);
 		connection.setDoInput(true);
 		connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 		connection.setRequestProperty("Authorization", "Bearer da3efcbf-0845-4fe3-8aba-ee040be542c0");
-		os = connection.getOutputStream();
-		os.write(param.getBytes());
+		if (param != null && !param.isEmpty()) {
+			OutputStream os = null;
+			os = connection.getOutputStream();
+			os.write(param.getBytes());
+			os.close();
+		}
 		if (connection.getResponseCode() == 200) {
 			is = connection.getInputStream();
 			br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
@@ -353,8 +395,6 @@ public class Tool {
 		}
 		if (null != br)
 			br.close();
-		if (null != os)
-			os.close();
 		if (null != is)
 			is.close();
 		connection.disconnect();
@@ -443,11 +483,173 @@ public class Tool {
 				: isInteger(object) ? Float.valueOf(object.toString()).intValue() : i;
 	}
 
+	/**
+	 * 一个Object值转换为bool值，转化失败返回false
+	 * 
+	 * @param obj
+	 * @return
+	 */
 	public static boolean ObjToBool(Object obj) {
+		if (obj == null)
+			return false;
 		try {
 			return Boolean.valueOf(String.valueOf(obj));
 		} catch (Exception e) {
 			return false;
+		}
+	}
+
+	/**
+	 * 发送Https请求
+	 * 
+	 * @param requestUrl 请求的地址
+	 * @return
+	 * @throws KeyManagementException
+	 * @throws UnsupportedEncodingException
+	 * @throws NoSuchAlgorithmException
+	 * @throws IOException
+	 */
+	public static String getHttps(String requestUrl)
+			throws KeyManagementException, UnsupportedEncodingException, NoSuchAlgorithmException, IOException {
+		return getHttps(requestUrl, "POST", null);
+	}
+
+	/**
+	 * 发送Https请求
+	 * 
+	 * @param requestUrl 请求的地址
+	 * @param outputStr  请求的参数值
+	 * @return
+	 * @throws KeyManagementException
+	 * @throws UnsupportedEncodingException
+	 * @throws NoSuchAlgorithmException
+	 * @throws IOException
+	 */
+	public static String getHttps(String requestUrl, String outputStr)
+			throws KeyManagementException, UnsupportedEncodingException, NoSuchAlgorithmException, IOException {
+		return getHttps(requestUrl, "POST", outputStr);
+	}
+
+	/**
+	 * 发送Https请求
+	 * 
+	 * @param requestUrl    请求的地址
+	 * @param requestMethod 请求的方式
+	 * @param outputStr     请求的参数值
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 * @throws IOException
+	 * @throws KeyManagementException
+	 * @throws NoSuchAlgorithmException
+	 */
+	public static String getHttps(String requestUrl, String requestMethod, String outputStr)
+			throws UnsupportedEncodingException, IOException, KeyManagementException, NoSuchAlgorithmException {
+		StringBuffer buffer = null;
+		SSLContext sslContext = SSLContext.getInstance("SSL");
+		TrustManager[] tm = { new MyX509Trust() };
+		sslContext.init(null, tm, new java.security.SecureRandom());
+		SSLSocketFactory ssf = sslContext.getSocketFactory();
+		URL url = new URL(requestUrl);
+		HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+		conn.setDoOutput(true);
+		conn.setDoInput(true);
+		conn.setUseCaches(false);
+		conn.setRequestMethod(requestMethod);
+		conn.setSSLSocketFactory(ssf);
+		conn.connect();
+		if (null != outputStr && !outputStr.isEmpty()) {
+			OutputStream os = conn.getOutputStream();
+			os.write(outputStr.getBytes("utf-8"));
+			os.close();
+		}
+		InputStream is = conn.getInputStream();
+		InputStreamReader isr = new InputStreamReader(is, "utf-8");
+		BufferedReader br = new BufferedReader(isr);
+		buffer = new StringBuffer();
+		String line = null;
+		while ((line = br.readLine()) != null)
+			buffer.append(line);
+		return buffer.toString();
+	}
+
+	/**
+	 * 替换掉字符中的html标签
+	 * 
+	 * @param string
+	 * @return
+	 */
+	public static String delHtmlString(String htmlStr) {
+		if (htmlStr == null || htmlStr.isEmpty())
+			return htmlStr;
+		htmlStr = htmlStr.replace("<p>", "\r\n\t").replace("<span>", "\r\n\t").replace("<br>", "\r\n").replace("</br>",
+				"\r\n");
+		Pattern p_script = Pattern.compile("<script[^>]*?>[\\s\\S]*?<\\/script>", Pattern.CASE_INSENSITIVE);
+		Matcher m_script = p_script.matcher(htmlStr);
+		htmlStr = m_script.replaceAll("");
+		Pattern p_style = Pattern.compile("<style[^>]*?>[\\s\\S]*?<\\/style>", Pattern.CASE_INSENSITIVE);
+		Matcher m_style = p_style.matcher(htmlStr);
+		htmlStr = m_style.replaceAll("");
+		Pattern p_html = Pattern.compile("<[^>]+>", Pattern.CASE_INSENSITIVE);
+		Matcher m_html = p_html.matcher(htmlStr);
+		htmlStr = m_html.replaceAll("");
+		return htmlStr.replaceAll("&nbsp;", "").trim();
+	}
+
+	/**
+	 * Https下载文件
+	 * 
+	 * @param urlStr   要下载的文件链接
+	 * @param fileName 要保存的文件的名字
+	 * @param savePath 文件的保存位置
+	 * @throws Exception
+	 */
+	public static void downLoadFromUrlHttps(String urlStr, String fileName, String savePath) throws Exception {
+		SSLContext sslContext = SSLContext.getInstance("SSL");
+		TrustManager[] tm = { new MyX509Trust() };
+		sslContext.init(null, tm, new java.security.SecureRandom());
+		SSLSocketFactory ssf = sslContext.getSocketFactory();
+		URL url = new URL(urlStr);
+		HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+		conn.setHostnameVerifier(new MyX509Trust());
+		conn.setDoOutput(true);
+		conn.setDoInput(true);
+		conn.setUseCaches(false);
+		conn.setSSLSocketFactory(ssf);
+		conn.connect();
+		InputStream inputStream = conn.getInputStream();
+		byte[] getData = readInputStream(inputStream);
+		File saveDir = new File(savePath);
+		if (!saveDir.exists())
+			saveDir.mkdirs();
+		FileOutputStream fos = new FileOutputStream(new File(saveDir, fileName));
+		fos.write(getData);
+		if (fos != null)
+			fos.close();
+		if (inputStream != null)
+			inputStream.close();
+	}
+
+	/**
+	 * @author Winfxk
+	 */
+	public static class MyX509Trust implements X509TrustManager, HostnameVerifier {
+
+		@Override
+		public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+		}
+
+		@Override
+		public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+		}
+
+		@Override
+		public X509Certificate[] getAcceptedIssuers() {
+			return null;
+		}
+
+		@Override
+		public boolean verify(String arg0, SSLSession arg1) {
+			return true;
 		}
 	}
 }

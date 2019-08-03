@@ -1,13 +1,22 @@
 package xiaokai.knickers.appliance;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Yaml;
 
 import cn.nukkit.Player;
 import cn.nukkit.item.Item;
+import cn.nukkit.item.enchantment.Enchantment;
+import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.utils.Config;
 import xiaokai.knickers.mtp.Kick;
+import xiaokai.knickers.mtp.Message;
 import xiaokai.tool.Tool;
 
 /**
@@ -15,8 +24,10 @@ import xiaokai.tool.Tool;
  */
 @SuppressWarnings("unchecked")
 public class Appliance {
-	private Kick kick;
+	private static Kick kick;
+	private static Message Msg;
 	private LinkedHashMap<String, Map<String, Object>> FormList;
+	private ArrayList<Object> ItemList = new ArrayList<Object>();
 	private Config config;
 
 	/**
@@ -25,7 +36,8 @@ public class Appliance {
 	 * @param kick
 	 */
 	public Appliance(Kick kick) {
-		this.kick = kick;
+		Appliance.kick = kick;
+		Msg = kick.Message;
 		this.enclose();
 	}
 
@@ -35,7 +47,7 @@ public class Appliance {
 	 * @return
 	 */
 	public static LinkedHashMap<String, Map<String, Object>> getFormList() {
-		return Kick.kick.App.FormList;
+		return kick.App.FormList;
 	}
 
 	/**
@@ -60,8 +72,61 @@ public class Appliance {
 	public static boolean isGirl(Item item) {
 		if (item == null || item.getId() == 0)
 			return false;
-		return (getFormList().containsKey(String.valueOf(item.getId()))
-				|| getFormList().containsKey(item.getId() + ":" + item.getDamage()));
+		CompoundTag Nbt = item.getNamedTag();
+		if (Nbt == null && !kick.App.ItemList.contains(item.getId())
+				&& !kick.App.ItemList.contains(item.getId() + ":" + item.getDamage()))
+			return false;
+		return Nbt.getString("Their").equals(kick.mis.getName()) || kick.App.ItemList.contains(item.getId())
+				|| kick.App.ItemList.contains(item.getId() + ":" + item.getDamage());
+	}
+
+	/**
+	 * 给一个物品设置唯一数据
+	 * 
+	 * @param ID     要设置的物品的ID
+	 * @param Damage 要设置的物品的特殊值
+	 * @param map    要存入的数据
+	 * @return
+	 */
+	public static Item setData(int ID, int Damage, Map<String, Object> map) {
+		return setData(new Item(ID, Damage), map);
+	}
+
+	/**
+	 * 给一个物品设置唯一数据
+	 * 
+	 * @param item 要设置的物品的Item对象
+	 * @param map  要存入的数据
+	 * @return
+	 */
+	public static Item setData(Item item, Map<String, Object> map) {
+		if (item == null || item.getId() == 0)
+			return item;
+		CompoundTag Nbt = item.getNamedTag();
+		Nbt = Nbt == null ? new CompoundTag() : Nbt;
+		Nbt.putString("Their", kick.mis.getName());
+		Nbt.putBoolean("isDrop", Tool.ObjToBool(map.get("允许丢弃")));
+		if (map.get("Name") != null)
+			item.setCustomName(Msg.getText(map.get("Name")));
+		if (map.get("Lore") != null)
+			item.setLore(Msg.getText(map.get("Lore")));
+		if (map.get("Enchant") != null) {
+			List<Enchantment> enchants = Arrays.asList(item.getEnchantments());
+			if (map.get("Enchant") instanceof List) {
+				List<Object> list = (List<Object>) map.get("Enchant");
+				for (Object obj : list)
+					if (!enchants.contains(EnchantName.UnknownToEnchant(obj)))
+						item.addEnchantment(EnchantName.UnknownToEnchant(obj));
+			} else if (!enchants.contains(EnchantName.UnknownToEnchant(map.get("Enchant"))))
+				item.addEnchantment(EnchantName.UnknownToEnchant(map.get("Enchant")));
+		}
+		item.setNamedTag(Nbt);
+		DumperOptions dumperOptions = new DumperOptions();
+		dumperOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+		Yaml yaml = new Yaml(dumperOptions);
+		Nbt.putString("Data", yaml.dump(map));
+		item.setNamedTag(Nbt);
+		return item;
 	}
 
 	/**
@@ -71,12 +136,7 @@ public class Appliance {
 	 * @return
 	 */
 	public static boolean isDrop(Item item) {
-		if (!isGirl(item))
-			return false;
-		String ID = String.valueOf(item.getId());
-		Map<String, Object> map = getFormList().containsKey(ID) ? getFormList().get(ID)
-				: getFormList().get(ID + ":" + item.getDamage());
-		return Tool.ObjToBool(map.get("允许丢弃"));
+		return isGirl(item) ? item.getNamedTag().getBoolean("isDrop") : false;
 	}
 
 	/**
@@ -87,7 +147,7 @@ public class Appliance {
 	 * @return
 	 */
 	public boolean start(Player player, Item item) {
-		
+
 		return true;
 	}
 }
