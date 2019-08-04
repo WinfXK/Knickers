@@ -9,12 +9,13 @@ import java.util.Map;
 
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
-
 import cn.nukkit.Player;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.enchantment.Enchantment;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.utils.Config;
+import cn.nukkit.utils.ConfigSection;
+import xiaokai.knickers.form.MakeForm;
 import xiaokai.knickers.mtp.Kick;
 import xiaokai.knickers.mtp.Message;
 import xiaokai.tool.Tool;
@@ -39,6 +40,43 @@ public class Appliance {
 		Appliance.kick = kick;
 		Msg = kick.Message;
 		this.enclose();
+	}
+
+	/**
+	 * 开始处理玩家使用快捷工具的事件
+	 * 
+	 * @param player 使用自定义快捷工具的玩家对象
+	 * @param item   使用的快捷工具的Item对象
+	 * @return
+	 */
+	public boolean start(Player player, Item item) {
+		CompoundTag Nbt = item.getNamedTag();
+		Map<String, Object> Item;
+		if (Nbt != null && Nbt.getString("Their") != null && Nbt.getString("Their").equals(kick.mis.getName())) {
+			String ConfigString = Nbt.getString("Data");
+			if (ConfigString == null || ConfigString.isEmpty())
+				return MakeForm.Tip(player, Msg.getSon("快捷工具", "自定义工具打开失败提示", new String[] { "{Player}", "{Error}" },
+						new Object[] { player.getName(), "数据获取失败！" }));
+			try {
+				DumperOptions dumperOptions = new DumperOptions();
+				dumperOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+				Yaml yaml = new Yaml(dumperOptions);
+				Item = new ConfigSection(yaml.loadAs(ConfigString, LinkedHashMap.class));
+			} catch (Exception e) {
+				return MakeForm.Tip(player, Msg.getSon("快捷工具", "自定义工具打开失败提示", new String[] { "{Player}", "{Error}" },
+						new Object[] { player.getName(), "数据解析失败！" + e.getMessage() }));
+			}
+		} else {
+			String ID = String.valueOf(item.getId());
+			if (FormList.containsKey(ID))
+				Item = FormList.get(ID);
+			else if (FormList.containsKey(item.getId() + ":" + item.getDamage()))
+				Item = FormList.get(item.getId() + ":" + item.getDamage());
+			else
+				return MakeForm.Tip(player, Msg.getSon("快捷工具", "自定义工具打开失败提示", new String[] { "{Player}", "{Error}" },
+						new Object[] { player.getName(), "数据获取失败！" }));
+		}
+		return new Handle(kick, player, Item, item).start();
 	}
 
 	/**
@@ -76,7 +114,8 @@ public class Appliance {
 		if (Nbt == null && !kick.App.ItemList.contains(item.getId())
 				&& !kick.App.ItemList.contains(item.getId() + ":" + item.getDamage()))
 			return false;
-		return Nbt.getString("Their").equals(kick.mis.getName()) || kick.App.ItemList.contains(item.getId())
+		return (Nbt.getString("Their") != null && Nbt.getString("Their").equals(kick.mis.getName()))
+				|| kick.App.ItemList.contains(item.getId())
 				|| kick.App.ItemList.contains(item.getId() + ":" + item.getDamage());
 	}
 
@@ -139,15 +178,4 @@ public class Appliance {
 		return isGirl(item) ? item.getNamedTag().getBoolean("isDrop") : false;
 	}
 
-	/**
-	 * 开始处理玩家使用快捷工具的事件
-	 * 
-	 * @param player 使用自定义快捷工具的玩家对象
-	 * @param item   使用的快捷工具的Item对象
-	 * @return
-	 */
-	public boolean start(Player player, Item item) {
-
-		return true;
-	}
 }

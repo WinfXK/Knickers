@@ -8,6 +8,7 @@ import cn.nukkit.form.response.FormResponse;
 import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.form.response.FormResponseModal;
 import cn.nukkit.form.response.FormResponseSimple;
+import xiaokai.knickers.appliance.Handle;
 import xiaokai.knickers.form.Dispose;
 import xiaokai.knickers.form.OpenButton;
 import xiaokai.knickers.form.man.AddButton;
@@ -57,5 +58,7 @@ public class Monitor implements Listener {
 			(new OpenButton.onCommand(player)).PY((FormResponseCustom) data);
 		else if (ID == fId.getID(9))
 			(new Dispose(kick, player)).Setting((FormResponseCustom) data);
+		else if (ID == fId.getID(14))
+			Handle.Form.Switch((FormResponseSimple) data);
 	}
 }
