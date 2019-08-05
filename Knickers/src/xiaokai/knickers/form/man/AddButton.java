@@ -50,6 +50,12 @@ public class AddButton {
 		return true;
 	}
 
+	/**
+	 * 添加各种按钮
+	 * 
+	 * @author Winfxk
+	 *
+	 */
 	public static class Add {
 		private Player player;
 		private Config config;
@@ -229,6 +235,8 @@ public class AddButton {
 	}
 
 	/**
+	 * 处理玩家添加按钮的界面传回的数据
+	 * 
 	 * @author Winfxk
 	 */
 	public static class Start {
@@ -388,6 +396,8 @@ public class AddButton {
 	}
 
 	/**
+	 * 添加按钮时创建界面给管理员写入按钮数据的类
+	 * 
 	 * @author Winfxk
 	 */
 	public static class Dispose {

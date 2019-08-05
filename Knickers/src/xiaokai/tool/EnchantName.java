@@ -1,9 +1,10 @@
-package xiaokai.knickers.appliance;
+package xiaokai.tool;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import cn.nukkit.item.enchantment.Enchantment;
-import xiaokai.tool.Tool;
 
 /**
  * @author Winfxk
@@ -158,11 +159,13 @@ public enum EnchantName {
 	private static final LinkedHashMap<String, Integer> NameKey = new LinkedHashMap<String, Integer>();
 	private static final LinkedHashMap<Integer, String> IDKey = new LinkedHashMap<Integer, String>();
 	private static final LinkedHashMap<Integer, EnchantName> ItemKey = new LinkedHashMap<Integer, EnchantName>();
+	private static final List<EnchantName> All = new ArrayList<EnchantName>();
 	static {
 		for (EnchantName item : EnchantName.values()) {
 			IDKey.put(item.getID(), item.getName());
 			NameKey.put(item.getName(), item.getID());
 			ItemKey.put(item.getID(), item);
+			All.add(item);
 		}
 	}
 
@@ -291,11 +294,30 @@ public enum EnchantName {
 		this.ID = ID;
 	}
 
+	/**
+	 * 取得当前附魔的ID
+	 * 
+	 * @return
+	 */
 	public Integer getID() {
 		return ID;
 	}
 
+	/**
+	 * 取得当前附魔的名称
+	 * 
+	 * @return
+	 */
 	public String getName() {
 		return Name;
+	}
+
+	/**
+	 * 取得所有的附魔ID和名称
+	 * 
+	 * @return
+	 */
+	public static List<EnchantName> getAll() {
+		return All;
 	}
 }

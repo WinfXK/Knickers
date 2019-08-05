@@ -1,14 +1,15 @@
 package xiaokai.knickers.appliance;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
+
 import cn.nukkit.Player;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.enchantment.Enchantment;
@@ -18,6 +19,7 @@ import cn.nukkit.utils.ConfigSection;
 import xiaokai.knickers.form.MakeForm;
 import xiaokai.knickers.mtp.Kick;
 import xiaokai.knickers.mtp.Message;
+import xiaokai.tool.EnchantName;
 import xiaokai.tool.Tool;
 
 /**
@@ -27,9 +29,8 @@ import xiaokai.tool.Tool;
 public class Appliance {
 	private static Kick kick;
 	private static Message Msg;
-	private LinkedHashMap<String, Map<String, Object>> FormList;
-	private ArrayList<Object> ItemList = new ArrayList<Object>();
-	private Config config;
+	public static LinkedHashMap<String, Map<String, Object>> FormList;
+	public static Config config;
 
 	/**
 	 * 自定义快捷工具工具
@@ -39,7 +40,7 @@ public class Appliance {
 	public Appliance(Kick kick) {
 		Appliance.kick = kick;
 		Msg = kick.Message;
-		this.enclose();
+		Appliance.enclose();
 	}
 
 	/**
@@ -80,24 +81,21 @@ public class Appliance {
 	}
 
 	/**
-	 * 取得自定义表单对象
-	 * 
-	 * @return
-	 */
-	public static LinkedHashMap<String, Map<String, Object>> getFormList() {
-		return kick.App.FormList;
-	}
-
-	/**
 	 * 初始化自定义工具的配置文件对象和数据对象
 	 */
-	public void enclose() {
+	public static void enclose() {
 		config = new Config(new File(kick.mis.getDataFolder(), kick.ApplianceName), Config.YAML);
 		Map<String, Object> map = config.getAll();
 		for (String ike : map.keySet())
-			if (map.get(ike) != null && (map.get(ike) instanceof Map))
-				FormList.put(ike, (Map<String, Object>) map.get(ike));
-			else
+			if (map.get(ike) != null && (map.get(ike) instanceof Map)) {
+				Map<String, Object> FFFSB = (Map<String, Object>) map.get(ike);
+				if (FFFSB.get("ID") != null) {
+					FFFSB.put("Key", ike);
+					FormList.put(FFFSB.get("ID").toString(), FFFSB);
+					continue;
+				} else
+					kick.mis.getLogger().warning("§4自定义工具中的§6" + ike + "§4数据不合法！请检查。");
+			} else
 				kick.mis.getLogger().warning("§4自定义工具中的§6" + ike + "§4数据不合法！请检查。");
 	}
 
@@ -111,12 +109,12 @@ public class Appliance {
 		if (item == null || item.getId() == 0)
 			return false;
 		CompoundTag Nbt = item.getNamedTag();
-		if (Nbt == null && !kick.App.ItemList.contains(item.getId())
-				&& !kick.App.ItemList.contains(item.getId() + ":" + item.getDamage()))
+		String ID = String.valueOf(item.getId());
+		if (Nbt == null && !Appliance.FormList.containsKey(ID)
+				&& !Appliance.FormList.containsKey(ID + ":" + item.getDamage()))
 			return false;
 		return (Nbt.getString("Their") != null && Nbt.getString("Their").equals(kick.mis.getName()))
-				|| kick.App.ItemList.contains(item.getId())
-				|| kick.App.ItemList.contains(item.getId() + ":" + item.getDamage());
+				|| Appliance.FormList.containsKey(ID) || Appliance.FormList.containsKey(ID + ":" + item.getDamage());
 	}
 
 	/**
@@ -169,6 +167,52 @@ public class Appliance {
 	}
 
 	/**
+	 * 返回一个快捷工具的数据
+	 * 
+	 * @param item
+	 * @return
+	 */
+	public static Map<String, Object> getData(Item item) {
+		if (!isGirl(item))
+			return null;
+		Map<String, Object> map = new HashMap<String, Object>();
+		String Error;
+		CompoundTag Nbt = item.getNamedTag();
+		String ID = String.valueOf(item.getId());
+		if (Nbt == null || Nbt.getString("Their") == null || !Nbt.getString("Their").equals(kick.mis.getName())) {
+			map = Appliance.FormList.containsKey(ID) ? Appliance.FormList.get(ID)
+					: Appliance.FormList.containsKey(ID + ":" + item.getDamage())
+							? Appliance.FormList.get(ID + ":" + item.getDamage())
+							: null;
+			Error = "无法获取数据！";
+		} else {
+			String ike = Nbt.getString("Data");
+			if (ike != null && !ike.isEmpty()) {
+				Error = "数据解析失败！";
+				try {
+					DumperOptions dumperOptions = new DumperOptions();
+					dumperOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+					Yaml yaml = new Yaml(dumperOptions);
+					map = new ConfigSection(yaml.loadAs(ike, LinkedHashMap.class));
+				} catch (Exception e) {
+					map = null;
+					Error += e.getMessage();
+				}
+			} else {
+				map = null;
+				Error = "数据提取失败！";
+			}
+		}
+		if (map == null) {
+			map = new HashMap<String, Object>();
+			map.put("OK", false);
+			map.put("Error", Error);
+		} else
+			map.put("OK", true);
+		return map;
+	}
+
+	/**
 	 * 判断一个物品是否是快捷工具并且检测可以丢弃
 	 * 
 	 * @param item
@@ -177,5 +221,4 @@ public class Appliance {
 	public static boolean isDrop(Item item) {
 		return isGirl(item) ? item.getNamedTag().getBoolean("isDrop") : false;
 	}
-
 }

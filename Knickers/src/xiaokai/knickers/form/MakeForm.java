@@ -113,7 +113,9 @@ public class MakeForm {
 					: new HashMap<String, Object>();
 			if (Item.size() > 0) {
 				String Path = (String) Item.get("IconPath");
-				form.addButton(String.valueOf(Item.get("Text")), !String.valueOf(Item.get("IconPath")).equals("2"),
+				form.addButton(
+						msg.getText(Item.get("Text"), new String[] { "{Player}" }, new Object[] { player.getName() }),
+						!String.valueOf(Item.get("IconPath")).equals("2"),
 						Path == null || Path.isEmpty() ? null : Path);
 				Item.put("Key", ike);
 				Items.add(Item);

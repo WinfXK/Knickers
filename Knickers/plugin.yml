@@ -2,7 +2,7 @@ name: Knickers
 main: xiaokai.knickers.Knickers
 api:
 - 1.0.0
-version: 1.1.1d
+version: 2.0
 load: POSTWORLD
 website: http://EpicFX.cn
 description: 多功能菜单，如传送、命令、提示等功能，并且支持多功能个人商店！并且支持自定义商品搜索等！后期还会加入更多功能哦！

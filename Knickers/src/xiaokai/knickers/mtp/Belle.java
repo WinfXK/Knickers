@@ -184,8 +184,8 @@ public class Belle {
 		tag.putString("ID", Kick.class.getName() + kick.mis.getFullName());
 		item.setNamedTag(tag);
 		item.setCustomName(
-				kick.Message.getMessage("快捷工具名称", new String[] { "{Player" }, new Object[] { player.getName() }));
-		item.setLore(kick.Message.getMessage("快捷工具名称2", new String[] { "{Player" }, new Object[] { player.getName() }));
+				kick.Message.getMessage("快捷工具名称", new String[] { "{Player}" }, new Object[] { player.getName() }));
+		item.setLore(kick.Message.getMessage("快捷工具名称2", new String[] { "{Player}" }, new Object[] { player.getName() }));
 		item.addEnchantment(Enchantment.get(Enchantment.ID_SILK_TOUCH));
 		player.getInventory().addItem(item);
 	}
