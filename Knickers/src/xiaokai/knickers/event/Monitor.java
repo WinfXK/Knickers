@@ -67,5 +67,12 @@ public class Monitor implements Listener {
 			EstablishForm.ButtonByPlayer.add(player, (FormResponseCustom) data);
 		else if (ID == fId.getID(17))
 			(new Handle.Make(player)).addButton((FormResponseCustom) data);
+		else if (ID == fId.getID(18))
+			Handle.Switch(player, (FormResponseSimple) data);
+		else if (ID == fId.getID(19))
+			EstablishForm.disToolList(player, (FormResponseSimple) data);
+		else if (ID == fId.getID(20))
+			EstablishForm.disDelTool(player, (FormResponseSimple) data);
+		
 	}
 }

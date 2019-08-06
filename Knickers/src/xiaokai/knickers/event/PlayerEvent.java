@@ -56,7 +56,7 @@ public class PlayerEvent implements Listener {
 							new Object[] { player.getName(), ItemIDSunName.getIDByName(item.getId(), item.getDamage()),
 									item.getId() + ":" + item.getDamage() }));
 		}
-		if (!kick.config.getBoolean("是否允许玩家丢弃自定义快捷工具") && Appliance.isDrop(item)) {
+		if (!Appliance.isDrop(item)) {
 			if (!isC)
 				e.setCancelled();
 			Player player = e.getPlayer();

@@ -1,5 +1,6 @@
 package xiaokai.knickers.appliance;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,8 +9,9 @@ import java.util.Map;
 import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.form.response.FormResponseSimple;
-import cn.nukkit.item.Item;
+import cn.nukkit.utils.Config;
 import xiaokai.knickers.form.MakeForm;
+import xiaokai.knickers.form.OpenButton;
 import xiaokai.knickers.mtp.Kick;
 import xiaokai.knickers.mtp.MyPlayer;
 import xiaokai.tool.ItemIDSunName;
@@ -18,11 +20,88 @@ import xiaokai.tool.Tool;
 /**
  * @author Winfxk
  */
+@SuppressWarnings("unchecked")
 public class Handle {
-	private static Kick kick;
+	private static Kick kick = Kick.kick;
 	private Player player;
 	private Map<String, Object> Item;
-	private Item item;
+
+	/**
+	 * 处理快捷工具页面的数据
+	 * 
+	 * @author Winfxk
+	 */
+	public static class disTool {
+		private Player player;
+
+		/**
+		 * 处理快捷工具页面的数据
+		 * 
+		 * @param player 玩家对象
+		 */
+		public disTool(Player player) {
+			this.player = player;
+		}
+
+		/**
+		 * 玩家点击的是获取快捷工具得到按钮
+		 * 
+		 * @return
+		 */
+		public boolean Price() {
+			return true;
+		}
+
+		/**
+		 * 玩家点击的是写入数据的按钮
+		 * 
+		 * @return
+		 */
+		public boolean Write() {
+			return true;
+		}
+	}
+
+	/**
+	 * 处理玩家查看工具信息页面返回的数据
+	 * 
+	 * @param player 触发这个事件的玩家对象
+	 * @param data   返回的数据对象
+	 * @return
+	 */
+	public static boolean disToolListIsItem(Player player, FormResponseSimple data) {
+		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
+		switch (myPlayer.keyList.get(data.getClickedButtonId())) {
+		case "get":
+			return (new disTool(player)).Price();
+		case "put":
+			return (new disTool(player)).Write();
+		case "ok":
+		default:
+			return EstablishForm.showToolList(player);
+		}
+	}
+
+	/**
+	 * 处理玩家点击工具主页的数据
+	 * 
+	 * @param player
+	 * @param data
+	 * @return
+	 */
+	public static boolean Switch(Player player, FormResponseSimple data) {
+		switch (data.getClickedButtonId()) {
+		case 0:
+			return EstablishForm.showToolList(player);
+		case 1:
+			return EstablishForm.AddItemByStyle(player);
+		case 2:
+			return EstablishForm.delTool(player);
+		default:
+			return MakeForm.Tip(player, kick.Message.getSon("快捷工具", "自定义工具打开失败提示",
+					new String[] { "{Player}", "{Error}" }, new Object[] { player.getName(), "无法获取返回数据！" }));
+		}
+	}
 
 	/**
 	 * 开始处理使用快捷工具的玩家对象
@@ -32,11 +111,9 @@ public class Handle {
 	 * @param Item   使用的跨界工具的项目数据对象
 	 * @param item   使用的快捷工具的物品对象
 	 */
-	public Handle(Kick kick, Player player, Map<String, Object> Item, Item item) {
-		Handle.kick = kick;
+	public Handle(Player player, Map<String, Object> Item) {
 		this.player = player;
 		this.Item = Item;
-		this.item = item;
 	}
 
 	/**
@@ -50,12 +127,63 @@ public class Handle {
 			return MakeForm.Tip(player, kick.Message.getSon("快捷工具", "自定义工具打开失败提示",
 					new String[] { "{Player}", "{Error}" }, new Object[] { player.getName(), "无法解析工具类型！" }));
 		switch (Type.toLowerCase()) {
+		case "button":
+			return isButton();
 		case "open":
 		default:
-
-			break;
+			return isOpen();
 		}
-		return true;
+	}
+
+	/**
+	 * 如果使用的工具是模拟点击按钮
+	 * 
+	 * @return
+	 */
+	public boolean isButton() {
+		Object obj = Item.get("FileName");
+		String FileName = obj == null || String.valueOf(obj).isEmpty() ? null : String.valueOf(obj);
+		if (FileName == null)
+			return MakeForm.Tip(player, kick.Message.getSon("快捷工具", "自定义工具打开失败提示",
+					new String[] { "{Player}", "{Error}" }, new Object[] { player.getName(), "无法获取想要打开的文件名！" }));
+		String Key = Item.get("Key") != null ? String.valueOf(Item.get("Key")) : null;
+		if (Key == null || Key.isEmpty())
+			return MakeForm.Tip(player, kick.Message.getSon("快捷工具", "自定义工具打开失败提示",
+					new String[] { "{Player}", "{Error}" }, new Object[] { player.getName(), "无法获取按钮的Key" }));
+		File file = new File(new File(kick.mis.getDataFolder(), Kick.MenuConfigPath), FileName);
+		if (!file.exists())
+			return MakeForm.Tip(player, kick.Message.getSon("快捷工具", "自定义工具打开失败提示",
+					new String[] { "{Player}", "{Error}" }, new Object[] { player.getName(), "要打开的界面文件不存在！" }));
+		Config config = new Config(file, Config.YAML);
+		Map<String, Object> Buttons = (config.get("Buttons") != null && (config.get("Buttons") instanceof Map))
+				? (HashMap<String, Object>) config.get("Buttons")
+				: new HashMap<String, Object>();
+		if (Buttons.size() < 1)
+			return MakeForm.Tip(player, kick.Message.getSon("快捷工具", "自定义工具打开失败提示",
+					new String[] { "{Player}", "{Error}" }, new Object[] { player.getName(), "打开的界面不存在任何按钮！" }));
+		if (Buttons.containsKey(Key))
+			return (new OpenButton(kick, player, file, Key)).start();
+		else
+			return MakeForm.Tip(player, kick.Message.getSon("快捷工具", "自定义工具打开失败提示",
+					new String[] { "{Player}", "{Error}" }, new Object[] { player.getName(), "要打开的按钮不存在！" }));
+	}
+
+	/**
+	 * 如果使用的工具按钮是打开界面型的
+	 * 
+	 * @return
+	 */
+	public boolean isOpen() {
+		Object obj = Item.get("FileName");
+		String FileName = obj == null || String.valueOf(obj).isEmpty() ? null : String.valueOf(obj);
+		if (FileName == null)
+			return MakeForm.Tip(player, kick.Message.getSon("快捷工具", "自定义工具打开失败提示",
+					new String[] { "{Player}", "{Error}" }, new Object[] { player.getName(), "无法获取想要打开的文件名！" }));
+		File file = new File(new File(kick.mis.getDataFolder(), Kick.MenuConfigPath), FileName);
+		if (!file.exists())
+			return MakeForm.Tip(player, kick.Message.getSon("快捷工具", "自定义工具打开失败提示",
+					new String[] { "{Player}", "{Error}" }, new Object[] { player.getName(), "要打开的界面文件不存在！" }));
+		return MakeForm.OpenMenu(player, file, false, false);
 	}
 
 	/**
@@ -82,20 +210,31 @@ public class Handle {
 			 * @param ItemName     快捷工具的名字
 			 * @param ItemLore     快捷工具的Lore
 			 * @param enchantments 快捷工具将会有的附魔效果
+			 * @param isPrice      是否可以通过快捷工具快速获取
+			 * @param isThread     是否异步强制玩家拥有该工具
+			 * @param isDrop       是否可以被对丢弃
+			 * @param isWrite      玩家是否可以将该数据写入手中的物品中
 			 */
 			public Dis(Player player, String FileName, String ItemID, String ItemName, String ItemLore,
-					List<String> ToolEnchantString) {
+					List<String> ToolEnchantString, boolean isPrice, boolean isThread, boolean isDrop,
+					boolean isWrite) {
 				this.player = player;
+				ItemLore = (ItemLore == null || ItemLore.isEmpty()) ? kick.Message.getMessage("快捷工具名称2",
+						new String[] { "{Player}" }, new Object[] { player.getName() }) : ItemLore;
+				ItemName = (ItemName == null || ItemName.isEmpty()) ? kick.Message.getMessage("快捷工具名称",
+						new String[] { "{Player}" }, new Object[] { player.getName() }) : ItemName;
 				Item.put("Key", getKey(1));
 				Item.put("FileName", FileName);
 				Item.put("ID", (ItemID == null || ItemID.isEmpty()) ? null : ItemIDSunName.UnknownToID(ItemID));
-				Item.put("Name", (ItemName == null || ItemName.isEmpty()) ? kick.Message.getMessage("快捷工具名称",
-						new String[] { "{Player}" }, new Object[] { player.getName() }) : ItemName);
-				Item.put("Lore", (ItemLore == null || ItemLore.isEmpty()) ? kick.Message.getMessage("快捷工具名称2",
-						new String[] { "{Player}" }, new Object[] { player.getName() }) : ItemLore);
+				Item.put("Name", ItemName.contains("\n") ? ItemName.replace("\n", "{n}") : ItemName);
+				Item.put("Lore", ItemLore.contains("\n") ? ItemLore.replace("\n", "{n}") : ItemLore);
 				Item.put("Enchant", ToolEnchantString == null ? new ArrayList<String>() : ToolEnchantString);
 				Item.put("Player", player.getName());
 				Item.put("Time", Tool.getDate() + " " + Tool.getTime());
+				Item.put("isPrice", isPrice);
+				Item.put("isThread", isThread);
+				Item.put("isDrop", isDrop);
+				Item.put("isWrite", isWrite);
 			}
 
 			/**
@@ -126,6 +265,10 @@ public class Handle {
 			 * @return
 			 */
 			private boolean save() {
+				if (Tool.isMateID(Item.get("ID"), kick.config.getString("快捷工具"))) {
+					player.sendMessage("§4我们强烈的不建议您将主快捷工具所属的物品设置为自定义快捷工具！");
+					return false;
+				}
 				Appliance.config.set(Item.get("Key").toString(), Item);
 				boolean b = Appliance.config.save();
 				if (b)
@@ -176,6 +319,10 @@ public class Handle {
 			String ToolName = data.getInputResponse(2);
 			String ToolLore = data.getInputResponse(3);
 			String ToolEnchantString = data.getInputResponse(4);
+			boolean isPrice = data.getToggleResponse(5);
+			boolean isThread = data.getToggleResponse(6);
+			boolean isDrop = data.getToggleResponse(7);
+			boolean isWrite = data.getToggleResponse(8);
 			List<String> list = new ArrayList<String>();
 			if (ToolEnchantString != null && !ToolEnchantString.isEmpty())
 				if (ToolEnchantString.contains(";"))
@@ -183,7 +330,8 @@ public class Handle {
 						list.add(string);
 				else
 					list.add(ToolEnchantString);
-			return (new Dis(player, FileName, ItemID, ToolName, ToolLore, list)).Open();
+			return (new Dis(player, FileName, ItemID, ToolName, ToolLore, list, isPrice, isThread, isDrop, isWrite))
+					.Open();
 		}
 
 		/**
@@ -202,6 +350,10 @@ public class Handle {
 			String ToolName = data.getInputResponse(2);
 			String ToolLore = data.getInputResponse(3);
 			String ToolEnchantString = data.getInputResponse(4);
+			boolean isPrice = data.getToggleResponse(5);
+			boolean isThread = data.getToggleResponse(6);
+			boolean isDrop = data.getToggleResponse(7);
+			boolean isWrite = data.getToggleResponse(8);
 			List<String> list = new ArrayList<String>();
 			if (ToolEnchantString != null && !ToolEnchantString.isEmpty())
 				if (ToolEnchantString.contains(";"))
@@ -209,7 +361,8 @@ public class Handle {
 						list.add(string);
 				else
 					list.add(ToolEnchantString);
-			return (new Dis(player, FileName, ItemID, ToolName, ToolLore, list)).Button(ButtonKey);
+			return (new Dis(player, FileName, ItemID, ToolName, ToolLore, list, isPrice, isThread, isDrop, isWrite))
+					.Button(ButtonKey);
 		}
 
 		/**

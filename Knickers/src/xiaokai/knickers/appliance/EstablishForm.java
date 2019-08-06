@@ -8,6 +8,7 @@ import java.util.Map;
 
 import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponseCustom;
+import cn.nukkit.form.response.FormResponseSimple;
 import cn.nukkit.utils.Config;
 import xiaokai.knickers.form.MakeForm;
 import xiaokai.knickers.form.man.AddButton;
@@ -15,6 +16,7 @@ import xiaokai.knickers.mtp.Kick;
 import xiaokai.knickers.mtp.MyPlayer;
 import xiaokai.tool.CustomForm;
 import xiaokai.tool.EnchantName;
+import xiaokai.tool.ItemIDSunName;
 import xiaokai.tool.SimpleForm;
 import xiaokai.tool.Tool;
 
@@ -25,8 +27,189 @@ import xiaokai.tool.Tool;
 public class EstablishForm {
 	public static Kick kick = Kick.kick;
 
+	/**
+	 * 处理玩家点击删除快捷工具的数据，这是处理列表返回的
+	 * 
+	 * @param player 玩家对象
+	 * @param data   返回的数据
+	 * @return
+	 */
+	public static boolean disDelTool(Player player, FormResponseSimple data) {
+		if (!Kick.isAdmin(player))
+			return MakeForm.Tip(player, Kick.kick.Message.getMessage("权限不足"));
+		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
+		String Key = myPlayer.keyList.get(data.getClickedButtonId());
+		Map<String, Object> map = (Map<String, Object>) myPlayer.Item.get(Key);
+		String ItemData = "§4确定要删除该工具吗？？\n\n\n\n";
+		int ii = 0;
+		for (String ike : map.keySet()) {
+			String Color = Tool.getRandColor();
+			ItemData += Color + ike + "§f: " + Color + map.get(ike) + (ii++ < map.size() ? "\n" : "");
+		}
+		SimpleForm form = new SimpleForm(kick.formID.getID(22), kick.Message.getSun("界面", "快捷工具列表页", "项目打开的标题",
+				new String[] { "{Player}", "{ItemName}" }, new Object[] { player.getName(), kick.Message
+						.getText(map.get("Name"), new String[] { "{Player}" }, new Object[] { player.getName() }) }),
+				ItemData);
+		form.addButton("§6取消");
+		form.addButton("§4确定删除");
+		myPlayer.Key = Key;
+		kick.PlayerDataMap.put(player.getName(), myPlayer);
+		form.sendPlayer(player);
+		return true;
+	}
+
+	/**
+	 * 处理玩家查看快捷工具列表点击的事件
+	 * 
+	 * @param player 点击的玩家
+	 * @param data   返回的数据
+	 * @return
+	 */
+	public static boolean disToolList(Player player, FormResponseSimple data) {
+		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
+		if (data.getClickedButtonId() > myPlayer.keyList.size())
+			return MakeForm.Tip(player, kick.Message.getSun("界面", "快捷工具列表页", "项目查看异常", new String[] { "{Player}" },
+					new Object[] { player.getName() }));
+		String Key = myPlayer.keyList.get(data.getClickedButtonId());
+		Map<String, Object> map = (Map<String, Object>) myPlayer.Item.get(Key);
+		String ItemData = "";
+		int ii = 0;
+		for (String ike : map.keySet()) {
+			String Color = Tool.getRandColor();
+			ItemData += Color + ike + "§f: " + Color + map.get(ike) + (ii++ < map.size() ? "\n" : "");
+		}
+		SimpleForm form = new SimpleForm(kick.formID.getID(21),
+				kick.Message.getSun("界面", "快捷工具列表页", "项目打开的标题", new String[] { "{Player}", "{ItemName}" },
+						new Object[] { player.getName(),
+								kick.Message.getText(map.get("Name"), new String[] { "{Player}" },
+										new Object[] { player.getName() }) }),
+				kick.Message.getSun("界面", "快捷工具列表页", "项目打开的内容", new String[] { "{Player}", "{ItemData}" },
+						new Object[] { player.getName(), ItemData }));
+		List<String> It = new ArrayList<String>();
+		form.addButton(kick.Message.getSun("界面", "快捷工具列表页", "确定按钮", new String[] { "{Player}", player.getName() },
+				new Object[] { player.getName() }));
+		It.add("ok");
+		if (Kick.isAdmin(player) || Tool.ObjToBool(map.get("isPrice"))) {
+			It.add("get");
+			form.addButton(kick.Message.getSun("界面", "快捷工具列表页", "获取工具", new String[] { "{Player}", player.getName() },
+					new Object[] { player.getName() }));
+		} else
+			form.addButton(kick.Message.getSun("界面", "快捷工具列表页", "取消按钮", new String[] { "{Player}", player.getName() },
+					new Object[] { player.getName() }));
+		if (Kick.isAdmin(player) || Tool.ObjToBool(map.get("isWrite"))) {
+			It.add("put");
+			form.addButton(kick.Message.getSun("界面", "快捷工具列表页", "导入按钮", new String[] { "{Player}", player.getName() },
+					new Object[] { player.getName() }));
+		} else
+			form.addButton(kick.Message.getSun("界面", "快捷工具列表页", "取消按钮", new String[] { "{Player}", player.getName() },
+					new Object[] { player.getName() }));
+		myPlayer.Key = Key;
+		myPlayer.Item = map;
+		myPlayer.keyList = It;
+		kick.PlayerDataMap.put(player.getName(), myPlayer);
+		form.sendPlayer(player);
+		return true;
+	}
+
+	/**
+	 * 删除快捷工具
+	 * 
+	 * @param player
+	 * @return
+	 */
+	public static boolean delTool(Player player) {
+		if (!Kick.isAdmin(player))
+			return MakeForm.Tip(player, Kick.kick.Message.getMessage("权限不足"));
+		Map<String, Object> map = Appliance.config.getAll();
+		if (map.size() < 1)
+			return MakeForm.Tip(player, kick.Message.getSun("界面", "快捷工具列表页", "没有快捷工具", new String[] { "{Player}" },
+					new Object[] { player.getName() }));
+		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
+		SimpleForm form = new SimpleForm(kick.formID.getID(20),
+				kick.Message.getSun("界面", "快捷工具列表页", "标题", new String[] { "{Player}" },
+						new Object[] { player.getName() }),
+				kick.Message.getSun("界面", "快捷工具列表页", "内容", new String[] { "{Player}" },
+						new Object[] { player.getName() }));
+		List<String> Keys = new ArrayList<String>();
+		for (String ike : map.keySet()) {
+			Map<String, Object> Item = (Map<String, Object>) map.get(ike);
+			Object obj = Item.get("ID");
+			String ID = obj == null ? null : String.valueOf(obj);
+			ID = ID == null || ID.isEmpty() ? null : ID;
+			ID = ItemIDSunName.UnknownToID(ID);
+			form.addButton(kick.Message.getSun("界面", "快捷工具列表页", "列表",
+					new String[] { "{Player}", "{Key}", "{Name}", "{ItemName}", "{ItemID}" },
+					new Object[] { player.getName(), ike,
+							kick.Message.getText(Item.get("Name"), new String[] { "{Player}" },
+									new Object[] { player.getName() }),
+							ID == null ? "null" : ItemIDSunName.getIDByName(ID), ID == null ? "null" : ID }));
+			Keys.add(ike);
+		}
+		myPlayer.keyList = Keys;
+		kick.PlayerDataMap.put(player.getName(), myPlayer);
+		form.sendPlayer(player);
+		return true;
+	}
+
+	/**
+	 * 查看已有的快捷工具列表
+	 * 
+	 * @param player
+	 * @return
+	 */
+	public static boolean showToolList(Player player) {
+		Map<String, Object> map = Appliance.config.getAll();
+		if (map.size() < 1)
+			return MakeForm.Tip(player, kick.Message.getSun("界面", "快捷工具列表页", "没有快捷工具", new String[] { "{Player}" },
+					new Object[] { player.getName() }));
+		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
+		SimpleForm form = new SimpleForm(kick.formID.getID(19),
+				kick.Message.getSun("界面", "快捷工具列表页", "标题", new String[] { "{Player}" },
+						new Object[] { player.getName() }),
+				kick.Message.getSun("界面", "快捷工具列表页", "内容", new String[] { "{Player}" },
+						new Object[] { player.getName() }));
+		List<String> Keys = new ArrayList<String>();
+		for (String ike : map.keySet()) {
+			Map<String, Object> Item = (Map<String, Object>) map.get(ike);
+			Object obj = Item.get("ID");
+			String ID = obj == null ? null : String.valueOf(obj);
+			ID = ID == null || ID.isEmpty() ? null : ID;
+			ID = ItemIDSunName.UnknownToID(ID);
+			form.addButton(
+					kick.Message.getSun("界面", "快捷工具列表页", "列表",
+							new String[] { "{Player}", "{Key}", "{Name}", "{ItemName}", "{ItemID}" },
+							new Object[] { player.getName(), ike,
+									kick.Message.getText(Item.get("Name"), new String[] { "{Player}" },
+											new Object[] { player.getName() }),
+									ID == null ? "null" : ItemIDSunName.getIDByName(ID), ID == null ? "null" : ID }),
+					true,
+					ID != null ? kick.config.getBoolean("自定义工具列表显示工具图标") ? ItemIDSunName.getIDByPath(ID) : null : null);
+			Keys.add(ike);
+		}
+		myPlayer.keyList = Keys;
+		myPlayer.Item = map;
+		kick.PlayerDataMap.put(player.getName(), myPlayer);
+		form.sendPlayer(player);
+		return true;
+	}
+
+	/**
+	 * 自定义工具主页
+	 * 
+	 * @param player
+	 * @return
+	 */
 	public static boolean Main(Player player) {
-		return false;
+		SimpleForm form = new SimpleForm(kick.formID.getID(18),
+				kick.Message.getSun("界面", "快捷工具", "标题", new String[] { "{Player}" }, new Object[] { player.getName() }),
+				kick.Message.getSun("界面", "快捷工具", "内容", new String[] { "{Player}" },
+						new Object[] { player.getName() }));
+		form.addButton(kick.Message.getSun("界面", "快捷工具", "查看工具", new String[] { "{Player}" },
+				new Object[] { player.getName() }));
+		if (Kick.isAdmin(player))
+			form.addButton("添加工具").addButton("删除工具");
+		form.sendPlayer(player);
+		return true;
 	}
 
 	/**
@@ -74,6 +257,10 @@ public class EstablishForm {
 		form.addInput("§6请输入工具的Lore",
 				kick.Message.getMessage("快捷工具名称2", new String[] { "{Player}" }, new Object[] { player.getName() }));
 		form.addInput("§6请输入工具的附魔，若多个附魔请使用；分割\n" + getEnchantString(), "", "可以支持ID或附魔名称");
+		form.addToggle("§6玩家是否可以通过“快捷工具”页面免费获取该工具", true);
+		form.addToggle("§6是否异步强制玩家拥有该工具", true);
+		form.addToggle("§6玩家是否可以丢弃该工具", false);
+		form.addToggle("§6是否允许将数据导入到非指定的其他物品", true);
 		kick.PlayerDataMap.put(player.getName(), myPlayer);
 		form.sendPlayer(player);
 		return true;
@@ -131,7 +318,7 @@ public class EstablishForm {
 			Map<String, Object> Buttons = (object != null && object instanceof Map) ? (HashMap<String, Object>) object
 					: new HashMap<String, Object>();
 			if (Buttons.size() < 1)
-				return MakeForm.Tip(player, "当前还没有可以添加的界面！请先添加一个吧！");
+				return MakeForm.Tip(player, "这个界面当前还没有可以添加的按钮！请先添加一个吧！");
 			CustomForm form = new CustomForm(kick.formID.getID(17), Tool.getColorFont(Kick.FastToolType[1]));
 			ArrayList<String> buttonStrings = new ArrayList<String>();
 			List<String> Keys = new ArrayList<String>();
@@ -147,6 +334,10 @@ public class EstablishForm {
 			form.addInput("§6请输入工具的Lore",
 					kick.Message.getMessage("快捷工具名称2", new String[] { "{Player}" }, new Object[] { player.getName() }));
 			form.addInput("§6请输入工具的附魔，若多个附魔请使用；分割\n" + getEnchantString(), "", "可以支持ID或附魔名称");
+			form.addToggle("§6玩家是否可以通过“快捷工具”页面免费获取该工具", true);
+			form.addToggle("§6是否异步强制玩家拥有该工具", true);
+			form.addToggle("§6玩家是否可以丢弃该工具", false);
+			form.addToggle("§6是否允许将数据导入到非指定的其他物品", true);
 			myPlayer.keyList = Keys;
 			kick.PlayerDataMap.put(player.getName(), myPlayer);
 			form.sendPlayer(player);

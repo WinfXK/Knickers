@@ -90,8 +90,8 @@ public class AddButton {
 					? new HashMap<String, Object>()
 					: (HashMap<String, Object>) config.get("Buttons");
 			Key = getKey(1);
-			map.put("Text", ButtonText);
-			map.put("Command", Command);
+			map.put("Text", ButtonText.contains("\n") ? ButtonText.replace("\n", "{n}") : ButtonText);
+			map.put("Command", Command.contains("\n") ? Command.replace("\n", "{n}") : Command);
 			map.put("Money", Money);
 			map.put("IconType", IconType);
 			map.put("IconPath", IconPath != null ? ItemIDSunName.UnknownToPath(IconPath) : IconPath);
@@ -142,8 +142,10 @@ public class AddButton {
 		 * @return
 		 */
 		public boolean addTip(String Title, String Content, String TipType) {
-			map.put("Title", Title == null ? ButtonText : Title);
-			map.put("Content", Content == null ? ButtonText : Content);
+			Title = Title == null ? ButtonText : Title;
+			Content = Content == null ? ButtonText : Content;
+			map.put("Title", Title.contains("\n") ? Title.replace("\n", "{n}") : Title);
+			map.put("Content", Content.contains("\n") ? Content.replace("\n", "{n}") : Content);
 			map.put("TipType", TipType);
 			map.put("Type", "Tip");
 			return save();
@@ -158,8 +160,10 @@ public class AddButton {
 		 * @return
 		 */
 		public boolean addTeleport(String Title, String Content, boolean isAffirm) {
-			map.put("Title", Title == null ? ButtonText : Title);
-			map.put("Content", Content == null ? ButtonText : Content);
+			Title = Title == null ? ButtonText : Title;
+			Content = Content == null ? ButtonText : Content;
+			map.put("Title", Title.contains("\n") ? Title.replace("\n", "{n}") : Title);
+			map.put("Content", Content.contains("\n") ? Content.replace("\n", "{n}") : Content);
 			map.put("Type", "Tpa");
 			map.put("isAffirm", isAffirm);
 			return save();
@@ -199,6 +203,12 @@ public class AddButton {
 					: Arrays.asList(new String[] { Hint });
 			playerType = (playerType.toLowerCase().equals("console") ? "Console"
 					: (playerType.toLowerCase().equals("playerbyop") ? "PlayerByOp" : "Player"));
+			for (int i = 0; i < msgList.size(); i++)
+				if (msgList.get(i).contains("\n"))
+					msgList.set(i, msgList.get(i).replace("\n", "{n}"));
+			for (int i = 0; i < hintMsg.size(); i++)
+				if (hintMsg.get(i).contains("\n"))
+					hintMsg.set(i, hintMsg.get(i).replace("\n", "{n}"));
 			map.put("Msg", msgList);
 			map.put("Hint", hintMsg);
 			map.put("Commander", playerType);
@@ -220,8 +230,10 @@ public class AddButton {
 			if (!file.exists()) {
 				Config config = new Config(file, Config.YAML);
 				LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
-				map.put("Title", Title);
-				map.put("Content", Content == null ? "" : Content);
+				Title = Title == null ? ButtonText : Title;
+				Content = Content == null ? ButtonText : Content;
+				map.put("Title", Title.contains("\n") ? Title.replace("\n", "{n}") : Title);
+				map.put("Content", Content.contains("\n") ? Content.replace("\n", "{n}") : Content);
 				map.put("creaTime", Tool.getDate() + " " + Tool.getTime());
 				map.put("Player", player.getName());
 				map.put("Buttons", new HashMap<String, Object>());
@@ -511,7 +523,7 @@ public class AddButton {
 			form.addInput("请输入要执行的命令\n若需玩家输入参数，请使用{msg}变量\n\n其他变量支持：\n玩家名：{Player}\n玩家的余额（未安装对应插件时为0)：{Money}\n全局变量");
 			form.addInput("请输入变量的标签（未使用{msg}变量请忽略本项)");
 			form.addInput("请输入变量的Hint（未使用{msg}变量请忽略本项)");
-			form.addDropdown("执行命令的权限", new String[] { "玩家", "玩家管理员", "控制台" }, player.isOp() ? 1 : 0);
+			form.addDropdown("执行命令的权限", new String[] { "玩家", "玩家管理员", "控制台" }, 0);
 			form.addInput(getMoneyString(), "0", "0");
 			form.addStepSlider("按钮的图标类型", new String[] { "无图标", "本地资源", "网络资源" });
 			form.addInput("请输入图标的路径", getHandItemID(player));

@@ -27,3 +27,18 @@ Buttons:
     IconType: 0
     Key: ShuaiBiKai
     TipType: Modal
+  FFFSB:
+    Msg:
+    - ''
+    Money: 0.0
+    IconPath: null
+    Player: Winfxk
+    Type: Command
+    Command: mis tool
+    Hint:
+    - ''
+    Commander: Player
+    Text: §6快捷工具
+    creaTime: '2019-08-06 14:20:57'
+    IconType: 0
+    Key: FFFSB

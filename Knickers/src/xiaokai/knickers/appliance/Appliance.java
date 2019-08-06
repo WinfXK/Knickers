@@ -1,6 +1,8 @@
 package xiaokai.knickers.appliance;
 
 import java.io.File;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -19,6 +21,7 @@ import cn.nukkit.utils.ConfigSection;
 import xiaokai.knickers.form.MakeForm;
 import xiaokai.knickers.mtp.Kick;
 import xiaokai.knickers.mtp.Message;
+import xiaokai.knickers.mtp.MyPlayer;
 import xiaokai.tool.EnchantName;
 import xiaokai.tool.Tool;
 
@@ -53,6 +56,13 @@ public class Appliance {
 	public boolean start(Player player, Item item) {
 		CompoundTag Nbt = item.getNamedTag();
 		Map<String, Object> Item;
+		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
+		myPlayer = myPlayer == null ? new MyPlayer(player) : myPlayer;
+		if (myPlayer.loadTime == null
+				|| Duration.between(myPlayer.loadTime, Instant.now()).toMillis() > kick.config.getInt("屏蔽玩家双击间隔"))
+			myPlayer.loadTime = Instant.now();
+		else
+			return false;
 		if (Nbt != null && Nbt.getString("Their") != null && Nbt.getString("Their").equals(kick.mis.getName())) {
 			String ConfigString = Nbt.getString("Data");
 			if (ConfigString == null || ConfigString.isEmpty())
@@ -77,24 +87,23 @@ public class Appliance {
 				return MakeForm.Tip(player, Msg.getSon("快捷工具", "自定义工具打开失败提示", new String[] { "{Player}", "{Error}" },
 						new Object[] { player.getName(), "数据获取失败！" }));
 		}
-		return new Handle(kick, player, Item, item).start();
+		return new Handle(player, Item).start();
 	}
 
 	/**
 	 * 初始化自定义工具的配置文件对象和数据对象
 	 */
 	public static void enclose() {
+		FormList = new LinkedHashMap<String, Map<String, Object>>();
 		config = new Config(new File(kick.mis.getDataFolder(), kick.ApplianceName), Config.YAML);
 		Map<String, Object> map = config.getAll();
 		for (String ike : map.keySet())
 			if (map.get(ike) != null && (map.get(ike) instanceof Map)) {
 				Map<String, Object> FFFSB = (Map<String, Object>) map.get(ike);
-				if (FFFSB.get("ID") != null) {
+				if (FFFSB.get("ID") != null && !FFFSB.get("ID").toString().isEmpty()) {
 					FFFSB.put("Key", ike);
 					FormList.put(FFFSB.get("ID").toString(), FFFSB);
-					continue;
-				} else
-					kick.mis.getLogger().warning("§4自定义工具中的§6" + ike + "§4数据不合法！请检查。");
+				}
 			} else
 				kick.mis.getLogger().warning("§4自定义工具中的§6" + ike + "§4数据不合法！请检查。");
 	}
@@ -113,7 +122,7 @@ public class Appliance {
 		if (Nbt == null && !Appliance.FormList.containsKey(ID)
 				&& !Appliance.FormList.containsKey(ID + ":" + item.getDamage()))
 			return false;
-		return (Nbt.getString("Their") != null && Nbt.getString("Their").equals(kick.mis.getName()))
+		return (Nbt != null && Nbt.getString("Their") != null && Nbt.getString("Their").equals(kick.mis.getName()))
 				|| Appliance.FormList.containsKey(ID) || Appliance.FormList.containsKey(ID + ":" + item.getDamage());
 	}
 
@@ -219,6 +228,12 @@ public class Appliance {
 	 * @return
 	 */
 	public static boolean isDrop(Item item) {
-		return isGirl(item) ? item.getNamedTag().getBoolean("isDrop") : false;
+		if (!isGirl(item))
+			return false;
+		CompoundTag Nbt = item.getNamedTag();
+		if (Nbt != null && Nbt.getString("Their").equals(kick.mis.getName()))
+			return Nbt.getBoolean("isDrop");
+		Map<String, Object> map = getData(item);
+		return Tool.ObjToBool(map.get("isDrop"));
 	}
 }

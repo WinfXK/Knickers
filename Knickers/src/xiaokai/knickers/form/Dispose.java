@@ -136,8 +136,7 @@ public class Dispose {
 					return AddButton.addButton(player, myPlayer.BackFile);
 				else if (ID == (myPlayer.Items.size() + 2))
 					return DelButton.delButton(player, myPlayer.BackFile);
-				else
-					return MakeForm.Setting(player);
+				else return MakeForm.Setting(player);
 			} else
 				return MakeForm.Tip(player, msg.getMessage("权限不足"));
 		return new OpenButton(kick, player, myPlayer.BackFile, myPlayer.Items.get(ID).get("Key").toString()).start();

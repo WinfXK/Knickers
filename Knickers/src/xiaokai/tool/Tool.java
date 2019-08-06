@@ -43,7 +43,7 @@ import javax.net.ssl.X509TrustManager;
  */
 public class Tool {
 	private static String colorKeyString = "123456789abcdef";
-	private static String randString = "0123456789-+abcdefghijklmnopqrstuvwxyz_=";
+	private static String randString = "-+abcdefghijklmnopqrstuvwxyz_";
 
 	/**
 	 * 获取从一个时间点到现在的时间差
@@ -490,12 +490,23 @@ public class Tool {
 	 * @return
 	 */
 	public static boolean ObjToBool(Object obj) {
+		return ObjToBool(obj, false);
+	}
+
+	/**
+	 * 一个Object值转换为bool值，转化失败返回false
+	 * 
+	 * @param obj
+	 * @param Del 
+	 * @return
+	 */
+	public static boolean ObjToBool(Object obj, boolean Del) {
 		if (obj == null)
-			return false;
+			return Del;
 		try {
 			return Boolean.valueOf(String.valueOf(obj));
 		} catch (Exception e) {
-			return false;
+			return Del;
 		}
 	}
 

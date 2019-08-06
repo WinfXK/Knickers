@@ -10,6 +10,7 @@ import cn.nukkit.Server;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.utils.Config;
 import xiaokai.knickers.Knickers;
+import xiaokai.knickers.toCommand;
 import xiaokai.knickers.appliance.Appliance;
 import xiaokai.tool.Tool;
 import xiaokai.tool.Update;
@@ -59,7 +60,8 @@ public class Kick {
 			/* 4 */"删除按钮时提示时候删除的界面", /* 5 */"显示在线玩家列表以供玩家传送的界面", /* 6 */ "在Tpa传送的时候，目标玩家点击确定取消的界面",
 			/* 7 */ "{Msg}型命令执行界面", /* 8 */ "子页4", /* 9 */"设置页面", /* 10 */ "子页0", /* 11 */ "子页1", /* 12 */ "子页3",
 			/* 13 */"子页2", /* 14 */"添加自定义快捷工具的界面的ID", /* 15 */"添加打开界面型的工具页面", /* 16 */"添加一个模拟点击按钮时，显示界面文件列表的界面ID",
-			/* 17 */"开始添加点击后模拟点击按钮的工具的界面" };
+			/* 17 */"开始添加点击后模拟点击按钮的工具的界面", /* 18 */"自定义工具主页", /* 19 */"自定义工具列表页ID", /* 20 */"自定义工具删除页面-列表",
+			/* 21 */"自定义工具列表打开的界面ID", /* 22 */"自定义工具确认删除界面" };
 	/**
 	 * 表单ID存储位置
 	 */
@@ -100,7 +102,16 @@ public class Kick {
 	 * 我咋感觉我有点不会说话了，这特么说的什么鬼！
 	 */
 	public Appliance App;
+	/**
+	 * 处理命令的地方
+	 */
+	public toCommand command;
 
+	/**
+	 * 插件数据集合
+	 * 
+	 * @param knickers
+	 */
 	public Kick(Knickers knickers) {
 		kick = this;
 		if (!knickers.getDataFolder().exists())
@@ -114,6 +125,7 @@ public class Kick {
 		Message = new Message(this);
 		App = new Appliance(this);
 		startThread();
+		command = new toCommand(this);
 	}
 
 	/**
