@@ -152,7 +152,7 @@ public class Appliance {
 		CompoundTag Nbt = item.getNamedTag();
 		Nbt = Nbt == null ? new CompoundTag() : Nbt;
 		Nbt.putString("Their", kick.mis.getName());
-		Nbt.putBoolean("isDrop", Tool.ObjToBool(map.get("允许丢弃")));
+		Nbt.putBoolean("isDrop", Tool.ObjToBool(map.get("isDrop"), true));
 		DumperOptions dumperOptions = new DumperOptions();
 		dumperOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
 		Yaml yaml = new Yaml(dumperOptions);
@@ -167,7 +167,7 @@ public class Appliance {
 			if (map.get("Enchant") instanceof List) {
 				List<Object> list = (List<Object>) map.get("Enchant");
 				for (Object obj : list)
-					if (!enchants.contains(EnchantName.UnknownToEnchant(obj)))
+					if (obj != null && !enchants.contains(EnchantName.UnknownToEnchant(obj)))
 						item.addEnchantment(EnchantName.UnknownToEnchant(obj));
 			} else if (!enchants.contains(EnchantName.UnknownToEnchant(map.get("Enchant"))))
 				item.addEnchantment(EnchantName.UnknownToEnchant(map.get("Enchant")));
@@ -229,12 +229,12 @@ public class Appliance {
 	 */
 	public static boolean isDrop(Item item) {
 		if (!isGirl(item))
-			return false;
+			return true;
 		CompoundTag Nbt = item.getNamedTag();
 		if (Nbt != null && Nbt.getString("Their").equals(kick.mis.getName()))
 			return Nbt.getBoolean("isDrop");
 		Map<String, Object> map = getData(item);
-		return Tool.ObjToBool(map.get("isDrop"));
+		return Tool.ObjToBool(map.get("isDrop"), true);
 	}
 
 	/**
