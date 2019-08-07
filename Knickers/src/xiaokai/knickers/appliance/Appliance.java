@@ -3,6 +3,7 @@ package xiaokai.knickers.appliance;
 import java.io.File;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -152,6 +153,11 @@ public class Appliance {
 		Nbt = Nbt == null ? new CompoundTag() : Nbt;
 		Nbt.putString("Their", kick.mis.getName());
 		Nbt.putBoolean("isDrop", Tool.ObjToBool(map.get("允许丢弃")));
+		DumperOptions dumperOptions = new DumperOptions();
+		dumperOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+		Yaml yaml = new Yaml(dumperOptions);
+		Nbt.putString("Data", yaml.dump(map));
+		item.setNamedTag(Nbt);
 		if (map.get("Name") != null)
 			item.setCustomName(Msg.getText(map.get("Name")));
 		if (map.get("Lore") != null)
@@ -166,12 +172,6 @@ public class Appliance {
 			} else if (!enchants.contains(EnchantName.UnknownToEnchant(map.get("Enchant"))))
 				item.addEnchantment(EnchantName.UnknownToEnchant(map.get("Enchant")));
 		}
-		item.setNamedTag(Nbt);
-		DumperOptions dumperOptions = new DumperOptions();
-		dumperOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-		Yaml yaml = new Yaml(dumperOptions);
-		Nbt.putString("Data", yaml.dump(map));
-		item.setNamedTag(Nbt);
 		return item;
 	}
 
@@ -235,5 +235,45 @@ public class Appliance {
 			return Nbt.getBoolean("isDrop");
 		Map<String, Object> map = getData(item);
 		return Tool.ObjToBool(map.get("isDrop"));
+	}
+
+	/**
+	 * 判断玩家是不是已经拥有这个快捷工具了
+	 * 
+	 * @param player 要检查的玩家对象
+	 * @param Key    要检查的数据的Key
+	 * @return
+	 */
+	public static boolean isAlready(Player player, String Key) {
+		Map<Integer, Item> Cons = player.getInventory().getContents();
+		for (Integer ike : Cons.keySet()) {
+			Item i = Cons.get(ike);
+			if (Appliance.isGirl(i)) {
+				Map<String, Object> mItem = Appliance.getData(i);
+				if (mItem != null && mItem.get("Key") != null && Key != null && mItem.get("Key").equals(Key))
+					return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * 检测玩家是否已经申请过这个快捷工具了
+	 * 
+	 * @param player 要检查的玩家对象
+	 * @param Key    要检查的数据的Key
+	 * @return
+	 */
+	public static boolean isRepetition(Player player, String Key) {
+		Map<String, Object> map = config.get(Key) == null ? new HashMap<String, Object>()
+				: (config.get(Key) instanceof Map) ? (HashMap<String, Object>) config.get(Key)
+						: new HashMap<String, Object>();
+		if (map.size() < 1)
+			return false;
+		List<String> list = map.get("Players") != null
+				? (map.get("Players") instanceof List) ? (ArrayList<String>) map.get("Players")
+						: new ArrayList<String>()
+				: new ArrayList<String>();
+		return list.contains(player.getName());
 	}
 }

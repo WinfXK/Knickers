@@ -10,6 +10,10 @@ author: Winfxk
 loadbefore:
 - EconomyAPI
 commands:
+   tool:
+      description: §9菜单快捷工具主命令
+      permission: Knickers.Command.Tool
+      usage: §b/§6mis §chelp
    mis:
       description: §9菜单工具主命令
       permission: Knickers.Command.main

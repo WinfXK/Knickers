@@ -46,19 +46,15 @@ public class PlayerEvent implements Listener {
 	@EventHandler
 	public void onDropItem(PlayerDropItemEvent e) {
 		Item item = e.getItem();
-		boolean isC = false;
 		if (!kick.config.getBoolean("是否允许玩家丢弃快捷工具") && Belle.isMaterials(item)) {
-			if (!isC)
-				e.setCancelled();
+			e.setCancelled();
 			Player player = e.getPlayer();
 			player.sendMessage(
 					kick.Message.getMessage("撤销丢掉快捷工具的提示", new String[] { "{Player}", "{ItemName}", "{ItemID}" },
 							new Object[] { player.getName(), ItemIDSunName.getIDByName(item.getId(), item.getDamage()),
 									item.getId() + ":" + item.getDamage() }));
-		}
-		if (!Appliance.isDrop(item)) {
-			if (!isC)
-				e.setCancelled();
+		} else if (!Appliance.isDrop(item)) {
+			e.setCancelled();
 			Player player = e.getPlayer();
 			player.sendMessage(
 					kick.Message.getMessage("撤销丢掉自定义快捷工具的提示", new String[] { "{Player}", "{ItemName}", "{ItemID}" },
@@ -75,21 +71,15 @@ public class PlayerEvent implements Listener {
 	@EventHandler
 	public void onBreak(BlockBreakEvent e) {
 		Player player = e.getPlayer();
-		boolean isC = false;
 		Item item = e.getItem();
 		if (Belle.isMaterials(item)) {
 			MakeForm.Main(player);
-			if (!isC && kick.config.getBoolean("打开撤销")) {
-				isC = true;
+			if (kick.config.getBoolean("打开撤销"))
 				e.setCancelled();
-			}
-		}
-		if (Appliance.isGirl(item)) {
+		} else if (Appliance.isGirl(item)) {
 			kick.App.start(player, item);
-			if (!isC && kick.config.getBoolean("打开撤销")) {
+			if (kick.config.getBoolean("打开撤销"))
 				e.setCancelled();
-				isC = true;
-			}
 		}
 	}
 
@@ -103,21 +93,16 @@ public class PlayerEvent implements Listener {
 		Player player = e.getPlayer();
 		Action ac = e.getAction();
 		Item item = e.getItem();
-		boolean isC = false;
 		if (!ac.equals(Action.PHYSICAL)) {
 			if (Belle.isMaterials(item)) {
 				MakeForm.Main(player);
-				if (!isC && kick.config.getBoolean("打开撤销")) {
-					isC = true;
+				if (kick.config.getBoolean("打开撤销"))
 					e.setCancelled();
-				}
-			}
-			if (Appliance.isGirl(item)) {
+			} else if (Appliance.isGirl(item)) {
 				kick.App.start(player, item);
-				if (!isC && kick.config.getBoolean("打开撤销")) {
+				if (kick.config.getBoolean("打开撤销"))
 					e.setCancelled();
-					isC = true;
-				}
+
 			}
 		}
 	}

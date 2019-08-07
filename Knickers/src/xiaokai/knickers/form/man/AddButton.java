@@ -2,7 +2,6 @@ package xiaokai.knickers.form.man;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -196,19 +195,20 @@ public class AddButton {
 		 * @return
 		 */
 		public boolean addCommand(String Msg, String Hint, String playerType) {
-			List<String> msgList = Msg != null && Msg.contains(";") && !Msg.isEmpty() ? Arrays.asList(Msg.split(";"))
-					: Arrays.asList(new String[] { Msg });
-			List<String> hintMsg = Hint != null && !Hint.isEmpty() && Hint.contains(";")
-					? Arrays.asList(Hint.split(";"))
-					: Arrays.asList(new String[] { Hint });
+			String[] msgLists = Msg != null && Msg.contains(";") && !Msg.isEmpty() ? Msg.split(";")
+					: new String[] { Msg };
+			String[] hintMsgs = Hint != null && !Hint.isEmpty() && Hint.contains(";") ? Hint.split(";")
+					: new String[] { Hint };
 			playerType = (playerType.toLowerCase().equals("console") ? "Console"
 					: (playerType.toLowerCase().equals("playerbyop") ? "PlayerByOp" : "Player"));
-			for (int i = 0; i < msgList.size(); i++)
-				if (msgList.get(i).contains("\n"))
-					msgList.set(i, msgList.get(i).replace("\n", "{n}"));
-			for (int i = 0; i < hintMsg.size(); i++)
-				if (hintMsg.get(i).contains("\n"))
-					hintMsg.set(i, hintMsg.get(i).replace("\n", "{n}"));
+			List<String> msgList = new ArrayList<String>();
+			List<String> hintMsg = new ArrayList<String>();
+			for (String Mag : msgLists)
+				if (Mag != null && !Mag.isEmpty())
+					msgList.add(Mag.contains("\n") ? Mag.replace("\n", "{n}") : Mag);
+			for (String Mag : hintMsgs)
+				if (Mag != null && !Mag.isEmpty())
+					hintMsg.add(Mag.contains("\n") ? Mag.replace("\n", "{n}") : Mag);
 			map.put("Msg", msgList);
 			map.put("Hint", hintMsg);
 			map.put("Commander", playerType);

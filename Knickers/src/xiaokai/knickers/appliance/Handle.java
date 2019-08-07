@@ -9,6 +9,8 @@ import java.util.Map;
 import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.form.response.FormResponseSimple;
+import cn.nukkit.inventory.PlayerInventory;
+import cn.nukkit.item.Item;
 import cn.nukkit.utils.Config;
 import xiaokai.knickers.form.MakeForm;
 import xiaokai.knickers.form.OpenButton;
@@ -24,7 +26,7 @@ import xiaokai.tool.Tool;
 public class Handle {
 	private static Kick kick = Kick.kick;
 	private Player player;
-	private Map<String, Object> Item;
+	private Map<String, Object> ToolItem;
 
 	/**
 	 * 处理快捷工具页面的数据
@@ -33,6 +35,9 @@ public class Handle {
 	 */
 	public static class disTool {
 		private Player player;
+		private Item item;
+		private MyPlayer myPlayer;
+		private PlayerInventory inventory;
 
 		/**
 		 * 处理快捷工具页面的数据
@@ -41,6 +46,26 @@ public class Handle {
 		 */
 		public disTool(Player player) {
 			this.player = player;
+			inventory = player.getInventory();
+			item = inventory.getItemInHand();
+			item = item == null ? new Item(0, 0) : item;
+			myPlayer = kick.PlayerDataMap.get(player.getName());
+		}
+
+		/**
+		 * 处理玩家点击是否删除页面的数据
+		 * 
+		 * @param player 触发事件的玩家对象
+		 * @param data   返回的数据对象
+		 * @return
+		 */
+		public static boolean Del(Player player, FormResponseSimple data) {
+			if (!Kick.isAdmin(player))
+				return MakeForm.Tip(player, Kick.kick.Message.getMessage("权限不足"));
+			MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
+			Appliance.config.remove(myPlayer.Key);
+			boolean isok = Appliance.config.save();
+			return MakeForm.Tip(player, "§6删除" + (isok ? "成功" : "可能遇到一点问题！"), isok);
 		}
 
 		/**
@@ -49,7 +74,41 @@ public class Handle {
 		 * @return
 		 */
 		public boolean Price() {
-			return true;
+			if (Appliance.isAlready(player, myPlayer.Key) && !Tool.ObjToBool(myPlayer.Item.get("isAlready"), true))
+				return MakeForm.Tip(player, kick.Message.getSun("界面", "快捷工具列表页", "已拥有该工具", new String[] { "{Player}" },
+						new Object[] { player.getName() }));
+			if (Appliance.isRepetition(player, myPlayer.Key)
+					&& !Tool.ObjToBool(myPlayer.Item.get("isRepetition"), true))
+				return MakeForm.Tip(player, kick.Message.getSun("界面", "快捷工具列表页", "已申请过工具", new String[] { "{Player}" },
+						new Object[] { player.getName() }));
+			if (inventory.isFull())
+				return MakeForm.Tip(player, kick.Message.getSun("界面", "快捷工具列表页", "背包已满", new String[] { "{Player}" },
+						new Object[] { player.getName() }));
+			Object obj = myPlayer.Item.get("ID");
+			String ID = String.valueOf(obj);
+			if (obj == null || ID == null || ID.isEmpty())
+				return MakeForm.Tip(player, kick.Message.getSun("界面", "快捷工具列表页", "数据获取失败",
+						new String[] { "{Player}", "{Error}" }, new Object[] { player.getName(), "无法获取工具ID！" }));
+			int[] IDs = Tool.IDtoFullID(ID);
+			if (IDs[0] == 0)
+				return MakeForm.Tip(player, kick.Message.getSun("界面", "快捷工具列表页", "数据获取失败",
+						new String[] { "{Player}", "{Error}" }, new Object[] { player.getName(), "数据设置错误！工具ID不能为0" }));
+			item = new Item(IDs[0], IDs[1]);
+			item = Appliance.setData(item, myPlayer.Item);
+			inventory.addItem(item);
+			List<String> list = (myPlayer.Item.get("Players") != null && (myPlayer.Item.get("Players") instanceof List))
+					? (ArrayList<String>) myPlayer.Item.get("Players")
+					: new ArrayList<String>();
+			if (!list.contains(player.getName()))
+				list.add(player.getName());
+			myPlayer.Item.put("Players", list);
+			Appliance.config.set(myPlayer.Key, myPlayer.Item);
+			return MakeForm.Tip(player,
+					kick.Message.getSun("界面", "快捷工具列表页", "获取快捷工具成功",
+							new String[] { "{Player}", "{ItemName}", "{ItemID}" },
+							new Object[] { player.getName(), ItemIDSunName.getIDByName(item.getId(), item.getDamage()),
+									item.getId() + ":" + item.getDamage() }),
+					Appliance.config.save());
 		}
 
 		/**
@@ -58,7 +117,41 @@ public class Handle {
 		 * @return
 		 */
 		public boolean Write() {
-			return true;
+			if (Appliance.isAlready(player, myPlayer.Key) && !Tool.ObjToBool(myPlayer.Item.get("isAlready"), true))
+				return MakeForm.Tip(player, kick.Message.getSun("界面", "快捷工具列表页", "已拥有该工具", new String[] { "{Player}" },
+						new Object[] { player.getName() }));
+			if (Appliance.isRepetition(player, myPlayer.Key)
+					&& !Tool.ObjToBool(myPlayer.Item.get("isRepetition"), true))
+				return MakeForm.Tip(player, kick.Message.getSun("界面", "快捷工具列表页", "已申请过工具", new String[] { "{Player}" },
+						new Object[] { player.getName() }));
+			if (item.getId() != 0) {
+				item = Appliance.setData(item, myPlayer.Item);
+				if (inventory.setItemInHand(item)) {
+					List<String> list = (myPlayer.Item.get("Players") != null
+							&& (myPlayer.Item.get("Players") instanceof List))
+									? (ArrayList<String>) myPlayer.Item.get("Players")
+									: new ArrayList<String>();
+					if (!list.contains(player.getName()))
+						list.add(player.getName());
+					myPlayer.Item.put("Players", list);
+					Appliance.config.set(myPlayer.Key, myPlayer.Item);
+					return MakeForm.Tip(player,
+							kick.Message.getSun("界面", "快捷工具列表页", "写入数据成功",
+									new String[] { "{Player}", "{ItemName}", "{ItemID}" },
+									new Object[] { player.getName(),
+											ItemIDSunName.getIDByName(item.getId(), item.getDamage()),
+											item.getId() + ":" + item.getDamage() }),
+							Appliance.config.save());
+				} else
+					return MakeForm.Tip(player,
+							kick.Message.getSun("界面", "快捷工具列表页", "写入数据失败",
+									new String[] { "{Player}", "{ItemName}", "{ItemID}" },
+									new Object[] { player.getName(),
+											ItemIDSunName.getIDByName(item.getId(), item.getDamage()),
+											item.getId() + ":" + item.getDamage() }));
+			} else
+				return MakeForm.Tip(player, kick.Message.getSun("界面", "快捷工具列表页", "不能把数据写入到空气",
+						new String[] { "{Player}" }, new Object[] { player.getName() }));
 		}
 	}
 
@@ -113,7 +206,7 @@ public class Handle {
 	 */
 	public Handle(Player player, Map<String, Object> Item) {
 		this.player = player;
-		this.Item = Item;
+		this.ToolItem = Item;
 	}
 
 	/**
@@ -122,7 +215,7 @@ public class Handle {
 	 * @return
 	 */
 	public boolean start() {
-		String Type = Item.get("Type") == null ? null : String.valueOf(Item.get("Type"));
+		String Type = ToolItem.get("Type") == null ? null : String.valueOf(ToolItem.get("Type"));
 		if (Type == null || Type.isEmpty())
 			return MakeForm.Tip(player, kick.Message.getSon("快捷工具", "自定义工具打开失败提示",
 					new String[] { "{Player}", "{Error}" }, new Object[] { player.getName(), "无法解析工具类型！" }));
@@ -141,12 +234,12 @@ public class Handle {
 	 * @return
 	 */
 	public boolean isButton() {
-		Object obj = Item.get("FileName");
+		Object obj = ToolItem.get("FileName");
 		String FileName = obj == null || String.valueOf(obj).isEmpty() ? null : String.valueOf(obj);
 		if (FileName == null)
 			return MakeForm.Tip(player, kick.Message.getSon("快捷工具", "自定义工具打开失败提示",
 					new String[] { "{Player}", "{Error}" }, new Object[] { player.getName(), "无法获取想要打开的文件名！" }));
-		String Key = Item.get("Key") != null ? String.valueOf(Item.get("Key")) : null;
+		String Key = ToolItem.get("ButtonKey") != null ? String.valueOf(ToolItem.get("ButtonKey")) : null;
 		if (Key == null || Key.isEmpty())
 			return MakeForm.Tip(player, kick.Message.getSon("快捷工具", "自定义工具打开失败提示",
 					new String[] { "{Player}", "{Error}" }, new Object[] { player.getName(), "无法获取按钮的Key" }));
@@ -161,7 +254,7 @@ public class Handle {
 		if (Buttons.size() < 1)
 			return MakeForm.Tip(player, kick.Message.getSon("快捷工具", "自定义工具打开失败提示",
 					new String[] { "{Player}", "{Error}" }, new Object[] { player.getName(), "打开的界面不存在任何按钮！" }));
-		if (Buttons.containsKey(Key))
+		if (Buttons.get(Key) != null)
 			return (new OpenButton(kick, player, file, Key)).start();
 		else
 			return MakeForm.Tip(player, kick.Message.getSon("快捷工具", "自定义工具打开失败提示",
@@ -174,7 +267,7 @@ public class Handle {
 	 * @return
 	 */
 	public boolean isOpen() {
-		Object obj = Item.get("FileName");
+		Object obj = ToolItem.get("FileName");
 		String FileName = obj == null || String.valueOf(obj).isEmpty() ? null : String.valueOf(obj);
 		if (FileName == null)
 			return MakeForm.Tip(player, kick.Message.getSon("快捷工具", "自定义工具打开失败提示",
@@ -214,10 +307,12 @@ public class Handle {
 			 * @param isThread     是否异步强制玩家拥有该工具
 			 * @param isDrop       是否可以被对丢弃
 			 * @param isWrite      玩家是否可以将该数据写入手中的物品中
+			 * @param isRepetition 是否允许多家多次申请
+			 * @param isAlready    是否允许玩家已经拥有该工具还在申请一个
 			 */
 			public Dis(Player player, String FileName, String ItemID, String ItemName, String ItemLore,
-					List<String> ToolEnchantString, boolean isPrice, boolean isThread, boolean isDrop,
-					boolean isWrite) {
+					List<String> ToolEnchantString, boolean isPrice, boolean isThread, boolean isDrop, boolean isWrite,
+					boolean isRepetition, boolean isAlready) {
 				this.player = player;
 				ItemLore = (ItemLore == null || ItemLore.isEmpty()) ? kick.Message.getMessage("快捷工具名称2",
 						new String[] { "{Player}" }, new Object[] { player.getName() }) : ItemLore;
@@ -235,6 +330,9 @@ public class Handle {
 				Item.put("isThread", isThread);
 				Item.put("isDrop", isDrop);
 				Item.put("isWrite", isWrite);
+				Item.put("isRepetition", isRepetition);
+				Item.put("isAlready", isAlready);
+				Item.put("Players", new ArrayList<String>());
 			}
 
 			/**
@@ -323,6 +421,8 @@ public class Handle {
 			boolean isThread = data.getToggleResponse(6);
 			boolean isDrop = data.getToggleResponse(7);
 			boolean isWrite = data.getToggleResponse(8);
+			boolean isRepetition = data.getToggleResponse(9);
+			boolean isAlready = data.getToggleResponse(10);
 			List<String> list = new ArrayList<String>();
 			if (ToolEnchantString != null && !ToolEnchantString.isEmpty())
 				if (ToolEnchantString.contains(";"))
@@ -330,8 +430,8 @@ public class Handle {
 						list.add(string);
 				else
 					list.add(ToolEnchantString);
-			return (new Dis(player, FileName, ItemID, ToolName, ToolLore, list, isPrice, isThread, isDrop, isWrite))
-					.Open();
+			return (new Dis(player, FileName, ItemID, ToolName, ToolLore, list, isPrice, isThread, isDrop, isWrite,
+					isRepetition, isAlready)).Open();
 		}
 
 		/**
@@ -354,6 +454,8 @@ public class Handle {
 			boolean isThread = data.getToggleResponse(6);
 			boolean isDrop = data.getToggleResponse(7);
 			boolean isWrite = data.getToggleResponse(8);
+			boolean isRepetition = data.getToggleResponse(9);
+			boolean isAlready = data.getToggleResponse(10);
 			List<String> list = new ArrayList<String>();
 			if (ToolEnchantString != null && !ToolEnchantString.isEmpty())
 				if (ToolEnchantString.contains(";"))
@@ -361,8 +463,8 @@ public class Handle {
 						list.add(string);
 				else
 					list.add(ToolEnchantString);
-			return (new Dis(player, FileName, ItemID, ToolName, ToolLore, list, isPrice, isThread, isDrop, isWrite))
-					.Button(ButtonKey);
+			return (new Dis(player, FileName, ItemID, ToolName, ToolLore, list, isPrice, isThread, isDrop, isWrite,
+					isRepetition, isAlready)).Button(ButtonKey);
 		}
 
 		/**

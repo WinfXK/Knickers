@@ -8,16 +8,19 @@ import java.util.UUID;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.CommandSender;
+import cn.nukkit.item.Item;
 import cn.nukkit.utils.Config;
 import xiaokai.knickers.Knickers;
 import xiaokai.knickers.toCommand;
 import xiaokai.knickers.appliance.Appliance;
+import xiaokai.tool.ItemIDSunName;
 import xiaokai.tool.Tool;
 import xiaokai.tool.Update;
 
 /**
  * @author Winfxk
  */
+@SuppressWarnings("unchecked")
 public class Kick {
 	public static Kick kick;
 	/**
@@ -106,6 +109,10 @@ public class Kick {
 	 * 处理命令的地方
 	 */
 	public toCommand command;
+	/**
+	 * 插件主线程
+	 */
+	public static Thread MainThread;
 
 	/**
 	 * 插件数据集合
@@ -126,6 +133,7 @@ public class Kick {
 		App = new Appliance(this);
 		startThread();
 		command = new toCommand(this);
+		MainThread = Thread.currentThread();
 	}
 
 	/**
@@ -144,7 +152,7 @@ public class Kick {
 						if (config.getBoolean("检测更新"))
 							(new Update(mis)).start(config.getBoolean("自动下载新版"));
 					} catch (InterruptedException e) {
-						mis.getLogger().warning("自动检查更新遇到错误！" + e.getMessage());
+						mis.getLogger().error("自动检查更新遇到错误！" + e.getMessage());
 					}
 				}
 			}
@@ -168,7 +176,52 @@ public class Kick {
 						}
 						sleep((time < 1 ? 60 : time) * 1000);
 					} catch (InterruptedException e) {
-						mis.getLogger().warning("自动检查更玩家快捷工具遇到错误！" + e.getMessage());
+						mis.getLogger().error("自动检查玩家快捷工具遇到错误！" + e.getMessage());
+					}
+				}
+			}
+		}.start();
+		new Thread() {
+			public void run() {
+				while (true) {
+					if (Tool.ObjectToInt(config.get("自定义工具异步检查持有间隔"), 0) < 1)
+						continue;
+					try {
+						sleep(Tool.ObjectToInt(config.get("自定义工具异步检查持有间隔"), 60) * 1000);
+						Map<UUID, Player> Players = Server.getInstance().getOnlinePlayers();
+						for (UUID u : Players.keySet()) {
+							Player player = Players.get(u);
+							if (player.isOnline() && !player.getInventory().isFull()) {
+								Map<String, Object> map = Appliance.config.getAll();
+								for (String ike : map.keySet()) {
+									Map<String, Object> item = (Map<String, Object>) map.get(ike);
+									if (Tool.ObjToBool(item.get("isThread"), true)
+											&& !Appliance.isAlready(player, ike)) {
+										Object obj = item.get("ID");
+										if (obj != null) {
+											String ID = String.valueOf(obj);
+											if (!ID.isEmpty()) {
+												int[] IDs = Tool.IDtoFullID(ID);
+												if (IDs[0] != 0) {
+													Item Item = new Item(IDs[0], IDs[1]);
+													Item = Appliance.setData(Item, item);
+													player.getInventory().addItem(Item);
+													player.sendMessage(kick.Message.getSun("界面", "快捷工具列表页",
+															"强制获得一个快捷工具",
+															new String[] { "{Player}", "{ItemName}", "{ItemID}" },
+															new Object[] { player.getName(),
+																	ItemIDSunName.getIDByName(Item.getId(),
+																			Item.getDamage()),
+																	Item.getId() + ":" + Item.getDamage() }));
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					} catch (Exception e) {
+						mis.getLogger().error("自动检查玩家自定义快捷工具遇到错误！" + e.getMessage());
 					}
 				}
 			}

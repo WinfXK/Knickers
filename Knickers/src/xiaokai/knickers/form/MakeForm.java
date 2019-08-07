@@ -54,6 +54,8 @@ public class MakeForm {
 		form.addToggle("是否撤销玩家使用快捷工具打开菜单产生的事件", config.getBoolean("打开撤销"));
 		form.addInput("自动检查玩家是否拥有快捷工具的时间间隔\n当这个值小于等于零时不启用该功能", config.getInt("定时检查快捷工具间隔"));
 		form.addToggle("是否允许玩家丢弃快捷工具", config.getBoolean("是否允许玩家丢弃快捷工具"));
+		form.addToggle("自定义工具列表显示工具图标", config.getBoolean("自定义工具列表显示工具图标"));
+		form.addInput("自定义工具异步检查持有间隔", config.get("自定义工具异步检查持有间隔"));
 		form.sendPlayer(player);
 		return true;
 	}

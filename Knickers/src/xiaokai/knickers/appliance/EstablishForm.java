@@ -39,7 +39,7 @@ public class EstablishForm {
 			return MakeForm.Tip(player, Kick.kick.Message.getMessage("权限不足"));
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		String Key = myPlayer.keyList.get(data.getClickedButtonId());
-		Map<String, Object> map = (Map<String, Object>) myPlayer.Item.get(Key);
+		Map<String, Object> map = (Map<String, Object>) Appliance.config.get(Key);
 		String ItemData = "§4确定要删除该工具吗？？\n\n\n\n";
 		int ii = 0;
 		for (String ike : map.keySet()) {
@@ -89,14 +89,17 @@ public class EstablishForm {
 		form.addButton(kick.Message.getSun("界面", "快捷工具列表页", "确定按钮", new String[] { "{Player}", player.getName() },
 				new Object[] { player.getName() }));
 		It.add("ok");
-		if (Kick.isAdmin(player) || Tool.ObjToBool(map.get("isPrice"))) {
-			It.add("get");
-			form.addButton(kick.Message.getSun("界面", "快捷工具列表页", "获取工具", new String[] { "{Player}", player.getName() },
-					new Object[] { player.getName() }));
-		} else
-			form.addButton(kick.Message.getSun("界面", "快捷工具列表页", "取消按钮", new String[] { "{Player}", player.getName() },
-					new Object[] { player.getName() }));
-		if (Kick.isAdmin(player) || Tool.ObjToBool(map.get("isWrite"))) {
+		if (Kick.isAdmin(player) || (Tool.ObjToBool(map.get("isPrice")) && !Appliance.isAlready(player, Key)
+				&& !Appliance.isRepetition(player, Key))) {
+			int[] IDs = Tool.IDtoFullID(map.get("ID"));
+			if (IDs[0] != 0) {
+				It.add("get");
+				form.addButton(kick.Message.getSun("界面", "快捷工具列表页", "获取工具",
+						new String[] { "{Player}", player.getName() }, new Object[] { player.getName() }));
+			}
+		}
+		if (Kick.isAdmin(player) || (Tool.ObjToBool(map.get("isWrite")) && !Appliance.isAlready(player, Key)
+				&& !Appliance.isRepetition(player, Key))) {
 			It.add("put");
 			form.addButton(kick.Message.getSun("界面", "快捷工具列表页", "导入按钮", new String[] { "{Player}", player.getName() },
 					new Object[] { player.getName() }));
@@ -136,7 +139,8 @@ public class EstablishForm {
 			Object obj = Item.get("ID");
 			String ID = obj == null ? null : String.valueOf(obj);
 			ID = ID == null || ID.isEmpty() ? null : ID;
-			ID = ItemIDSunName.UnknownToID(ID);
+			if (ID != null)
+				ID = ItemIDSunName.UnknownToID(ID);
 			form.addButton(kick.Message.getSun("界面", "快捷工具列表页", "列表",
 					new String[] { "{Player}", "{Key}", "{Name}", "{ItemName}", "{ItemID}" },
 					new Object[] { player.getName(), ike,
@@ -174,7 +178,8 @@ public class EstablishForm {
 			Object obj = Item.get("ID");
 			String ID = obj == null ? null : String.valueOf(obj);
 			ID = ID == null || ID.isEmpty() ? null : ID;
-			ID = ItemIDSunName.UnknownToID(ID);
+			if (ID != null)
+				ID = ItemIDSunName.UnknownToID(ID);
 			form.addButton(
 					kick.Message.getSun("界面", "快捷工具列表页", "列表",
 							new String[] { "{Player}", "{Key}", "{Name}", "{ItemName}", "{ItemID}" },
@@ -261,6 +266,8 @@ public class EstablishForm {
 		form.addToggle("§6是否异步强制玩家拥有该工具", true);
 		form.addToggle("§6玩家是否可以丢弃该工具", false);
 		form.addToggle("§6是否允许将数据导入到非指定的其他物品", true);
+		form.addToggle("§6是否允许玩家多次获取", true);
+		form.addToggle("§6是否允许玩家已经拥有该物品还在次申请", true);
 		kick.PlayerDataMap.put(player.getName(), myPlayer);
 		form.sendPlayer(player);
 		return true;
@@ -338,6 +345,8 @@ public class EstablishForm {
 			form.addToggle("§6是否异步强制玩家拥有该工具", true);
 			form.addToggle("§6玩家是否可以丢弃该工具", false);
 			form.addToggle("§6是否允许将数据导入到非指定的其他物品", true);
+			form.addToggle("§6是否允许玩家多次获取", true);
+			form.addToggle("§6是否允许玩家已经拥有该物品还在次申请", true);
 			myPlayer.keyList = Keys;
 			kick.PlayerDataMap.put(player.getName(), myPlayer);
 			form.sendPlayer(player);

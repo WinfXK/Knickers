@@ -82,6 +82,12 @@ public class Dispose {
 			return MakeForm.Tip(player, "§4自动检查快捷工具的间隔仅支持大于等于0的纯整数！");
 		Config config = kick.config;
 		boolean isD = data.getToggleResponse(9);
+		boolean isToolShowIcon = data.getToggleResponse(10);
+		String aboutToolTimeString = data.getInputResponse(11);
+		int aboutTime = 0;
+		if (aboutToolTimeString == null || !Tool.isInteger(sovString) || aboutToolTimeString.isEmpty()
+				|| (aboutTime = Float.valueOf(aboutToolTimeString).intValue()) < 1)
+			return MakeForm.Tip(player, "§4自定义工具异步检查持有的间隔仅支持大于等于0的纯整数！");
 		config.set("快捷工具", id);
 		config.set("货币单位", MoneyName);
 		config.set("检测更新", isUpdate);
@@ -92,6 +98,8 @@ public class Dispose {
 		config.set("打开撤销", isC);
 		config.set("定时检查快捷工具间隔", SovTime);
 		config.set("是否允许玩家丢弃快捷工具", isD);
+		config.set("自定义工具列表显示工具图标", isToolShowIcon);
+		config.set("自定义工具异步检查持有间隔", aboutTime);
 		kick.config = config;
 		if (kick.config.save())
 			return MakeForm.Tip(player, "§6数据保存正常！\n\n§a各类时间间隔将在检查一次后生效");
@@ -106,6 +114,7 @@ public class Dispose {
 	 * @return
 	 */
 	public boolean start(FormResponseSimple data) {
+		System.err.println(10010);
 		Message msg = kick.Message;
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		int ID = data.getClickedButtonId();
@@ -136,7 +145,8 @@ public class Dispose {
 					return AddButton.addButton(player, myPlayer.BackFile);
 				else if (ID == (myPlayer.Items.size() + 2))
 					return DelButton.delButton(player, myPlayer.BackFile);
-				else return MakeForm.Setting(player);
+				else
+					return MakeForm.Setting(player);
 			} else
 				return MakeForm.Tip(player, msg.getMessage("权限不足"));
 		return new OpenButton(kick, player, myPlayer.BackFile, myPlayer.Items.get(ID).get("Key").toString()).start();

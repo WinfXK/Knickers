@@ -73,6 +73,9 @@ public class Monitor implements Listener {
 			EstablishForm.disToolList(player, (FormResponseSimple) data);
 		else if (ID == fId.getID(20))
 			EstablishForm.disDelTool(player, (FormResponseSimple) data);
-		
+		else if (ID == fId.getID(21))
+			Handle.disToolListIsItem(player, (FormResponseSimple) data);
+		else if (ID == fId.getID(22))
+			Handle.disTool.Del(player, (FormResponseSimple) data);
 	}
 }

@@ -125,7 +125,7 @@ public class Tool {
 	 * @param ID 要检查分解的ID
 	 * @return int[]{ID, Damage}
 	 */
-	public static int[] IDtoFullID(String ID) {
+	public static int[] IDtoFullID(Object ID) {
 		return IDtoFullID(ID, 0);
 	}
 
@@ -136,11 +136,18 @@ public class Tool {
 	 * @param Damage 要默认设置的特殊值
 	 * @return int[]{ID, Damage}
 	 */
-	public static int[] IDtoFullID(String ID, int Damage) {
+	public static int[] IDtoFullID(Object obj, int Damage) {
+		String ID = "0";
+		if (obj != null && !String.valueOf(obj).isEmpty())
+			ID = String.valueOf(obj);
 		if (!ID.contains(":"))
 			ID += ":" + Damage;
 		String[] strings = ID.split(":");
-		return new int[] { Integer.valueOf(strings[0]), Integer.valueOf(strings[1]) };
+		try {
+			return new int[] { Integer.valueOf(strings[0]), Integer.valueOf(strings[1]) };
+		} catch (Exception e) {
+			return new int[] { 0, 0 };
+		}
 	}
 
 	/**
@@ -497,7 +504,7 @@ public class Tool {
 	 * 一个Object值转换为bool值，转化失败返回false
 	 * 
 	 * @param obj
-	 * @param Del 
+	 * @param Del
 	 * @return
 	 */
 	public static boolean ObjToBool(Object obj, boolean Del) {

@@ -1,44 +1,42 @@
 Title: '{RandColor}{PluginName}'
 Content: ''
 Buttons:
-  YouAreSB:
-    Money: 0.0
-    IconPath: null
-    Player: Winfxk
-    Type: Tip
-    Command: me 大家好，经过§e§l§n不§6§l§n懈§a§l§n努§4§l§n力，我终于变成了§e§l§n丑§9§l§n逼§r！！！
-    Content: §a恭喜您！您已经成功变成丑比！{n}{n}{n}
-    Title: §a恭喜
-    Text: §6点击变丑
-    creaTime: '2019-07-22 16:38:46'
-    IconType: 0
-    Key: YouAreSB
-    TipType: Modal
-  ShuaiBiKai:
-    Money: 0.0
-    IconPath: null
-    Player: Winfxk
-    Type: Tip
-    Command: me §e§l§n帅§9§l§n逼§4§l§n凯§r万岁
-    Content: '§e首先感谢您对我们的支持！{n}§6作者：帅逼凯{n}§9QQ: 2508543202{n}§4有任何问题都可以来联系我们哦！'
-    Title: §a感谢使用
-    Text: §9关于作者
-    creaTime: '2019-07-22 16:42:33'
-    IconType: 0
-    Key: ShuaiBiKai
-    TipType: Modal
-  FFFSB:
-    Msg:
-    - ''
-    Money: 0.0
-    IconPath: null
-    Player: Winfxk
-    Type: Command
-    Command: mis tool
-    Hint:
-    - ''
-    Commander: Player
-    Text: §6快捷工具
-    creaTime: '2019-08-06 14:20:57'
-    IconType: 0
-    Key: FFFSB
+   YouAreSB:
+      Money: 0.0
+      IconPath: null
+      Player: Winfxk
+      Type: Tip
+      Command: me 大家好，经过§e§l§n不§6§l§n懈§a§l§n努§4§l§n力，我终于变成了§e§l§n丑§9§l§n逼§r！！！
+      Content: §a恭喜您！您已经成功变成丑比！{n}{n}{n}
+      Title: §a恭喜
+      Text: §6点击变丑
+      creaTime: '2019-07-22 16:38:46'
+      IconType: 0
+      Key: YouAreSB
+      TipType: Modal
+   ShuaiBiKai:
+      Money: 0.0
+      IconPath: null
+      Player: Winfxk
+      Type: Tip
+      Command: me §e§l§n帅§9§l§n逼§4§l§n凯§r万岁
+      Content: '§e首先感谢您对我们的支持！{n}§6作者：帅逼凯{n}§9QQ: 2508543202{n}§4有任何问题都可以来联系我们哦！'
+      Title: §a感谢使用
+      Text: §9关于作者
+      creaTime: '2019-07-22 16:42:33'
+      IconType: 0
+      Key: ShuaiBiKai
+      TipType: Modal
+   FFFSB:
+      Msg: []
+      Money: 0.0
+      IconPath: null
+      Player: Winfxk
+      Type: Command
+      Command: mis tool
+      Hint: []
+      Commander: Player
+      Text: §6快捷工具
+      creaTime: '2019-08-06 14:20:57'
+      IconType: 0
+      Key: FFFSB

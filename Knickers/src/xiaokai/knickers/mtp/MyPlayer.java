@@ -75,6 +75,10 @@ public class MyPlayer {
 	 * 删除的时候的文件列表
 	 */
 	public List<File> DelFileList;
+	/**
+	 * 是否处于异步处理状态
+	 */
+	public boolean isThread = false;
 
 	public MyPlayer(Player player) {
 		this.player = player;
