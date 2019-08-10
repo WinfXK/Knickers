@@ -469,10 +469,15 @@ public class OpenButton {
 			boolean isOP = player.isOp();
 			if (Commander.toLowerCase().equals("playerbyop") && !isOP)
 				player.setOp(true);
-			boolean cmd = Server.getInstance().dispatchCommand(
-					(Commander.toLowerCase().equals("player") || Commander.toLowerCase().equals("playerbyop")) ? player
-							: new ConsoleCommandSender(),
-					Command);
+			boolean cmd;
+			try {
+				cmd = Server.getInstance().dispatchCommand(
+						(Commander.toLowerCase().equals("player") || Commander.toLowerCase().equals("playerbyop")) ? player
+								: new ConsoleCommandSender(),
+						Command);
+			} catch (Exception ex) {
+				cmd = false;
+			}
 			if (Commander.toLowerCase().equals("playerbyop") && !isOP)
 				player.setOp(false);
 			return cmd;
