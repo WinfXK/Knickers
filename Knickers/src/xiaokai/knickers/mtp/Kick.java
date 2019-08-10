@@ -110,9 +110,9 @@ public class Kick {
 	 */
 	public toCommand command;
 	/**
-	 * 插件主线程
+	 * 异步线程
 	 */
-	public static Thread MainThread;
+	public startThread sThread;
 
 	/**
 	 * 插件数据集合
@@ -131,63 +131,53 @@ public class Kick {
 		formID.setConfig(formIdConfig.getAll());
 		Message = new Message(this);
 		App = new Appliance(this);
-		startThread();
 		command = new toCommand(this);
-		MainThread = Thread.currentThread();
+		sThread = new startThread();
+		sThread.start();
 	}
 
 	/**
 	 * 上面太多了看着难受，启动几个线程 </br>
 	 * 检测更新间隔 </br>
 	 * 定时检查快捷工具间隔
+	 * 
+	 * @author Winfxk
 	 */
-	private void startThread() {
-		new Thread() {
-			@Override
-			public void run() {
-				super.run();
-				while (true) {
-					try {
-						sleep(Tool.ObjectToInt(config.get("检测更新间隔"), 500) * 1000);
-						if (config.getBoolean("检测更新"))
-							(new Update(mis)).start(config.getBoolean("自动下载新版"));
-					} catch (InterruptedException e) {
-						mis.getLogger().error("自动检查更新遇到错误！" + e.getMessage());
+	public class startThread extends Thread {
+		public int Update;
+		public int time;
+		public int UpdateAutoTool;
+
+		/**
+		 * 上面太多了看着难受，启动几个线程 </br>
+		 * 检测更新间隔 </br>
+		 * 定时检查快捷工具间隔
+		 */
+		public startThread() {
+			Update = Tool.ObjectToInt(config.get("检测更新间隔"), 500);
+			time = Tool.ObjectToInt(config.get("定时检查快捷工具间隔"), 60);
+			UpdateAutoTool = Tool.ObjectToInt(config.get("自定义工具异步检查持有间隔"), 0);
+		}
+
+		@Override
+		public void run() {
+			while (true) {
+				try {
+					sleep(1000);
+					if (config.getBoolean("检测更新") && Update-- < 0) {
+						(new Update(mis)).start(config.getBoolean("自动下载新版"));
+						Update = Tool.ObjectToInt(config.get("检测更新间隔"), 500);
 					}
-				}
-			}
-		}.start();
-		new Thread() {
-			@Override
-			public void run() {
-				super.run();
-				while (true) {
-					try {
-						Object object = config.get("定时检查快捷工具间隔");
-						String s = object == null ? "" : String.valueOf(object);
-						int time = Tool.ObjectToInt(s, 60);
-						if (time > 0) {
-							Map<UUID, Player> Players = Server.getInstance().getOnlinePlayers();
-							for (UUID u : Players.keySet()) {
-								Player player = Players.get(u);
-								if (player.isOnline())
-									Belle.exMaterials(player);
-							}
+					if (time-- < 0 && config.getBoolean("定时检查快捷工具")) {
+						Map<UUID, Player> Players = Server.getInstance().getOnlinePlayers();
+						for (UUID u : Players.keySet()) {
+							Player player = Players.get(u);
+							if (player.isOnline())
+								Belle.exMaterials(player);
 						}
-						sleep((time < 1 ? 60 : time) * 1000);
-					} catch (InterruptedException e) {
-						mis.getLogger().error("自动检查玩家快捷工具遇到错误！" + e.getMessage());
+						time = Tool.ObjectToInt(config.get("定时检查快捷工具间隔"), 60);
 					}
-				}
-			}
-		}.start();
-		new Thread() {
-			public void run() {
-				while (true) {
-					if (Tool.ObjectToInt(config.get("自定义工具异步检查持有间隔"), 0) < 1)
-						continue;
-					try {
-						sleep(Tool.ObjectToInt(config.get("自定义工具异步检查持有间隔"), 60) * 1000);
+					if (config.getBoolean("自定义工具异步检查持有") && UpdateAutoTool-- < 0) {
 						Map<UUID, Player> Players = Server.getInstance().getOnlinePlayers();
 						for (UUID u : Players.keySet()) {
 							Player player = Players.get(u);
@@ -220,20 +210,33 @@ public class Kick {
 								}
 							}
 						}
-					} catch (Exception e) {
-						mis.getLogger().error("自动检查玩家自定义快捷工具遇到错误！" + e.getMessage());
+						UpdateAutoTool = Tool.ObjectToInt(config.get("自定义工具异步检查持有间隔"), 0);
 					}
+				} catch (InterruptedException e) {
+					mis.getLogger().error("进程更新遇到错误！" + e.getMessage());
 				}
 			}
-		}.start();
+		}
 	}
 
+	/**
+	 * 判断一个逗比是不是管理员
+	 * 
+	 * @param player
+	 * @return
+	 */
 	public static boolean isAdmin(CommandSender player) {
 		if (!player.isPlayer())
 			return true;
 		return isAdmin((Player) player);
 	}
 
+	/**
+	 * 判断一个逗比是不是管理员
+	 * 
+	 * @param player
+	 * @return
+	 */
 	public static boolean isAdmin(Player player) {
 		if (!player.isPlayer())
 			return true;

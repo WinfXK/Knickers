@@ -467,14 +467,29 @@ public class OpenButton {
 		 */
 		private static boolean carryCommand(Player player, String Command, String Commander) {
 			boolean isOP = player.isOp();
-			if (Commander.toLowerCase().equals("playerbyop") && !isOP)
+			boolean cmdr = Commander.toLowerCase().equals("playerbyop");
+			if (cmdr && !isOP)
 				player.setOp(true);
-			boolean cmd = Server.getInstance().dispatchCommand(
-					(Commander.toLowerCase().equals("player") || Commander.toLowerCase().equals("playerbyop")) ? player
-							: new ConsoleCommandSender(),
-					Command);
-			if (Commander.toLowerCase().equals("playerbyop") && !isOP)
-				player.setOp(false);
+			boolean cmd = false;
+			try {
+				cmd = Server.getInstance().dispatchCommand(
+						(Commander.toLowerCase().equals("player") || cmdr) ? player : new ConsoleCommandSender(),
+						Command);
+			} catch (Exception e) {
+				Kick.kick.mis.getLogger().error("§4执行命令出现错误！" + e.getMessage());
+			}
+			if (cmdr && !isOP)
+				new Thread() {
+					public void run() {
+						try {
+							sleep(Tool.ObjectToInt(Kick.kick.config.get("OP命令延时撤销"), 1000));
+						} catch (InterruptedException e) {
+							Kick.kick.mis.getLogger().error("§4警告！OP命令执行出现问题！Op撤销可能已经失败！请检查OP列表！玩家名：§e"
+									+ player.getName() + "\nError: \n " + e.getMessage());
+						}
+						player.setOp(false);
+					}
+				}.start();
 			return cmd;
 		}
 	}

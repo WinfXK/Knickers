@@ -88,6 +88,9 @@ public class Dispose {
 		if (aboutToolTimeString == null || !Tool.isInteger(sovString) || aboutToolTimeString.isEmpty()
 				|| (aboutTime = Float.valueOf(aboutToolTimeString).intValue()) < 1)
 			return MakeForm.Tip(player, "§4自定义工具异步检查持有的间隔仅支持大于等于0的纯整数！");
+		boolean 定时检查快捷工具 = data.getToggleResponse(12);
+		boolean 自定义工具异步检查持有 = data.getToggleResponse(13);
+		int OP命令延时撤销 = Float.valueOf(data.getSliderResponse(14)).intValue();
 		config.set("快捷工具", id);
 		config.set("货币单位", MoneyName);
 		config.set("检测更新", isUpdate);
@@ -100,7 +103,13 @@ public class Dispose {
 		config.set("是否允许玩家丢弃快捷工具", isD);
 		config.set("自定义工具列表显示工具图标", isToolShowIcon);
 		config.set("自定义工具异步检查持有间隔", aboutTime);
+		config.set("定时检查快捷工具", 定时检查快捷工具);
+		config.set("自定义工具异步检查持有", 自定义工具异步检查持有);
+		config.set("OP命令延时撤销", OP命令延时撤销);
 		kick.config = config;
+		kick.sThread.Update = Tool.ObjectToInt(config.get("检测更新间隔"), 500);
+		kick.sThread.time = Tool.ObjectToInt(config.get("定时检查快捷工具间隔"), 60);
+		kick.sThread.UpdateAutoTool = Tool.ObjectToInt(config.get("自定义工具异步检查持有间隔"), 0);
 		if (kick.config.save())
 			return MakeForm.Tip(player, "§6数据保存正常！\n\n§a各类时间间隔将在检查一次后生效");
 		else
@@ -114,7 +123,6 @@ public class Dispose {
 	 * @return
 	 */
 	public boolean start(FormResponseSimple data) {
-		System.err.println(10010);
 		Message msg = kick.Message;
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		int ID = data.getClickedButtonId();

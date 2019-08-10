@@ -32,8 +32,16 @@ public class Knickers extends PluginBase {
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(new PlayerEvent(kick), this);
 		pm.registerEvents(new Monitor(kick), this);
-		this.getServer().getLogger().info(Tool.getColorFont(this.getName() + "启动！") + "§6耗时：§9"
-				+ ((float) (Duration.between(loadTime, Instant.now()).toMillis()) / 1000));
+		String s = "";
+		if (!kick.config.getString("v").equals(getDescription().getVersion())) {
+			s = "  §e感谢QQ：3284288761的用户反馈一个重要BUG";
+			kick.config.set("v", getDescription().getVersion());
+			kick.config.save();
+		}
+		this.getServer().getLogger()
+				.info(Tool.getColorFont(this.getName() + "启动！") + "§6耗时：§9"
+						+ ((float) (Duration.between(loadTime, Instant.now()).toMillis()) / 1000) + s
+						+ (Tool.getRand(1, 5) == 1 ? "\n" + Tool.getColorFont("本插件完全免费，如果你是给钱了的，那你就可能被坑啦~") : ""));
 	}
 
 	/**

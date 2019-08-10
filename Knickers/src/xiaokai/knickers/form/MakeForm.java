@@ -56,6 +56,10 @@ public class MakeForm {
 		form.addToggle("是否允许玩家丢弃快捷工具", config.getBoolean("是否允许玩家丢弃快捷工具"));
 		form.addToggle("自定义工具列表显示工具图标", config.getBoolean("自定义工具列表显示工具图标"));
 		form.addInput("自定义工具异步检查持有间隔", config.get("自定义工具异步检查持有间隔"));
+		form.addToggle("定时检查快捷工具", config.getBoolean("定时检查快捷工具"));
+		form.addToggle("自定义工具异步检查持有", config.getBoolean("自定义工具异步检查持有"));
+		form.addSlider("OP命令延时撤销\n\n这个值决定了命令型按钮在使用“玩家OP权限”执行命令后多久撤销玩家OP，建议值在500到1500之间", 50, 5000, 5,
+				Tool.ObjectToInt(config.get("OP命令延时撤销"), 1000));
 		form.sendPlayer(player);
 		return true;
 	}
