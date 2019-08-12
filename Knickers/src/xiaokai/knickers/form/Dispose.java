@@ -10,6 +10,7 @@ import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.form.response.FormResponseSimple;
 import cn.nukkit.utils.Config;
 import xiaokai.knickers.form.man.AddButton;
+import xiaokai.knickers.form.man.AlterButton;
 import xiaokai.knickers.form.man.DelButton;
 import xiaokai.knickers.mtp.Kick;
 import xiaokai.knickers.mtp.Message;
@@ -33,6 +34,56 @@ public class Dispose {
 	public Dispose(Kick kick, Player player) {
 		this.kick = kick;
 		this.player = player;
+	}
+
+	/**
+	 * 处理玩家修改界面信息返回的数据
+	 * 
+	 * @param player
+	 * @param data
+	 * @return
+	 */
+	public boolean AlterForm(FormResponseCustom data) {
+		if (!Kick.isAdmin(player))
+			return MakeForm.Tip(player, kick.Message.getMessage("权限不足"));
+		MyPlayer myPlayer = Kick.kick.PlayerDataMap.get(player.getName());
+		Config config = new Config(myPlayer.CacheFile, Config.YAML);
+		String Title = data.getInputResponse(0);
+		Title = Title.contains("\n") ? Title.replace("\n", "{n}") : Title;
+		String Content = data.getInputResponse(1);
+		Content = Content.contains("\n") ? Content.replace("\n", "{n}") : Content;
+		config.set("Title", Title);
+		config.set("Content", Content);
+		config.set("FilteredModel", data.getStepSliderResponse(2).getElementID());
+		config.set("FilteredPlayer", AddButton.Start.getPlayers(data.getInputResponse(3)));
+		config.set("AlterTime", Tool.getDate() + " " + Tool.getTime());
+		config.set("AlterPlayer", player.getName());
+		boolean isok = config.save();
+		player.sendMessage("§6数据保存" + (isok ? "成功" : "§4异常") + "§6！");
+		return isok;
+	}
+
+	/**
+	 * 处理玩家点击更多设置按钮后返回的数据
+	 * 
+	 * @param data 发挥的数据
+	 * @return
+	 */
+	public boolean disMoreSettings(FormResponseSimple data) {
+		MyPlayer myPlayer = Kick.kick.PlayerDataMap.get(player.getName());
+		switch (myPlayer.UIAdminButtonKis.get(data.getClickedButtonId())) {
+		case "sf":
+			return MakeForm.AlterForm(player, myPlayer.CacheFile);
+		case "alter":
+			return AlterButton.make(player, myPlayer.CacheFile);
+		case "add":
+			return AddButton.addButton(player, myPlayer.CacheFile);
+		case "del":
+			return DelButton.delButton(player, myPlayer.CacheFile);
+		case "back":
+		default:
+			return MakeForm.OpenMenu(player, myPlayer.CacheFile, false, false);
+		}
 	}
 
 	/**
@@ -91,6 +142,7 @@ public class Dispose {
 		boolean 定时检查快捷工具 = data.getToggleResponse(12);
 		boolean 自定义工具异步检查持有 = data.getToggleResponse(13);
 		int OP命令延时撤销 = Float.valueOf(data.getSliderResponse(14)).intValue();
+		boolean 折叠更多设置 = data.getToggleResponse(15);
 		config.set("快捷工具", id);
 		config.set("货币单位", MoneyName);
 		config.set("检测更新", isUpdate);
@@ -106,6 +158,7 @@ public class Dispose {
 		config.set("定时检查快捷工具", 定时检查快捷工具);
 		config.set("自定义工具异步检查持有", 自定义工具异步检查持有);
 		config.set("OP命令延时撤销", OP命令延时撤销);
+		config.set("折叠更多设置", 折叠更多设置);
 		kick.config = config;
 		kick.sThread.Update = Tool.ObjectToInt(config.get("检测更新间隔"), 500);
 		kick.sThread.time = Tool.ObjectToInt(config.get("定时检查快捷工具间隔"), 60);
@@ -127,7 +180,7 @@ public class Dispose {
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		int ID = data.getClickedButtonId();
 		if (ID >= myPlayer.Items.size())
-			if (ID == myPlayer.Items.size()) {
+			if (myPlayer.UIAdminButtonKis.get(ID - myPlayer.Items.size()).equals("back")) {
 				if (myPlayer.OpenMenuList == null || myPlayer.OpenMenuList.size() < 1
 						|| (new File(kick.mis.getDataFolder(), kick.MainFileName).getAbsolutePath()
 								.equals(myPlayer.BackFile.getAbsolutePath()))
@@ -149,12 +202,20 @@ public class Dispose {
 				else
 					return true;
 			} else if (Kick.isAdmin(player)) {
-				if (ID == myPlayer.Items.size() + 1)
+				if (myPlayer.UIAdminButtonKis.get(ID - myPlayer.Items.size()).equals("ss"))
+					return MakeForm.MoreSettings(player, myPlayer.BackFile);
+				else if (myPlayer.UIAdminButtonKis.get(ID - myPlayer.Items.size()).equals("add"))
 					return AddButton.addButton(player, myPlayer.BackFile);
-				else if (ID == (myPlayer.Items.size() + 2))
+				else if (myPlayer.UIAdminButtonKis.get(ID - myPlayer.Items.size()).equals("del"))
 					return DelButton.delButton(player, myPlayer.BackFile);
-				else
+				else if (myPlayer.UIAdminButtonKis.get(ID - myPlayer.Items.size()).equals("alter"))
+					return AlterButton.make(player, myPlayer.BackFile);
+				else if (myPlayer.UIAdminButtonKis.get(ID - myPlayer.Items.size()).equals("sf"))
+					return MakeForm.AlterForm(player, myPlayer.BackFile);
+				else if (myPlayer.UIAdminButtonKis.get(ID - myPlayer.Items.size()).equals("set"))
 					return MakeForm.Setting(player);
+				else
+					return true;
 			} else
 				return MakeForm.Tip(player, msg.getMessage("权限不足"));
 		return new OpenButton(kick, player, myPlayer.BackFile, myPlayer.Items.get(ID).get("Key").toString()).start();

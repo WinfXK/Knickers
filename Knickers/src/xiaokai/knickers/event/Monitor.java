@@ -13,6 +13,7 @@ import xiaokai.knickers.appliance.Handle;
 import xiaokai.knickers.form.Dispose;
 import xiaokai.knickers.form.OpenButton;
 import xiaokai.knickers.form.man.AddButton;
+import xiaokai.knickers.form.man.AlterButton;
 import xiaokai.knickers.form.man.DelButton;
 import xiaokai.knickers.mtp.FormID;
 import xiaokai.knickers.mtp.Kick;
@@ -77,5 +78,11 @@ public class Monitor implements Listener {
 			Handle.disToolListIsItem(player, (FormResponseSimple) data);
 		else if (ID == fId.getID(22))
 			Handle.disTool.Del(player, (FormResponseSimple) data);
+		else if (ID == fId.getID(23))
+			AlterButton.Dis(player, (FormResponseSimple) data);
+		else if (ID == fId.getID(24))
+			(new Dispose(kick, player)).AlterForm((FormResponseCustom) data);
+		else if (ID == fId.getID(25))
+			(new Dispose(kick, player)).disMoreSettings((FormResponseSimple) data);
 	}
 }

@@ -62,9 +62,12 @@ public class Handle {
 		public static boolean Del(Player player, FormResponseSimple data) {
 			if (!Kick.isAdmin(player))
 				return MakeForm.Tip(player, Kick.kick.Message.getMessage("权限不足"));
+			if (data.getClickedButtonId() == 0)
+				return EstablishForm.showToolList(player);
 			MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 			Appliance.config.remove(myPlayer.Key);
 			boolean isok = Appliance.config.save();
+			EstablishForm.showToolList(player);
 			return MakeForm.Tip(player, "§6删除" + (isok ? "成功" : "可能遇到一点问题！"), isok);
 		}
 
@@ -374,6 +377,7 @@ public class Handle {
 				else
 					player.sendMessage("§6您添加了一个自定义工具但保存可能出现了一点问题！");
 				Appliance.enclose();
+				EstablishForm.showToolList(player);
 				return b;
 			}
 

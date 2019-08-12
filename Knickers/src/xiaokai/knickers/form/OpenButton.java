@@ -28,6 +28,7 @@ import xiaokai.tool.Tool;
 /**
  * @author Winfxk
  */
+@SuppressWarnings("unchecked")
 public class OpenButton {
 	private Kick kick;
 	private Player player;
@@ -45,7 +46,6 @@ public class OpenButton {
 	 * @param f 要打开的按钮的文件对象
 	 * @param s 要打开的按钮的Key
 	 */
-	@SuppressWarnings("unchecked")
 	public OpenButton(Kick k, Player p, File f, String s) {
 		this.kick = k;
 		this.player = p;
@@ -61,6 +61,37 @@ public class OpenButton {
 	}
 
 	/**
+	 * 是否不能使用按钮
+	 * 
+	 * @param player
+	 * @return
+	 */
+	public boolean isSB(Player player) {
+		return isSB(player.getName());
+	}
+
+	/**
+	 * 是否不能使用按钮
+	 * 
+	 * @param player
+	 * @return
+	 */
+	public boolean isSB(String player) {
+		int k = Tool.ObjectToInt(Item.get("FilteredModel"), 0);
+		Object obj = Item.get("FilteredPlayer");
+		List<String> Players = obj != null && (obj instanceof List) ? (ArrayList<String>) obj : new ArrayList<String>();
+		if (k == 1) {
+			if (Players.contains(player))
+				return true;
+		} else if (k == 2) {
+			if (!Players.contains(player))
+				return true;
+		} else if (k == 0)
+			return false;
+		return false;
+	}
+
+	/**
 	 * 开始处理玩家点击按钮的事件，这里是判断玩家点击跌是什么按钮类型
 	 * 
 	 * @return
@@ -68,8 +99,14 @@ public class OpenButton {
 	public boolean start() {
 		if (Item.equals(new HashMap<String, Object>()) || Item.get("Type") == null
 				|| String.valueOf(Item.get("Type")).isEmpty()) {
-			player.sendMessage("§4按钮打开失败！");
+			player.sendMessage(
+					msg.getSon("界面", "打开按钮失败", new String[] { "{Player}" }, new String[] { player.getName() }));
 			MakeForm.OpenMenu(player, file);
+			return false;
+		}
+		if (isSB(player)) {
+			player.sendMessage(
+					msg.getSon("界面", "被列入黑名单", new String[] { "{Player}" }, new String[] { player.getName() }));
 			return false;
 		}
 		switch (String.valueOf(Item.get("Type")).toLowerCase()) {
@@ -376,7 +413,6 @@ public class OpenButton {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public static class onCommand {
 		private Player player;
 

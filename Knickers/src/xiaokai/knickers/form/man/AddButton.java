@@ -39,6 +39,7 @@ public class AddButton {
 			return MakeForm.Tip(player, Kick.kick.Message.getMessage("权限不足"));
 		MyPlayer myPlayer = Kick.kick.PlayerDataMap.get(player.getName());
 		myPlayer.CacheFile = file;
+		myPlayer.isAlter = false;
 		Config config = new Config(file, Config.YAML);
 		SimpleForm form = new SimpleForm(Kick.kick.formID.getID(1), Kick.kick.Message.getText(config.getString("Title"),
 				new String[] { "{Player}" }, new Object[] { player.getName() }) + Tool.getRandColor() + " 添加按钮");
@@ -61,22 +62,69 @@ public class AddButton {
 		private String ButtonText;
 		private Map<String, Object> map;
 		private Map<String, Object> Buttons;
-		private String Key;
+		private boolean isAlter;
 
 		/**
 		 * 给菜单添加按钮
 		 * 
-		 * @param k          Kick对象
-		 * @param player     添加按钮的玩家对象
-		 * @param file       要添加按钮的配置文件对象
-		 * @param ButtonText 按钮的文本内容
-		 * @param Command    点击按钮后会执行的命令内容
-		 * @param Money      点击后会扣除的金币数量
-		 * @param IconType   按钮的图标类型
-		 * @param IconPath   按钮的贴图路径
+		 * @param Key            按钮的Key
+		 * @param player         添加按钮的玩家对象
+		 * @param file           要添加按钮的配置文件对象
+		 * @param ButtonText     按钮的文本内容
+		 * @param Command        点击按钮后会执行的命令内容
+		 * @param Money          点击后会扣除的金币数量
+		 * @param IconType       按钮的图标类型
+		 * @param IconPath       按钮的贴图路径
+		 * @param FilteredModel  过滤玩家的模式
+		 * @param FilteredPlayer 过滤的玩家列表
+		 * @param isAlter        是修改还是创建
+		 */
+		public Add(String Key, Player player, File file, String ButtonText, String Command, double Money, int IconType,
+				String IconPath, int FilteredModel, List<String> FilteredPlayer, boolean isAlter) {
+			this.player = player;
+			this.config = new Config(file, Config.YAML);
+			Command = Command == null ? "" : Command;
+			IconType = IconType >= 0 || IconType <= 2 ? IconType : 0;
+			IconPath = (IconType != 1 && IconType != 2) ? null
+					: ((IconPath == null || IconPath.isEmpty() || IconPath.equals("null")) ? null : IconPath);
+			Money = Money < 0 ? 0 : Money;
+			map = new HashMap<String, Object>();
+			Buttons = (config.get("Buttons") == null || !(config.get("Buttons") instanceof Map))
+					? new HashMap<String, Object>()
+					: (HashMap<String, Object>) config.get("Buttons");
+			map.put("Text", ButtonText.contains("\n") ? ButtonText.replace("\n", "{n}") : ButtonText);
+			map.put("Command", Command.contains("\n") ? Command.replace("\n", "{n}") : Command);
+			map.put("Money", Money);
+			map.put("IconType", IconType);
+			map.put("IconPath", IconPath != null ? ItemIDSunName.UnknownToPath(IconPath) : IconPath);
+			map.put("FilteredModel", FilteredModel);
+			map.put("FilteredPlayer", FilteredPlayer);
+			map.put("Key", Key == null || Key.isEmpty() ? getKey(1) : Key);
+			this.isAlter = isAlter;
+			if (isAlter) {
+				map.put("AlterTime", Tool.getDate() + " " + Tool.getTime());
+				map.put("AlterPlayer", player.getName());
+			} else {
+				map.put("creaTime", Tool.getDate() + " " + Tool.getTime());
+				map.put("Player", player.getName());
+			}
+		}
+
+		/**
+		 * 给菜单添加按钮
+		 * 
+		 * @param player         添加按钮的玩家对象
+		 * @param file           要添加按钮的配置文件对象
+		 * @param ButtonText     按钮的文本内容
+		 * @param Command        点击按钮后会执行的命令内容
+		 * @param Money          点击后会扣除的金币数量
+		 * @param IconType       按钮的图标类型
+		 * @param IconPath       按钮的贴图路径
+		 * @param FilteredModel  过滤玩家的模式
+		 * @param FilteredPlayer 过滤的玩家列表
 		 */
 		public Add(Player player, File file, String ButtonText, String Command, double Money, int IconType,
-				String IconPath) {
+				String IconPath, int FilteredModel, List<String> FilteredPlayer, boolean isAlter) {
 			this.player = player;
 			this.config = new Config(file, Config.YAML);
 			Command = Command == null ? "" : Command;
@@ -88,15 +136,23 @@ public class AddButton {
 			Buttons = (config.get("Buttons") == null || !(config.get("Buttons") instanceof Map))
 					? new HashMap<String, Object>()
 					: (HashMap<String, Object>) config.get("Buttons");
-			Key = getKey(1);
 			map.put("Text", ButtonText.contains("\n") ? ButtonText.replace("\n", "{n}") : ButtonText);
 			map.put("Command", Command.contains("\n") ? Command.replace("\n", "{n}") : Command);
 			map.put("Money", Money);
 			map.put("IconType", IconType);
 			map.put("IconPath", IconPath != null ? ItemIDSunName.UnknownToPath(IconPath) : IconPath);
-			map.put("creaTime", Tool.getDate() + " " + Tool.getTime());
-			map.put("Player", player.getName());
-			map.put("Key", Key);
+			if (isAlter) {
+				map.put("AlterTime", Tool.getDate() + " " + Tool.getTime());
+				map.put("AlterPlayer", player.getName());
+				map.put("Key", Kick.kick.PlayerDataMap.get(player.getName()).Key);
+			} else {
+				map.put("creaTime", Tool.getDate() + " " + Tool.getTime());
+				map.put("Player", player.getName());
+				map.put("Key", getKey(1));
+			}
+			map.put("FilteredModel", FilteredModel);
+			map.put("FilteredPlayer", FilteredPlayer);
+			this.isAlter = isAlter;
 		}
 
 		/**
@@ -122,11 +178,14 @@ public class AddButton {
 		 * @return
 		 */
 		public boolean save() {
-			Buttons.put(Key, map);
+			Buttons.put(map.get("Key").toString(), map);
 			config.set("Buttons", Buttons);
 			boolean isok;
 			if (isok = config.save())
-				player.sendMessage("§6成功创建这个页面的第§4" + Buttons.size() + "§6个按钮！");
+				if (isAlter)
+					player.sendMessage("§6成功修改了这个按钮！");
+				else
+					player.sendMessage("§6成功创建这个页面的第§4" + Buttons.size() + "§6个按钮！");
 			else
 				player.sendMessage("§4创建可能出现了一些问题！如果这个问题经常存在，请联系作者！");
 			return isok;
@@ -237,6 +296,8 @@ public class AddButton {
 				map.put("creaTime", Tool.getDate() + " " + Tool.getTime());
 				map.put("Player", player.getName());
 				map.put("Buttons", new HashMap<String, Object>());
+				map.put("FilteredModel", this.map.get("FilteredModel"));
+				map.put("FilteredPlayer", this.map.get("FilteredPlayer"));
 				config.setAll(map);
 				config.save();
 			}
@@ -318,8 +379,9 @@ public class AddButton {
 				return MakeForm.Tip(player, "§4扣除的费用数必须为大于零的纯数字！");
 			double Money = Double.valueOf(s);
 			return (new AddButton.Add(player, my.CacheFile, ButtonText, data.getInputResponse(5), Money,
-					data.getStepSliderResponse(7).getElementID(), data.getInputResponse(8))).addOpen(Title, Content,
-							ConfigName);
+					data.getStepSliderResponse(7).getElementID(), data.getInputResponse(8),
+					data.getStepSliderResponse(9).getElementID(), getPlayers(data.getInputResponse(10)),
+					Kick.kick.PlayerDataMap.get(player.getName()).isAlter)).addOpen(Title, Content, ConfigName);
 		}
 
 		/**
@@ -339,8 +401,10 @@ public class AddButton {
 				return MakeForm.Tip(player, "§4扣除的费用数必须为大于零的纯数字！");
 			double Money = Double.valueOf(s);
 			return (new AddButton.Add(player, my.CacheFile, ButtonText, Cmd, Money,
-					data.getStepSliderResponse(6).getElementID(), data.getInputResponse(7)))
-							.addCommand(data.getInputResponse(2), data.getInputResponse(3), PlayerType);
+					data.getStepSliderResponse(6).getElementID(), data.getInputResponse(7),
+					data.getStepSliderResponse(8).getElementID(), getPlayers(data.getInputResponse(9)),
+					Kick.kick.PlayerDataMap.get(player.getName()).isAlter)).addCommand(data.getInputResponse(2),
+							data.getInputResponse(3), PlayerType);
 		}
 
 		/**
@@ -368,7 +432,9 @@ public class AddButton {
 			} else
 				return MakeForm.Tip(player, "§4X、Y、Z坐标必须为纯数字！");
 			return (new AddButton.Add(player, my.CacheFile, ButtonText, data.getInputResponse(5), Money,
-					data.getStepSliderResponse(7).getElementID(), data.getInputResponse(8)))
+					data.getStepSliderResponse(7).getElementID(), data.getInputResponse(8),
+					data.getStepSliderResponse(9).getElementID(), getPlayers(data.getInputResponse(10)),
+					Kick.kick.PlayerDataMap.get(player.getName()).isAlter))
 							.addTransfer(data.getDropdownResponse(1).getElementContent(), x, y, z);
 		}
 
@@ -384,9 +450,10 @@ public class AddButton {
 				return MakeForm.Tip(player, "§4扣除的费用数必须为大于零的纯数字！");
 			double Money = Double.valueOf(s);
 			return (new AddButton.Add(player, my.CacheFile, ButtonText, data.getInputResponse(4), Money,
-					data.getStepSliderResponse(6).getElementID(), data.getInputResponse(7))).addTeleport(
-							data.getInputResponse(1), data.getInputResponse(2),
-							data.getStepSliderResponse(3).getElementID() == 1);
+					data.getStepSliderResponse(6).getElementID(), data.getInputResponse(7),
+					data.getStepSliderResponse(8).getElementID(), getPlayers(data.getInputResponse(9)),
+					Kick.kick.PlayerDataMap.get(player.getName()).isAlter)).addTeleport(data.getInputResponse(1),
+							data.getInputResponse(2), data.getStepSliderResponse(3).getElementID() == 1);
 		}
 
 		/**
@@ -401,9 +468,30 @@ public class AddButton {
 				return MakeForm.Tip(player, "§4扣除的费用数必须为大于零的纯数字！");
 			double Money = Double.valueOf(s);
 			return (new AddButton.Add(player, my.CacheFile, ButtonText, data.getInputResponse(3), Money,
-					data.getStepSliderResponse(6).getElementID(), data.getInputResponse(7))).addTip(
-							data.getInputResponse(1), data.getInputResponse(2),
-							data.getDropdownResponse(4).getElementContent());
+					data.getStepSliderResponse(6).getElementID(), data.getInputResponse(7),
+					data.getStepSliderResponse(8).getElementID(), getPlayers(data.getInputResponse(9)),
+					Kick.kick.PlayerDataMap.get(player.getName()).isAlter)).addTip(data.getInputResponse(1),
+							data.getInputResponse(2), data.getDropdownResponse(4).getElementContent());
+		}
+
+		/**
+		 * 获取被屏蔽的玩家列表
+		 * 
+		 * @param string
+		 * @return
+		 */
+		public static List<String> getPlayers(String string) {
+			List<String> list = new ArrayList<String>();
+			if (string == null || string.isEmpty())
+				return list;
+			if (string.contains(";")) {
+				String[] s = string.split(";");
+				for (String player : s)
+					if (player != null && !player.isEmpty())
+						list.add(player);
+			} else
+				list.add(string);
+			return list;
 		}
 	}
 
@@ -435,6 +523,7 @@ public class AddButton {
 			if (!Kick.isAdmin(player))
 				return MakeForm.Tip(player, kick.Message.getMessage("权限不足"));
 			my.AddButtonType = Kick.ButtonTypeList[data.getClickedButtonId()];
+			my.isAlter = false;
 			kick.PlayerDataMap.put(player.getName(), my);
 			switch (Kick.ButtonTypeList[data.getClickedButtonId()]) {
 			case "传送到在线玩家":
@@ -470,6 +559,8 @@ public class AddButton {
 			form.addInput(getMoneyString(), "0", "0");
 			form.addStepSlider("按钮的图标类型", new String[] { "无图标", "本地资源", "网络资源" });
 			form.addInput("请输入图标的路径", getHandItemID(player));
+			form.addStepSlider("过滤模式", Kick.FilteredModel);
+			form.addInput("黑名单列表，多个使用;分割", "");
 			form.sendPlayer(player);
 			return true;
 		}
@@ -505,6 +596,8 @@ public class AddButton {
 			form.addInput(getMoneyString(), "0", "0");
 			form.addStepSlider("按钮的图标类型", new String[] { "无图标", "本地资源", "网络资源" });
 			form.addInput("请输入图标的路径", getHandItemID(player));
+			form.addStepSlider("过滤模式", Kick.FilteredModel);
+			form.addInput("黑名单列表，多个使用;分割", "");
 			form.sendPlayer(player);
 			return true;
 		}
@@ -527,6 +620,8 @@ public class AddButton {
 			form.addInput(getMoneyString(), "0", "0");
 			form.addStepSlider("按钮的图标类型", new String[] { "无图标", "本地资源", "网络资源" });
 			form.addInput("请输入图标的路径", getHandItemID(player));
+			form.addStepSlider("过滤模式", Kick.FilteredModel);
+			form.addInput("黑名单列表，多个使用;分割", "");
 			form.sendPlayer(player);
 			return true;
 		}
@@ -551,6 +646,8 @@ public class AddButton {
 			form.addInput(getMoneyString(), "0", "0");
 			form.addStepSlider("按钮的图标类型", new String[] { "无图标", "本地资源", "网络资源" });
 			form.addInput("请输入图标的路径", getHandItemID(player));
+			form.addStepSlider("过滤模式", Kick.FilteredModel);
+			form.addInput("黑名单列表，多个使用;分割", "");
 			form.sendPlayer(player);
 			return true;
 		}
@@ -575,6 +672,8 @@ public class AddButton {
 			form.addInput(getMoneyString(), "0");
 			form.addStepSlider("按钮的图标类型", new String[] { "无图标", "本地资源", "网络资源" });
 			form.addInput("请输入图标的路径", getHandItemID(player));
+			form.addStepSlider("过滤模式", Kick.FilteredModel);
+			form.addInput("黑名单列表，多个使用;分割", "");
 			form.sendPlayer(player);
 			return true;
 		}

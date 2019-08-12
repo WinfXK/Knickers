@@ -75,7 +75,14 @@ public class MyPlayer {
 	 * 删除的时候的文件列表
 	 */
 	public List<File> DelFileList;
-
+	/**
+	 * 查看到底显示了哪些管理员按钮
+	 */
+	public List<String> UIAdminButtonKis;
+	/**
+	 * 是修改还是创建
+	 */
+	public boolean isAlter;
 	public MyPlayer(Player player) {
 		this.player = player;
 	}

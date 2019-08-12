@@ -17,7 +17,7 @@ import xiaokai.tool.Tool;
  * @author Winfxk
  */
 public class Knickers extends PluginBase {
-	private Instant loadTime = Instant.now();
+	private Instant loadTime;
 	/**
 	 * 插件缓存数据集合
 	 */
@@ -28,19 +28,13 @@ public class Knickers extends PluginBase {
 	 */
 	@Override
 	public void onEnable() {
-		super.onEnable();
+		loadTime = Instant.now();
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(new PlayerEvent(kick), this);
 		pm.registerEvents(new Monitor(kick), this);
-		String s = "";
-		if (!kick.config.getString("v").equals(getDescription().getVersion())) {
-			s = "  §e感谢QQ：3284288761的用户反馈一个重要BUG";
-			kick.config.set("v", getDescription().getVersion());
-			kick.config.save();
-		}
 		this.getServer().getLogger()
 				.info(Tool.getColorFont(this.getName() + "启动！") + "§6耗时：§9"
-						+ ((float) (Duration.between(loadTime, Instant.now()).toMillis()) / 1000) + s
+						+ ((float) (Duration.between(loadTime, Instant.now()).toMillis()) / 1000)
 						+ (Tool.getRand(1, 5) == 1 ? "\n" + Tool.getColorFont("本插件完全免费，如果你是给钱了的，那你就可能被坑啦~") : ""));
 	}
 
@@ -61,7 +55,6 @@ public class Knickers extends PluginBase {
 		this.getServer().getLogger()
 				.info(Tool.getColorFont(this.getName() + "关闭！") + TextFormat.GREEN + "本次运行时长" + TextFormat.BLUE
 						+ Tool.getTimeBy(((float) (Duration.between(loadTime, Instant.now()).toMillis()) / 1000)));
-		super.onDisable();
 	}
 
 	/**

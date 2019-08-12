@@ -10,6 +10,7 @@ import java.util.Map;
 
 import cn.nukkit.Player;
 import cn.nukkit.utils.Config;
+import xiaokai.knickers.form.man.AlterButton;
 import xiaokai.knickers.mtp.Kick;
 import xiaokai.knickers.mtp.Message;
 import xiaokai.knickers.mtp.MyPlayer;
@@ -23,6 +24,71 @@ import xiaokai.tool.Tool;
  */
 @SuppressWarnings("unchecked")
 public class MakeForm {
+	/**
+	 * 更多设置界面
+	 * 
+	 * @param player 要显示这个界面的玩家对象
+	 * @param file   上级界面
+	 * @return
+	 */
+	public static boolean MoreSettings(Player player, File file) {
+		Kick kick = Kick.kick;
+		if (!Kick.isAdmin(player))
+			return MakeForm.Tip(player, kick.Message.getMessage("权限不足"));
+		MyPlayer myPlayer = Kick.kick.PlayerDataMap.get(player.getName());
+		myPlayer.CacheFile = file;
+		Config config = new Config(file, Config.YAML);
+		SimpleForm form = new SimpleForm(kick.formID.getID(25), kick.Message.getText(config.getString("Title", ""),
+				new String[] { "{Player}" }, new Object[] { player.getName() }));
+		List<String> kis = new ArrayList<String>();
+		Map<String, Object> Buttons = ((config.get("Buttons") instanceof Map) && config.get("Buttons") != null)
+				? (HashMap<String, Object>) config.get("Buttons")
+				: new HashMap<String, Object>();
+		kis.add("add");
+		form.addButton(Tool.getRandColor() + "添加按钮");
+		if (Buttons.size() > 0) {
+			kis.add("del");
+			form.addButton(Tool.getRandColor() + "删除按钮");
+			kis.add("alter");
+			form.addButton(Tool.getRandColor() + "修改按钮");
+		}
+		kis.add("sf");
+		form.addButton(Tool.getRandColor() + "修改界面");
+		kis.add("set");
+		form.addButton(Tool.getRandColor() + "系统设置");
+		kis.add("back");
+		form.addButton(Tool.getRandColor() + "返回上级");
+		myPlayer.UIAdminButtonKis = kis;
+		kick.PlayerDataMap.put(player.getName(), myPlayer);
+		form.sendPlayer(player);
+		return true;
+	}
+
+	/**
+	 * 修改一个界面
+	 * 
+	 * @param player 要修改界面的玩家对象
+	 * @param file   要修改得到界面配件
+	 * @return
+	 */
+	public static boolean AlterForm(Player player, File file) {
+		Kick kick = Kick.kick;
+		if (!Kick.isAdmin(player))
+			return MakeForm.Tip(player, kick.Message.getMessage("权限不足"));
+		MyPlayer myPlayer = Kick.kick.PlayerDataMap.get(player.getName());
+		myPlayer.CacheFile = file;
+		Config config = new Config(file, Config.YAML);
+		CustomForm form = new CustomForm(Kick.kick.formID.getID(24),
+				Kick.kick.Message.getText(config.getString("Title")) + "Set");
+		form.addInput("界面的标题", config.getString("Title"));
+		form.addInput("界面的内容", config.getString("Content"));
+		form.addStepSlider("过滤模式", Kick.FilteredModel, Tool.ObjectToInt("FilteredModel"));
+		form.addInput("屏蔽列表", AlterButton.Dispose.ListToString(config.get("FilteredPlayer")));
+		form.sendPlayer(player);
+		kick.PlayerDataMap.put(player.getName(), myPlayer);
+		return true;
+	}
+
 	/**
 	 * 打开一个界面，这个界面是用来设置系统配置的
 	 * 
@@ -60,6 +126,7 @@ public class MakeForm {
 		form.addToggle("自定义工具异步检查持有", config.getBoolean("自定义工具异步检查持有"));
 		form.addSlider("OP命令延时撤销\n\n这个值决定了命令型按钮在使用“玩家OP权限”执行命令后多久撤销玩家OP，建议值在500到1500之间", 50, 5000, 5,
 				Tool.ObjectToInt(config.get("OP命令延时撤销"), 1000));
+		form.addToggle("折叠更多设置", config.getBoolean("折叠更多设置"));
 		form.sendPlayer(player);
 		return true;
 	}
@@ -97,12 +164,19 @@ public class MakeForm {
 	 * @return
 	 */
 	public static boolean OpenMenu(Player player, File file, boolean isBack, boolean isMain) {
+		Config config = new Config(file, Config.YAML);
+		Object obj = config.get("FilteredPlayer");
 		Kick kick = Kick.kick;
 		Message msg = kick.Message;
+		List<String> Players = obj != null && (obj instanceof List) ? (ArrayList<String>) obj : new ArrayList<String>();
+		if ((config.getInt("FilteredModel") == 1 && Players.contains(player.getName()))
+				|| (config.getInt("FilteredModel") == 2 && !Players.contains(player.getName()))) {
+			return MakeForm.Tip(player,
+					msg.getSon("界面", "被列入黑名单", new String[] { "{Player}" }, new String[] { player.getName() }));
+		}
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		if (isBack)
 			myPlayer.OpenMenuList.add(file);
-		Config config = new Config(file, Config.YAML);
 		List<Map<String, Object>> Items = new ArrayList<Map<String, Object>>();
 		int ID = isMain ? kick.formID.getID(0) : getID(myPlayer);
 		SimpleForm form = new SimpleForm(ID,
@@ -127,7 +201,9 @@ public class MakeForm {
 				Items.add(Item);
 			}
 		}
-		if (form.getButtonSize() < 1)
+		List<String> kis = new ArrayList<String>();
+		boolean isShow = true;
+		if (isShow = (form.getButtonSize() < 1))
 			form.setContent(form.getContent() + (form.getContent() != null && !form.getContent().isEmpty() ? "\n" : "")
 					+ msg.getMessage("没有按钮时提示", new String[] { "{Player}" }, new Object[] { player.getName() }));
 		if (myPlayer.OpenMenuList == null || myPlayer.OpenMenuList.size() < 1 || isMain
@@ -135,14 +211,34 @@ public class MakeForm {
 						.equals(new File(kick.mis.getDataFolder(), kick.MainFileName).getAbsolutePath())
 				|| (myPlayer.BackFile != null && file.getAbsolutePath().equals(myPlayer.BackFile.getAbsolutePath()))) {
 			form.addButton(msg.getSon("界面", "取消按钮", new String[] { "{Player}" }, new Object[] { player.getName() }));
-		} else
+			kis.add("quit");
+		} else {
 			form.addButton(msg.getSon("界面", "返回上级", new String[] { "{Player}" }, new Object[] { player.getName() }));
-		if (Kick.isAdmin(player))
-			form.addButton(Tool.getRandColor() + "添加按钮").addButton(Tool.getRandColor() + "删除按钮")
-					.addButton(Tool.getRandColor() + "系统设置");
+			kis.add("back");
+		}
+		if (Kick.isAdmin(player)) {
+			if (!kick.config.getBoolean("折叠更多设置")) {
+				kis.add("add");
+				form.addButton(Tool.getRandColor() + "添加按钮");
+				if (!isShow) {
+					kis.add("del");
+					form.addButton(Tool.getRandColor() + "删除按钮");
+					kis.add("alter");
+					form.addButton(Tool.getRandColor() + "修改按钮");
+				}
+				kis.add("set");
+				form.addButton(Tool.getRandColor() + "系统设置");
+				kis.add("sf");
+				form.addButton(Tool.getRandColor() + "修改界面");
+			} else {
+				kis.add("ss");
+				form.addButton(Tool.getRandColor() + "更多设置");
+			}
+		}
 		myPlayer.BackFile = file;
 		myPlayer.Items = Items;
 		myPlayer.isMain = isMain;
+		myPlayer.UIAdminButtonKis = kis;
 		kick.PlayerDataMap.put(player.getName(), myPlayer);
 		form.sendPlayer(player);
 		return true;
