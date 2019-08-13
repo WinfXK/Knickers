@@ -80,6 +80,8 @@ public class Dispose {
 			return AddButton.addButton(player, myPlayer.CacheFile);
 		case "del":
 			return DelButton.delButton(player, myPlayer.CacheFile);
+		case "set":
+			return MakeForm.Setting(player);
 		case "back":
 		default:
 			return MakeForm.OpenMenu(player, myPlayer.CacheFile, false, false);
@@ -143,6 +145,14 @@ public class Dispose {
 		boolean 自定义工具异步检查持有 = data.getToggleResponse(13);
 		int OP命令延时撤销 = Float.valueOf(data.getSliderResponse(14)).intValue();
 		boolean 折叠更多设置 = data.getToggleResponse(15);
+		boolean 快捷工具监听点击 = data.getToggleResponse(16);
+		boolean 快捷工具监听破坏 = data.getToggleResponse(17);
+		boolean 快捷工具监听快捷栏双击 = data.getToggleResponse(18);
+		String 快捷工具快捷栏双击间隔文字 = data.getInputResponse(19);
+		int 快捷工具快捷栏双击间隔 = 1000;
+		if (快捷工具快捷栏双击间隔文字 == null || 快捷工具快捷栏双击间隔文字.isEmpty() || !Tool.isInteger(快捷工具快捷栏双击间隔文字)
+				|| Float.valueOf(快捷工具快捷栏双击间隔文字).intValue() < 1)
+			return MakeForm.Tip(player, "§4快捷工具快捷栏双击间隔仅支持大于等于0的纯整数！");
 		config.set("快捷工具", id);
 		config.set("货币单位", MoneyName);
 		config.set("检测更新", isUpdate);
@@ -159,6 +169,10 @@ public class Dispose {
 		config.set("自定义工具异步检查持有", 自定义工具异步检查持有);
 		config.set("OP命令延时撤销", OP命令延时撤销);
 		config.set("折叠更多设置", 折叠更多设置);
+		config.set("快捷工具监听点击", 快捷工具监听点击);
+		config.set("快捷工具监听破坏", 快捷工具监听破坏);
+		config.set("快捷工具监听快捷栏双击", 快捷工具监听快捷栏双击);
+		config.set("快捷工具快捷栏双击间隔", 快捷工具快捷栏双击间隔);
 		kick.config = config;
 		kick.sThread.Update = Tool.ObjectToInt(config.get("检测更新间隔"), 500);
 		kick.sThread.time = Tool.ObjectToInt(config.get("定时检查快捷工具间隔"), 60);

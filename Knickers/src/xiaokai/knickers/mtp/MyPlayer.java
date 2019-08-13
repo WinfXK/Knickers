@@ -11,8 +11,14 @@ import java.util.Map;
 import cn.nukkit.Player;
 
 public class MyPlayer {
+	/**
+	 * 记录玩家点击时的事时间
+	 */
+	public Instant ClickHeldTime;
+	/**
+	 * 记录玩家点击时的事时间
+	 */
 	public Instant loadTime;
-	public boolean isPlayerOnJoin = true;
 	/**
 	 * 玩家对象
 	 */
@@ -83,6 +89,7 @@ public class MyPlayer {
 	 * 是修改还是创建
 	 */
 	public boolean isAlter;
+
 	public MyPlayer(Player player) {
 		this.player = player;
 	}

@@ -560,7 +560,7 @@ public class AddButton {
 			form.addStepSlider("按钮的图标类型", new String[] { "无图标", "本地资源", "网络资源" });
 			form.addInput("请输入图标的路径", getHandItemID(player));
 			form.addStepSlider("过滤模式", Kick.FilteredModel);
-			form.addInput("黑名单列表，多个使用;分割", "");
+			form.addInput("黑/白 名单列表，多个使用;分割", "");
 			form.sendPlayer(player);
 			return true;
 		}
@@ -597,7 +597,7 @@ public class AddButton {
 			form.addStepSlider("按钮的图标类型", new String[] { "无图标", "本地资源", "网络资源" });
 			form.addInput("请输入图标的路径", getHandItemID(player));
 			form.addStepSlider("过滤模式", Kick.FilteredModel);
-			form.addInput("黑名单列表，多个使用;分割", "");
+			form.addInput("黑/白 名单列表，多个使用;分割", "");
 			form.sendPlayer(player);
 			return true;
 		}
@@ -621,7 +621,7 @@ public class AddButton {
 			form.addStepSlider("按钮的图标类型", new String[] { "无图标", "本地资源", "网络资源" });
 			form.addInput("请输入图标的路径", getHandItemID(player));
 			form.addStepSlider("过滤模式", Kick.FilteredModel);
-			form.addInput("黑名单列表，多个使用;分割", "");
+			form.addInput("黑/白 名单列表，多个使用;分割", "");
 			form.sendPlayer(player);
 			return true;
 		}
@@ -647,7 +647,7 @@ public class AddButton {
 			form.addStepSlider("按钮的图标类型", new String[] { "无图标", "本地资源", "网络资源" });
 			form.addInput("请输入图标的路径", getHandItemID(player));
 			form.addStepSlider("过滤模式", Kick.FilteredModel);
-			form.addInput("黑名单列表，多个使用;分割", "");
+			form.addInput("黑/白 名单列表，多个使用;分割", "");
 			form.sendPlayer(player);
 			return true;
 		}
@@ -673,7 +673,7 @@ public class AddButton {
 			form.addStepSlider("按钮的图标类型", new String[] { "无图标", "本地资源", "网络资源" });
 			form.addInput("请输入图标的路径", getHandItemID(player));
 			form.addStepSlider("过滤模式", Kick.FilteredModel);
-			form.addInput("黑名单列表，多个使用;分割", "");
+			form.addInput("黑/白 名单列表，多个使用;分割", "");
 			form.sendPlayer(player);
 			return true;
 		}

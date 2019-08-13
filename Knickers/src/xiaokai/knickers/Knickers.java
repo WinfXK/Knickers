@@ -17,7 +17,8 @@ import xiaokai.tool.Tool;
  * @author Winfxk
  */
 public class Knickers extends PluginBase {
-	private Instant loadTime;
+	private Instant loadTime = Instant.now();
+	private Instant EnableTime;
 	/**
 	 * 插件缓存数据集合
 	 */
@@ -28,14 +29,16 @@ public class Knickers extends PluginBase {
 	 */
 	@Override
 	public void onEnable() {
-		loadTime = Instant.now();
+		EnableTime = Instant.now();
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(new PlayerEvent(kick), this);
 		pm.registerEvents(new Monitor(kick), this);
 		this.getServer().getLogger()
-				.info(Tool.getColorFont(this.getName() + "启动！") + "§6耗时：§9"
-						+ ((float) (Duration.between(loadTime, Instant.now()).toMillis()) / 1000)
-						+ (Tool.getRand(1, 5) == 1 ? "\n" + Tool.getColorFont("本插件完全免费，如果你是给钱了的，那你就可能被坑啦~") : ""));
+				.info(Tool.getColorFont(this.getName() + "启动！") + "§6总耗时:§9"
+						+ ((float) (Duration.between(loadTime, Instant.now()).toMillis())) + "§6ms 启动耗时:§9"
+						+ ((float) (Duration.between(EnableTime, Instant.now()).toMillis())) + "§6ms");
+		if (Tool.getRand(1, 5) == 1)
+			getLogger().info(Tool.getColorFont("本插件完全免费，如果你是给钱了的，那你就可能被坑啦~"));
 	}
 
 	/**

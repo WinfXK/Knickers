@@ -125,7 +125,7 @@ public class AlterButton {
 					Tool.ObjectToInt(map.get("IconType")));
 			form.addInput("请输入图标的路径", map.get("IconPath"));
 			form.addStepSlider("过滤模式", Kick.FilteredModel, Tool.ObjectToInt("FilteredModel"));
-			form.addInput("黑名单列表，多个使用;分割", ListToString(map.get("FilteredPlayer")));
+			form.addInput("黑/白 名单列表，多个使用;分割", ListToString(map.get("FilteredPlayer")));
 			form.sendPlayer(player);
 			return true;
 		}
@@ -163,7 +163,7 @@ public class AlterButton {
 					Tool.ObjectToInt(map.get("IconType")));
 			form.addInput("请输入图标的路径", map.get("IconPath"));
 			form.addStepSlider("过滤模式", Kick.FilteredModel, Tool.ObjectToInt("FilteredModel"));
-			form.addInput("黑名单列表，多个使用;分割", ListToString(map.get("FilteredPlayer")));
+			form.addInput("黑/白 名单列表，多个使用;分割", ListToString(map.get("FilteredPlayer")));
 			form.sendPlayer(player);
 			return true;
 		}
@@ -191,7 +191,7 @@ public class AlterButton {
 					Tool.ObjectToInt(map.get("IconType")));
 			form.addInput("请输入图标的路径", map.get("IconPath"));
 			form.addStepSlider("过滤模式", Kick.FilteredModel, Tool.ObjectToInt("FilteredModel"));
-			form.addInput("黑名单列表，多个使用;分割", ListToString(map.get("FilteredPlayer")));
+			form.addInput("黑/白 名单列表，多个使用;分割", ListToString(map.get("FilteredPlayer")));
 			form.sendPlayer(player);
 			return true;
 		}
@@ -218,7 +218,7 @@ public class AlterButton {
 					Tool.ObjectToInt(map.get("IconType")));
 			form.addInput("请输入图标的路径", map.get("IconPath"));
 			form.addStepSlider("过滤模式", Kick.FilteredModel, Tool.ObjectToInt("FilteredModel"));
-			form.addInput("黑名单列表，多个使用;分割", ListToString(map.get("FilteredPlayer")));
+			form.addInput("黑/白 名单列表，多个使用;分割", ListToString(map.get("FilteredPlayer")));
 			form.sendPlayer(player);
 			return true;
 		}
@@ -245,7 +245,7 @@ public class AlterButton {
 					Tool.ObjectToInt(map.get("IconType")));
 			form.addInput("请输入图标的路径", map.get("IconPath"));
 			form.addStepSlider("过滤模式", Kick.FilteredModel, Tool.ObjectToInt("FilteredModel"));
-			form.addInput("黑名单列表，多个使用;分割", ListToString(map.get("FilteredPlayer")));
+			form.addInput("黑/白 名单列表，多个使用;分割", ListToString(map.get("FilteredPlayer")));
 			form.sendPlayer(player);
 			return true;
 		}

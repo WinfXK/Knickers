@@ -1,14 +1,16 @@
 package xiaokai.knickers.event;
 
+import java.time.Duration;
+import java.time.Instant;
+
 import cn.nukkit.Player;
-import cn.nukkit.Server;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.BlockBreakEvent;
-import cn.nukkit.event.inventory.InventoryMoveItemEvent;
 import cn.nukkit.event.player.PlayerDropItemEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.event.player.PlayerInteractEvent.Action;
+import cn.nukkit.event.player.PlayerItemHeldEvent;
 import cn.nukkit.item.Item;
 import cn.nukkit.event.player.PlayerQuitEvent;
 import cn.nukkit.event.player.PlayerRespawnEvent;
@@ -29,13 +31,41 @@ public class PlayerEvent implements Listener {
 		this.kick = kick;
 	}
 
-//测试中..
-	public void onIMI(InventoryMoveItemEvent e) {
-		Server.getInstance().broadcastMessage("asdasd");
-		Item item = e.getItem();
-		if (e.getAction().equals(cn.nukkit.event.inventory.InventoryMoveItemEvent.Action.DROP)
-				&& Belle.isMaterials(item) && !kick.config.getBoolean("是否允许玩家将快捷工具装箱"))
-			e.setCancelled();
+	/**
+	 * 玩家点击快捷物品栏物品事件事件
+	 * 
+	 * @param e
+	 */
+	@EventHandler
+	public void onClicks(PlayerItemHeldEvent e) {
+		if (!kick.config.getBoolean("快捷工具监听快捷栏双击"))
+			return;
+		Player player = e.getPlayer();
+		MyPlayer myPlayer = Kick.kick.PlayerDataMap.get(player.getName());
+		Item item = player.getInventory().getItemInHand();
+		if (Belle.isMaterials(item)) {
+			if (myPlayer.ClickHeldTime == null || Duration.between(myPlayer.ClickHeldTime, Instant.now())
+					.toMillis() > kick.config.getInt("快捷工具快捷栏双击间隔")) {
+				myPlayer.ClickHeldTime = Instant.now();
+				kick.PlayerDataMap.put(player.getName(), myPlayer);
+				return;
+			}
+			MakeForm.Main(player);
+			if (kick.config.getBoolean("打开撤销"))
+				e.setCancelled();
+			return;
+		} else if (Appliance.isGirl(item)) {
+			if (myPlayer.ClickHeldTime == null || Duration.between(myPlayer.ClickHeldTime, Instant.now())
+					.toMillis() > kick.config.getInt("快捷工具快捷栏双击间隔")) {
+				myPlayer.ClickHeldTime = Instant.now();
+				kick.PlayerDataMap.put(player.getName(), myPlayer);
+				return;
+			}
+			kick.App.start(player, item);
+			if (kick.config.getBoolean("打开撤销"))
+				e.setCancelled();
+			return;
+		}
 	}
 
 	/**
@@ -70,6 +100,8 @@ public class PlayerEvent implements Listener {
 	 */
 	@EventHandler
 	public void onBreak(BlockBreakEvent e) {
+		if (!kick.config.getBoolean("快捷工具监听破坏"))
+			return;
 		Player player = e.getPlayer();
 		Item item = e.getItem();
 		if (Belle.isMaterials(item)) {
@@ -90,6 +122,8 @@ public class PlayerEvent implements Listener {
 	 */
 	@EventHandler
 	public void onClick(PlayerInteractEvent e) {
+		if (!kick.config.getBoolean("快捷工具监听点击"))
+			return;
 		Player player = e.getPlayer();
 		Action ac = e.getAction();
 		Item item = e.getItem();

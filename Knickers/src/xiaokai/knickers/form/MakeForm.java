@@ -127,6 +127,10 @@ public class MakeForm {
 		form.addSlider("OP命令延时撤销\n\n这个值决定了命令型按钮在使用“玩家OP权限”执行命令后多久撤销玩家OP，建议值在500到1500之间", 50, 5000, 5,
 				Tool.ObjectToInt(config.get("OP命令延时撤销"), 1000));
 		form.addToggle("折叠更多设置", config.getBoolean("折叠更多设置"));
+		form.addToggle("快捷工具监听点击", config.getBoolean("快捷工具监听点击"));
+		form.addToggle("快捷工具监听破坏", config.getBoolean("快捷工具监听破坏"));
+		form.addToggle("快捷工具监听快捷栏双击", config.getBoolean("快捷工具监听快捷栏双击"));
+		form.addInput("快捷工具快捷栏双击间隔", config.get("快捷工具快捷栏双击间隔"));
 		form.sendPlayer(player);
 		return true;
 	}
