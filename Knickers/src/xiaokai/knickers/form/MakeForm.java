@@ -1,5 +1,14 @@
 package xiaokai.knickers.form;
 
+import xiaokai.knickers.form.man.AlterButton;
+import xiaokai.knickers.mtp.Kick;
+import xiaokai.knickers.mtp.Message;
+import xiaokai.knickers.mtp.MyPlayer;
+import xiaokai.knickers.tool.CustomForm;
+import xiaokai.knickers.tool.ModalForm;
+import xiaokai.knickers.tool.SimpleForm;
+import xiaokai.knickers.tool.Tool;
+
 import java.io.File;
 import java.time.Duration;
 import java.time.Instant;
@@ -10,18 +19,10 @@ import java.util.Map;
 
 import cn.nukkit.Player;
 import cn.nukkit.utils.Config;
-import xiaokai.knickers.form.man.AlterButton;
-import xiaokai.knickers.mtp.Kick;
-import xiaokai.knickers.mtp.Message;
-import xiaokai.knickers.mtp.MyPlayer;
-import xiaokai.tool.CustomForm;
-import xiaokai.tool.ModalForm;
-import xiaokai.tool.SimpleForm;
-import xiaokai.tool.Tool;
 
 /**
  * @author Winfxk
- */
+ */ 
 @SuppressWarnings("unchecked")
 public class MakeForm {
 	/**
@@ -40,10 +41,10 @@ public class MakeForm {
 		Config config = new Config(file, Config.YAML);
 		SimpleForm form = new SimpleForm(kick.formID.getID(25), kick.Message.getText(config.getString("Title", ""),
 				new String[] { "{Player}" }, new Object[] { player.getName() }));
-		List<String> kis = new ArrayList<String>();
+		List<String> kis = new ArrayList<>();
 		Map<String, Object> Buttons = ((config.get("Buttons") instanceof Map) && config.get("Buttons") != null)
 				? (HashMap<String, Object>) config.get("Buttons")
-				: new HashMap<String, Object>();
+				: new HashMap<>();
 		kis.add("add");
 		form.addButton(Tool.getRandColor() + "添加按钮");
 		if (Buttons.size() > 0) {
@@ -172,7 +173,7 @@ public class MakeForm {
 		Object obj = config.get("FilteredPlayer");
 		Kick kick = Kick.kick;
 		Message msg = kick.Message;
-		List<String> Players = obj != null && (obj instanceof List) ? (ArrayList<String>) obj : new ArrayList<String>();
+		List<String> Players = obj != null && (obj instanceof List) ? (ArrayList<String>) obj : new ArrayList<>();
 		if ((config.getInt("FilteredModel") == 1 && Players.contains(player.getName()))
 				|| (config.getInt("FilteredModel") == 2 && !Players.contains(player.getName()))) {
 			return MakeForm.Tip(player,
@@ -181,7 +182,7 @@ public class MakeForm {
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		if (isBack)
 			myPlayer.OpenMenuList.add(file);
-		List<Map<String, Object>> Items = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> Items = new ArrayList<>();
 		int ID = isMain ? kick.formID.getID(0) : getID(myPlayer);
 		SimpleForm form = new SimpleForm(ID,
 				msg.getText(config.getString("Title", ""), new String[] { "{Player}" },
@@ -190,11 +191,11 @@ public class MakeForm {
 						new Object[] { player.getName() }));
 		Map<String, Object> Buttons = ((config.get("Buttons") instanceof Map) && config.get("Buttons") != null)
 				? (HashMap<String, Object>) config.get("Buttons")
-				: new HashMap<String, Object>();
+				: new HashMap<>();
 		for (String ike : Buttons.keySet()) {
 			Map<String, Object> Item = ((Buttons.get(ike) instanceof Map) && Buttons.get(ike) != null)
 					? (HashMap<String, Object>) Buttons.get(ike)
-					: new HashMap<String, Object>();
+					: new HashMap<>();
 			if (Item.size() > 0) {
 				String Path = (String) Item.get("IconPath");
 				form.addButton(
@@ -205,21 +206,25 @@ public class MakeForm {
 				Items.add(Item);
 			}
 		}
-		List<String> kis = new ArrayList<String>();
+		List<String> kis = new ArrayList<>();
 		boolean isShow = true;
 		if (isShow = (form.getButtonSize() < 1))
 			form.setContent(form.getContent() + (form.getContent() != null && !form.getContent().isEmpty() ? "\n" : "")
 					+ msg.getMessage("没有按钮时提示", new String[] { "{Player}" }, new Object[] { player.getName() }));
-		if (myPlayer.OpenMenuList == null || myPlayer.OpenMenuList.size() < 1 || isMain
-				|| file.getAbsolutePath()
-						.equals(new File(kick.mis.getDataFolder(), kick.MainFileName).getAbsolutePath())
-				|| (myPlayer.BackFile != null && file.getAbsolutePath().equals(myPlayer.BackFile.getAbsolutePath()))) {
-			form.addButton(msg.getSon("界面", "取消按钮", new String[] { "{Player}" }, new Object[] { player.getName() }));
-			kis.add("quit");
-		} else {
-			form.addButton(msg.getSon("界面", "返回上级", new String[] { "{Player}" }, new Object[] { player.getName() }));
-			kis.add("back");
-		}
+		if (!isMain)
+			if (myPlayer.OpenMenuList == null || myPlayer.OpenMenuList.size() < 1
+					|| file.getAbsolutePath()
+							.equals(new File(kick.mis.getDataFolder(), kick.MainFileName).getAbsolutePath())
+					|| (myPlayer.BackFile != null
+							&& file.getAbsolutePath().equals(myPlayer.BackFile.getAbsolutePath()))) {
+				form.addButton(
+						msg.getSon("界面", "取消按钮", new String[] { "{Player}" }, new Object[] { player.getName() }));
+				kis.add("quit");
+			} else {
+				form.addButton(
+						msg.getSon("界面", "返回上级", new String[] { "{Player}" }, new Object[] { player.getName() }));
+				kis.add("back");
+			}
 		if (Kick.isAdmin(player)) {
 			if (!kick.config.getBoolean("折叠更多设置")) {
 				kis.add("add");
@@ -262,7 +267,7 @@ public class MakeForm {
 			myPlayer.loadTime = Instant.now();
 		else
 			return false;
-		myPlayer.OpenMenuList = new ArrayList<File>();
+		myPlayer.OpenMenuList = new ArrayList<>();
 		kick.PlayerDataMap.put(player.getName(), myPlayer);
 		return OpenMenu(player, new File(kick.mis.getDataFolder(), kick.MainFileName), true, true);
 	}

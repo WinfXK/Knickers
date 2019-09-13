@@ -1,4 +1,4 @@
-package xiaokai.tool;
+package xiaokai.knickers.tool;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +26,7 @@ public enum ItemIDSunName {
 	 */
 	STONE_DIORITE("闪长岩", 1, 3, "textures/blocks/stone_diorite.png"),
 	/**
-	 * 磨制闪长岩
+	 * 磨制闪长岩 
 	 */
 	STONE_DIORITE_SMOOTH("磨制闪长岩", 1, 4, "textures/blocks/stone_diorite_smooth.png"),
 	/**
@@ -1953,7 +1953,7 @@ public enum ItemIDSunName {
 	private static final ArrayList<HashMap<String, Object>> All = new ArrayList<>();
 	static {
 		for (ItemIDSunName item : ItemIDSunName.values()) {
-			HashMap<String, Object> map = new HashMap<String, Object>();
+			HashMap<String, Object> map = new HashMap<>();
 			map.put("ID", item.ID);
 			map.put("Damage", item.Damage);
 			map.put("Path", item.Path);

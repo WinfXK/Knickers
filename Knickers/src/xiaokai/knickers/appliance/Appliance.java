@@ -1,5 +1,12 @@
 package xiaokai.knickers.appliance;
 
+import xiaokai.knickers.form.MakeForm;
+import xiaokai.knickers.mtp.Kick;
+import xiaokai.knickers.mtp.Message;
+import xiaokai.knickers.mtp.MyPlayer;
+import xiaokai.knickers.tool.EnchantName;
+import xiaokai.knickers.tool.Tool;
+
 import java.io.File;
 import java.time.Duration;
 import java.time.Instant;
@@ -10,21 +17,15 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.Yaml;
-
 import cn.nukkit.Player;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.enchantment.Enchantment;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.ConfigSection;
-import xiaokai.knickers.form.MakeForm;
-import xiaokai.knickers.mtp.Kick;
-import xiaokai.knickers.mtp.Message;
-import xiaokai.knickers.mtp.MyPlayer;
-import xiaokai.tool.EnchantName;
-import xiaokai.tool.Tool;
+
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Yaml;
 
 /**
  * @author Winfxk
@@ -95,7 +96,7 @@ public class Appliance {
 	 * 初始化自定义工具的配置文件对象和数据对象
 	 */
 	public static void enclose() {
-		FormList = new LinkedHashMap<String, Map<String, Object>>();
+		FormList = new LinkedHashMap<>();
 		config = new Config(new File(kick.mis.getDataFolder(), kick.ApplianceName), Config.YAML);
 		Map<String, Object> map = config.getAll();
 		for (String ike : map.keySet())
@@ -184,7 +185,7 @@ public class Appliance {
 	public static Map<String, Object> getData(Item item) {
 		if (!isGirl(item))
 			return null;
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		String Error;
 		CompoundTag Nbt = item.getNamedTag();
 		String ID = String.valueOf(item.getId());
@@ -213,7 +214,7 @@ public class Appliance {
 			}
 		}
 		if (map == null) {
-			map = new HashMap<String, Object>();
+			map = new HashMap<>();
 			map.put("OK", false);
 			map.put("Error", Error);
 		} else
@@ -265,15 +266,15 @@ public class Appliance {
 	 * @return
 	 */
 	public static boolean isRepetition(Player player, String Key) {
-		Map<String, Object> map = config.get(Key) == null ? new HashMap<String, Object>()
+		Map<String, Object> map = config.get(Key) == null ? new HashMap<>()
 				: (config.get(Key) instanceof Map) ? (HashMap<String, Object>) config.get(Key)
-						: new HashMap<String, Object>();
+						: new HashMap<>();
 		if (map.size() < 1)
 			return false;
 		List<String> list = map.get("Players") != null
 				? (map.get("Players") instanceof List) ? (ArrayList<String>) map.get("Players")
-						: new ArrayList<String>()
-				: new ArrayList<String>();
+						: new ArrayList<>()
+				: new ArrayList<>();
 		return list.contains(player.getName());
 	}
 }

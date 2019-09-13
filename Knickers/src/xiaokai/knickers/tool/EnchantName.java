@@ -1,4 +1,4 @@
-package xiaokai.tool;
+package xiaokai.knickers.tool;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -23,7 +23,7 @@ public enum EnchantName {
 	 */
 	PROTECTION_FALL("摔落保护", 2),
 	/**
-	 * 爆炸保护
+	 * 爆炸保护 
 	 */
 	BLAST_PROTECTION("爆炸保护", 3),
 	/**
@@ -156,10 +156,10 @@ public enum EnchantName {
 	QUICK_CHARGE("快速装填", 35);
 	private String Name;
 	private int ID;
-	private static final LinkedHashMap<String, Integer> NameKey = new LinkedHashMap<String, Integer>();
-	private static final LinkedHashMap<Integer, String> IDKey = new LinkedHashMap<Integer, String>();
-	private static final LinkedHashMap<Integer, EnchantName> ItemKey = new LinkedHashMap<Integer, EnchantName>();
-	private static final List<EnchantName> All = new ArrayList<EnchantName>();
+	private static final LinkedHashMap<String, Integer> NameKey = new LinkedHashMap<>();
+	private static final LinkedHashMap<Integer, String> IDKey = new LinkedHashMap<>();
+	private static final LinkedHashMap<Integer, EnchantName> ItemKey = new LinkedHashMap<>();
+	private static final List<EnchantName> All = new ArrayList<>();
 	static {
 		for (EnchantName item : EnchantName.values()) {
 			IDKey.put(item.getID(), item.getName());

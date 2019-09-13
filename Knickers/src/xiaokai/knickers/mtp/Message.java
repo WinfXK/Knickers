@@ -6,7 +6,7 @@ import java.util.Map;
 
 import cn.nukkit.utils.Config;
 import xiaokai.knickers.Knickers;
-import xiaokai.tool.Tool;
+import xiaokai.knickers.tool.Tool;
 
 /**
  * @author Winfxk

@@ -1,11 +1,20 @@
 package xiaokai.knickers.form.man;
 
+import xiaokai.knickers.form.MakeForm;
+import xiaokai.knickers.mtp.Kick;
+import xiaokai.knickers.mtp.MyPlayer;
+import xiaokai.knickers.tool.CustomForm;
+import xiaokai.knickers.tool.ItemIDSunName;
+import xiaokai.knickers.tool.SimpleForm;
+import xiaokai.knickers.tool.Tool;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.form.response.FormResponseCustom;
@@ -14,19 +23,14 @@ import cn.nukkit.item.Item;
 import cn.nukkit.level.Level;
 import cn.nukkit.plugin.Plugin;
 import cn.nukkit.utils.Config;
-import xiaokai.knickers.form.MakeForm;
-import xiaokai.knickers.mtp.Kick;
-import xiaokai.knickers.mtp.MyPlayer;
-import xiaokai.tool.CustomForm;
-import xiaokai.tool.ItemIDSunName;
-import xiaokai.tool.SimpleForm;
-import xiaokai.tool.Tool;
 
 /**
  * @author Winfxk
  */
 @SuppressWarnings("unchecked")
 public class AddButton {
+	public static final String[] LevelLL = { "无", "黑名单", "白名单" };
+
 	/**
 	 * 添加按钮的时候提示要创建那种按钮的界面
 	 * 
@@ -67,20 +71,23 @@ public class AddButton {
 		/**
 		 * 给菜单添加按钮
 		 * 
-		 * @param Key            按钮的Key
-		 * @param player         添加按钮的玩家对象
-		 * @param file           要添加按钮的配置文件对象
-		 * @param ButtonText     按钮的文本内容
-		 * @param Command        点击按钮后会执行的命令内容
-		 * @param Money          点击后会扣除的金币数量
-		 * @param IconType       按钮的图标类型
-		 * @param IconPath       按钮的贴图路径
-		 * @param FilteredModel  过滤玩家的模式
-		 * @param FilteredPlayer 过滤的玩家列表
-		 * @param isAlter        是修改还是创建
+		 * @param Key                按钮的Key
+		 * @param player             添加按钮的玩家对象
+		 * @param file               要添加按钮的配置文件对象
+		 * @param ButtonText         按钮的文本内容
+		 * @param Command            点击按钮后会执行的命令内容
+		 * @param Money              点击后会扣除的金币数量
+		 * @param IconType           按钮的图标类型
+		 * @param IconPath           按钮的贴图路径
+		 * @param FilteredModel      过滤玩家的模式
+		 * @param FilteredPlayer     过滤的玩家列表
+		 * @param isAlter            是修改还是创建
+		 * @param LevelFilteredModel 地图的过滤方式
+		 * @param LevelList          过滤列表
 		 */
 		public Add(String Key, Player player, File file, String ButtonText, String Command, double Money, int IconType,
-				String IconPath, int FilteredModel, List<String> FilteredPlayer, boolean isAlter) {
+				String IconPath, int FilteredModel, List<String> FilteredPlayer, boolean isAlter,
+				int LevelFilteredModel, List<String> LevelList) {
 			this.player = player;
 			this.config = new Config(file, Config.YAML);
 			Command = Command == null ? "" : Command;
@@ -88,9 +95,8 @@ public class AddButton {
 			IconPath = (IconType != 1 && IconType != 2) ? null
 					: ((IconPath == null || IconPath.isEmpty() || IconPath.equals("null")) ? null : IconPath);
 			Money = Money < 0 ? 0 : Money;
-			map = new HashMap<String, Object>();
-			Buttons = (config.get("Buttons") == null || !(config.get("Buttons") instanceof Map))
-					? new HashMap<String, Object>()
+			map = new HashMap<>();
+			Buttons = (config.get("Buttons") == null || !(config.get("Buttons") instanceof Map)) ? new HashMap<>()
 					: (HashMap<String, Object>) config.get("Buttons");
 			map.put("Text", ButtonText.contains("\n") ? ButtonText.replace("\n", "{n}") : ButtonText);
 			map.put("Command", Command.contains("\n") ? Command.replace("\n", "{n}") : Command);
@@ -100,6 +106,8 @@ public class AddButton {
 			map.put("FilteredModel", FilteredModel);
 			map.put("FilteredPlayer", FilteredPlayer);
 			map.put("Key", Key == null || Key.isEmpty() ? getKey(1) : Key);
+			map.put("LevelFilteredModel", LevelFilteredModel);
+			map.put("LevelList", LevelList);
 			this.isAlter = isAlter;
 			if (isAlter) {
 				map.put("AlterTime", Tool.getDate() + " " + Tool.getTime());
@@ -113,18 +121,21 @@ public class AddButton {
 		/**
 		 * 给菜单添加按钮
 		 * 
-		 * @param player         添加按钮的玩家对象
-		 * @param file           要添加按钮的配置文件对象
-		 * @param ButtonText     按钮的文本内容
-		 * @param Command        点击按钮后会执行的命令内容
-		 * @param Money          点击后会扣除的金币数量
-		 * @param IconType       按钮的图标类型
-		 * @param IconPath       按钮的贴图路径
-		 * @param FilteredModel  过滤玩家的模式
-		 * @param FilteredPlayer 过滤的玩家列表
+		 * @param player             添加按钮的玩家对象
+		 * @param file               要添加按钮的配置文件对象
+		 * @param ButtonText         按钮的文本内容
+		 * @param Command            点击按钮后会执行的命令内容
+		 * @param Money              点击后会扣除的金币数量
+		 * @param IconType           按钮的图标类型
+		 * @param IconPath           按钮的贴图路径
+		 * @param FilteredModel      过滤玩家的模式
+		 * @param FilteredPlayer     过滤的玩家列表
+		 * @param LevelFilteredModel 地图的过滤方式
+		 * @param LevelList          过滤列表
 		 */
 		public Add(Player player, File file, String ButtonText, String Command, double Money, int IconType,
-				String IconPath, int FilteredModel, List<String> FilteredPlayer, boolean isAlter) {
+				String IconPath, int FilteredModel, List<String> FilteredPlayer, boolean isAlter,
+				int LevelFilteredModel, List<String> LevelList) {
 			this.player = player;
 			this.config = new Config(file, Config.YAML);
 			Command = Command == null ? "" : Command;
@@ -132,15 +143,16 @@ public class AddButton {
 			IconPath = (IconType != 1 && IconType != 2) ? null
 					: ((IconPath == null || IconPath.isEmpty()) ? null : IconPath);
 			Money = Money < 0 ? 0 : Money;
-			map = new HashMap<String, Object>();
-			Buttons = (config.get("Buttons") == null || !(config.get("Buttons") instanceof Map))
-					? new HashMap<String, Object>()
+			map = new HashMap<>();
+			Buttons = (config.get("Buttons") == null || !(config.get("Buttons") instanceof Map)) ? new HashMap<>()
 					: (HashMap<String, Object>) config.get("Buttons");
 			map.put("Text", ButtonText.contains("\n") ? ButtonText.replace("\n", "{n}") : ButtonText);
 			map.put("Command", Command.contains("\n") ? Command.replace("\n", "{n}") : Command);
 			map.put("Money", Money);
 			map.put("IconType", IconType);
 			map.put("IconPath", IconPath != null ? ItemIDSunName.UnknownToPath(IconPath) : IconPath);
+			map.put("LevelFilteredModel", LevelFilteredModel);
+			map.put("LevelList", LevelList);
 			if (isAlter) {
 				map.put("AlterTime", Tool.getDate() + " " + Tool.getTime());
 				map.put("AlterPlayer", player.getName());
@@ -260,8 +272,8 @@ public class AddButton {
 					: new String[] { Hint };
 			playerType = (playerType.toLowerCase().equals("console") ? "Console"
 					: (playerType.toLowerCase().equals("playerbyop") ? "PlayerByOp" : "Player"));
-			List<String> msgList = new ArrayList<String>();
-			List<String> hintMsg = new ArrayList<String>();
+			List<String> msgList = new ArrayList<>();
+			List<String> hintMsg = new ArrayList<>();
 			for (String Mag : msgLists)
 				if (Mag != null && !Mag.isEmpty())
 					msgList.add(Mag.contains("\n") ? Mag.replace("\n", "{n}") : Mag);
@@ -288,7 +300,7 @@ public class AddButton {
 			File file = new File(new File(Kick.kick.mis.getDataFolder(), Kick.MenuConfigPath), ConfigName);
 			if (!file.exists()) {
 				Config config = new Config(file, Config.YAML);
-				LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
+				LinkedHashMap<String, Object> map = new LinkedHashMap<>();
 				Title = Title == null ? ButtonText : Title;
 				Content = Content == null ? ButtonText : Content;
 				map.put("Title", Title.contains("\n") ? Title.replace("\n", "{n}") : Title);
@@ -381,7 +393,20 @@ public class AddButton {
 			return (new AddButton.Add(player, my.CacheFile, ButtonText, data.getInputResponse(5), Money,
 					data.getStepSliderResponse(7).getElementID(), data.getInputResponse(8),
 					data.getStepSliderResponse(9).getElementID(), getPlayers(data.getInputResponse(10)),
-					Kick.kick.PlayerDataMap.get(player.getName()).isAlter)).addOpen(Title, Content, ConfigName);
+					Kick.kick.PlayerDataMap.get(player.getName()).isAlter,
+					data.getStepSliderResponse(11).getElementID(), getLevelList(data.getInputResponse(12)))
+							.addOpen(Title, Content, ConfigName));
+		}
+
+		private List<String> getLevelList(String string) {
+			List<String> list = new ArrayList<>();
+			if (string != null && !string.isEmpty()) {
+				String[] strings = string.split(";");
+				for (String s : strings)
+					if (s != null && !s.isEmpty())
+						list.add(s);
+			}
+			return list;
 		}
 
 		/**
@@ -403,8 +428,9 @@ public class AddButton {
 			return (new AddButton.Add(player, my.CacheFile, ButtonText, Cmd, Money,
 					data.getStepSliderResponse(6).getElementID(), data.getInputResponse(7),
 					data.getStepSliderResponse(8).getElementID(), getPlayers(data.getInputResponse(9)),
-					Kick.kick.PlayerDataMap.get(player.getName()).isAlter)).addCommand(data.getInputResponse(2),
-							data.getInputResponse(3), PlayerType);
+					Kick.kick.PlayerDataMap.get(player.getName()).isAlter,
+					data.getStepSliderResponse(10).getElementID(), getLevelList(data.getInputResponse(11))))
+							.addCommand(data.getInputResponse(2), data.getInputResponse(3), PlayerType);
 		}
 
 		/**
@@ -434,7 +460,8 @@ public class AddButton {
 			return (new AddButton.Add(player, my.CacheFile, ButtonText, data.getInputResponse(5), Money,
 					data.getStepSliderResponse(7).getElementID(), data.getInputResponse(8),
 					data.getStepSliderResponse(9).getElementID(), getPlayers(data.getInputResponse(10)),
-					Kick.kick.PlayerDataMap.get(player.getName()).isAlter))
+					Kick.kick.PlayerDataMap.get(player.getName()).isAlter,
+					data.getStepSliderResponse(11).getElementID(), getLevelList(data.getInputResponse(12))))
 							.addTransfer(data.getDropdownResponse(1).getElementContent(), x, y, z);
 		}
 
@@ -449,11 +476,13 @@ public class AddButton {
 			if (!Tool.isInteger(s))
 				return MakeForm.Tip(player, "§4扣除的费用数必须为大于零的纯数字！");
 			double Money = Double.valueOf(s);
-			return (new AddButton.Add(player, my.CacheFile, ButtonText, data.getInputResponse(4), Money,
+			return new AddButton.Add(player, my.CacheFile, ButtonText, data.getInputResponse(4), Money,
 					data.getStepSliderResponse(6).getElementID(), data.getInputResponse(7),
 					data.getStepSliderResponse(8).getElementID(), getPlayers(data.getInputResponse(9)),
-					Kick.kick.PlayerDataMap.get(player.getName()).isAlter)).addTeleport(data.getInputResponse(1),
-							data.getInputResponse(2), data.getStepSliderResponse(3).getElementID() == 1);
+					Kick.kick.PlayerDataMap.get(player.getName()).isAlter,
+					data.getStepSliderResponse(10).getElementID(), getLevelList(data.getInputResponse(11))).addTeleport(
+							data.getInputResponse(1), data.getInputResponse(2),
+							data.getStepSliderResponse(3).getElementID() == 1);
 		}
 
 		/**
@@ -470,8 +499,10 @@ public class AddButton {
 			return (new AddButton.Add(player, my.CacheFile, ButtonText, data.getInputResponse(3), Money,
 					data.getStepSliderResponse(6).getElementID(), data.getInputResponse(7),
 					data.getStepSliderResponse(8).getElementID(), getPlayers(data.getInputResponse(9)),
-					Kick.kick.PlayerDataMap.get(player.getName()).isAlter)).addTip(data.getInputResponse(1),
-							data.getInputResponse(2), data.getDropdownResponse(4).getElementContent());
+					Kick.kick.PlayerDataMap.get(player.getName()).isAlter,
+					data.getStepSliderResponse(10).getElementID(), getLevelList(data.getInputResponse(11)))).addTip(
+							data.getInputResponse(1), data.getInputResponse(2),
+							data.getDropdownResponse(4).getElementContent());
 		}
 
 		/**
@@ -481,7 +512,7 @@ public class AddButton {
 		 * @return
 		 */
 		public static List<String> getPlayers(String string) {
-			List<String> list = new ArrayList<String>();
+			List<String> list = new ArrayList<>();
 			if (string == null || string.isEmpty())
 				return list;
 			if (string.contains(";")) {
@@ -561,6 +592,8 @@ public class AddButton {
 			form.addInput("请输入图标的路径", getHandItemID(player));
 			form.addStepSlider("过滤模式", Kick.FilteredModel);
 			form.addInput("黑/白 名单列表，多个使用;分割", "");
+			form.addStepSlider("世界过滤选项", LevelLL, 0);
+			form.addInput("请输入过滤世界名，多个使用;分割", "");
 			form.sendPlayer(player);
 			return true;
 		}
@@ -575,7 +608,7 @@ public class AddButton {
 				return MakeForm.Tip(player, kick.Message.getMessage("权限不足"));
 			CustomForm form = new CustomForm(kick.formID.getID(2), kick.Message.getText(config.getString("Title"),
 					new String[] { "{Player}" }, new Object[] { player.getName() }));
-			List<String> list = new ArrayList<String>();
+			List<String> list = new ArrayList<>();
 			int i = 0;
 			boolean isSB = false;
 			Map<Integer, Level> as = Server.getInstance().getLevels();
@@ -598,6 +631,8 @@ public class AddButton {
 			form.addInput("请输入图标的路径", getHandItemID(player));
 			form.addStepSlider("过滤模式", Kick.FilteredModel);
 			form.addInput("黑/白 名单列表，多个使用;分割", "");
+			form.addStepSlider("世界过滤选项", LevelLL, 0);
+			form.addInput("请输入过滤世界名，多个使用;分割", "");
 			form.sendPlayer(player);
 			return true;
 		}
@@ -622,6 +657,8 @@ public class AddButton {
 			form.addInput("请输入图标的路径", getHandItemID(player));
 			form.addStepSlider("过滤模式", Kick.FilteredModel);
 			form.addInput("黑/白 名单列表，多个使用;分割", "");
+			form.addStepSlider("世界过滤选项", LevelLL, 0);
+			form.addInput("请输入过滤世界名，多个使用;分割", "");
 			form.sendPlayer(player);
 			return true;
 		}
@@ -648,6 +685,8 @@ public class AddButton {
 			form.addInput("请输入图标的路径", getHandItemID(player));
 			form.addStepSlider("过滤模式", Kick.FilteredModel);
 			form.addInput("黑/白 名单列表，多个使用;分割", "");
+			form.addStepSlider("世界过滤选项", LevelLL, 0);
+			form.addInput("请输入过滤世界名，多个使用;分割", "");
 			form.sendPlayer(player);
 			return true;
 		}
@@ -674,6 +713,8 @@ public class AddButton {
 			form.addInput("请输入图标的路径", getHandItemID(player));
 			form.addStepSlider("过滤模式", Kick.FilteredModel);
 			form.addInput("黑/白 名单列表，多个使用;分割", "");
+			form.addStepSlider("世界过滤选项", LevelLL, 0);
+			form.addInput("请输入过滤世界名，多个使用;分割", "");
 			form.sendPlayer(player);
 			return true;
 		}

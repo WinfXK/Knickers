@@ -1,5 +1,10 @@
 package xiaokai.knickers;
 
+import xiaokai.knickers.appliance.EstablishForm;
+import xiaokai.knickers.form.MakeForm;
+import xiaokai.knickers.mtp.Belle;
+import xiaokai.knickers.mtp.Kick;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,15 +12,10 @@ import java.util.List;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
-import xiaokai.knickers.appliance.EstablishForm;
-import xiaokai.knickers.form.MakeForm;
-import xiaokai.knickers.mtp.Belle;
-import xiaokai.knickers.mtp.Kick;
 
 /**
  * @author Winfxk
  */
-@SuppressWarnings("unchecked")
 public class toCommand {
 	private Kick kick;
 
@@ -35,6 +35,7 @@ public class toCommand {
 		default:
 			if (player.isPlayer()) {
 				new Thread() {
+					@Override
 					public void run() {
 						Belle.exMaterials((Player) player);
 					}
@@ -68,7 +69,7 @@ public class toCommand {
 					player.sendMessage("§4请输入想要添加或删除管理员的玩家名称！");
 					return true;
 				}
-				List<Object> list = kick.config.getList("白名单") == null ? new ArrayList<Object>()
+				List<Object> list = kick.config.getList("白名单") == null ? new ArrayList<>()
 						: kick.config.getList("白名单");
 				if (list.contains(args[1])) {
 					for (int i = 0; i < list.size(); i++)

@@ -1,5 +1,12 @@
 package xiaokai.knickers.event;
 
+import xiaokai.knickers.appliance.Appliance;
+import xiaokai.knickers.form.MakeForm;
+import xiaokai.knickers.mtp.Belle;
+import xiaokai.knickers.mtp.Kick;
+import xiaokai.knickers.mtp.MyPlayer;
+import xiaokai.knickers.tool.ItemIDSunName;
+
 import java.time.Duration;
 import java.time.Instant;
 
@@ -11,19 +18,13 @@ import cn.nukkit.event.player.PlayerDropItemEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
 import cn.nukkit.event.player.PlayerInteractEvent.Action;
 import cn.nukkit.event.player.PlayerItemHeldEvent;
-import cn.nukkit.item.Item;
 import cn.nukkit.event.player.PlayerQuitEvent;
 import cn.nukkit.event.player.PlayerRespawnEvent;
-import xiaokai.knickers.appliance.Appliance;
-import xiaokai.knickers.form.MakeForm;
-import xiaokai.knickers.mtp.Belle;
-import xiaokai.knickers.mtp.Kick;
-import xiaokai.knickers.mtp.MyPlayer;
-import xiaokai.tool.ItemIDSunName;
+import cn.nukkit.item.Item;
 
 /**
  * @author Winfxk
- */
+ */ 
 public class PlayerEvent implements Listener {
 	private Kick kick;
 
@@ -164,6 +165,7 @@ public class PlayerEvent implements Listener {
 		if (!kick.PlayerDataMap.containsKey(player.getName()))
 			kick.PlayerDataMap.put(player.getName(), new MyPlayer(player));
 		new Thread() {
+			@Override
 			public void run() {
 				Belle.exMaterials(player);
 			}

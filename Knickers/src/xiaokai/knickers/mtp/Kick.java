@@ -1,5 +1,12 @@
 package xiaokai.knickers.mtp;
 
+import xiaokai.knickers.Knickers;
+import xiaokai.knickers.toCommand;
+import xiaokai.knickers.appliance.Appliance;
+import xiaokai.knickers.tool.ItemIDSunName;
+import xiaokai.knickers.tool.Tool;
+import xiaokai.knickers.tool.Update;
+
 import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -10,16 +17,10 @@ import cn.nukkit.Server;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.item.Item;
 import cn.nukkit.utils.Config;
-import xiaokai.knickers.Knickers;
-import xiaokai.knickers.toCommand;
-import xiaokai.knickers.appliance.Appliance;
-import xiaokai.tool.ItemIDSunName;
-import xiaokai.tool.Tool;
-import xiaokai.tool.Update;
 
 /**
  * @author Winfxk
- */
+ */ 
 @SuppressWarnings("unchecked")
 public class Kick {
 	public static Kick kick;
@@ -72,7 +73,7 @@ public class Kick {
 	/**
 	 * 玩家数据库
 	 */
-	public LinkedHashMap<String, MyPlayer> PlayerDataMap = new LinkedHashMap<String, MyPlayer>();
+	public LinkedHashMap<String, MyPlayer> PlayerDataMap = new LinkedHashMap<>();
 	/**
 	 * 要检查默认设置的配置文件
 	 */
@@ -170,7 +171,7 @@ public class Kick {
 				try {
 					sleep(1000);
 					if (config.getBoolean("检测更新") && Update-- < 0) {
-						(new Update(mis)).start(config.getBoolean("自动下载新版"));
+						(new Update(mis)).start();
 						Update = Tool.ObjectToInt(config.get("检测更新间隔"), 500);
 					}
 					if (time-- < 0 && config.getBoolean("定时检查快捷工具")) {

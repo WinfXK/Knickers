@@ -1,5 +1,12 @@
 package xiaokai.knickers.appliance;
 
+import xiaokai.knickers.form.MakeForm;
+import xiaokai.knickers.form.OpenButton;
+import xiaokai.knickers.mtp.Kick;
+import xiaokai.knickers.mtp.MyPlayer;
+import xiaokai.knickers.tool.ItemIDSunName;
+import xiaokai.knickers.tool.Tool;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,16 +19,10 @@ import cn.nukkit.form.response.FormResponseSimple;
 import cn.nukkit.inventory.PlayerInventory;
 import cn.nukkit.item.Item;
 import cn.nukkit.utils.Config;
-import xiaokai.knickers.form.MakeForm;
-import xiaokai.knickers.form.OpenButton;
-import xiaokai.knickers.mtp.Kick;
-import xiaokai.knickers.mtp.MyPlayer;
-import xiaokai.tool.ItemIDSunName;
-import xiaokai.tool.Tool;
 
 /**
  * @author Winfxk
- */
+ */ 
 @SuppressWarnings("unchecked")
 public class Handle {
 	private static Kick kick = Kick.kick;
@@ -101,7 +102,7 @@ public class Handle {
 			inventory.addItem(item);
 			List<String> list = (myPlayer.Item.get("Players") != null && (myPlayer.Item.get("Players") instanceof List))
 					? (ArrayList<String>) myPlayer.Item.get("Players")
-					: new ArrayList<String>();
+					: new ArrayList<>();
 			if (!list.contains(player.getName()))
 				list.add(player.getName());
 			myPlayer.Item.put("Players", list);
@@ -133,7 +134,7 @@ public class Handle {
 					List<String> list = (myPlayer.Item.get("Players") != null
 							&& (myPlayer.Item.get("Players") instanceof List))
 									? (ArrayList<String>) myPlayer.Item.get("Players")
-									: new ArrayList<String>();
+									: new ArrayList<>();
 					if (!list.contains(player.getName()))
 						list.add(player.getName());
 					myPlayer.Item.put("Players", list);
@@ -253,7 +254,7 @@ public class Handle {
 		Config config = new Config(file, Config.YAML);
 		Map<String, Object> Buttons = (config.get("Buttons") != null && (config.get("Buttons") instanceof Map))
 				? (HashMap<String, Object>) config.get("Buttons")
-				: new HashMap<String, Object>();
+				: new HashMap<>();
 		if (Buttons.size() < 1)
 			return MakeForm.Tip(player, kick.Message.getSon("快捷工具", "自定义工具打开失败提示",
 					new String[] { "{Player}", "{Error}" }, new Object[] { player.getName(), "打开的界面不存在任何按钮！" }));
@@ -295,7 +296,7 @@ public class Handle {
 		 */
 		public static class Dis {
 			private Player player;
-			private Map<String, Object> Item = new HashMap<String, Object>();
+			private Map<String, Object> Item = new HashMap<>();
 
 			/**
 			 * 添加一个自定义快捷工具工具
@@ -427,7 +428,7 @@ public class Handle {
 			boolean isWrite = data.getToggleResponse(8);
 			boolean isRepetition = data.getToggleResponse(9);
 			boolean isAlready = data.getToggleResponse(10);
-			List<String> list = new ArrayList<String>();
+			List<String> list = new ArrayList<>();
 			if (ToolEnchantString != null && !ToolEnchantString.isEmpty())
 				if (ToolEnchantString.contains(";"))
 					for (String string : ToolEnchantString.split(";"))
@@ -460,7 +461,7 @@ public class Handle {
 			boolean isWrite = data.getToggleResponse(8);
 			boolean isRepetition = data.getToggleResponse(9);
 			boolean isAlready = data.getToggleResponse(10);
-			List<String> list = new ArrayList<String>();
+			List<String> list = new ArrayList<>();
 			if (ToolEnchantString != null && !ToolEnchantString.isEmpty())
 				if (ToolEnchantString.contains(";"))
 					for (String string : ToolEnchantString.split(";"))

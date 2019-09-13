@@ -1,20 +1,20 @@
 package xiaokai.knickers.mtp;
 
+import xiaokai.knickers.tool.Tool;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import xiaokai.tool.Tool;
-
 /**
  * @author Winfxk
- */
+ */ 
 public class FormID {
 	private Map<String, Integer> config;
 	private Kick kick;
 
 	public FormID(Kick k) {
 		this.kick = k;
-		config = new HashMap<String, Integer>();
+		config = new HashMap<>();
 	}
 
 	public Map<String, Integer> getMap() {

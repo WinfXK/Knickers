@@ -1,5 +1,7 @@
 package xiaokai.knickers.mtp;
 
+import xiaokai.knickers.tool.Tool;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,7 +20,6 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.ConfigSection;
 import cn.nukkit.utils.Utils;
-import xiaokai.tool.Tool;
 
 /**
  * @author Winfxk

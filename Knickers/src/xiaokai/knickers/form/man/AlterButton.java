@@ -1,5 +1,12 @@
 package xiaokai.knickers.form.man;
 
+import xiaokai.knickers.form.MakeForm;
+import xiaokai.knickers.mtp.Kick;
+import xiaokai.knickers.mtp.MyPlayer;
+import xiaokai.knickers.tool.CustomForm;
+import xiaokai.knickers.tool.SimpleForm;
+import xiaokai.knickers.tool.Tool;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,12 +19,6 @@ import cn.nukkit.form.response.FormResponseSimple;
 import cn.nukkit.level.Level;
 import cn.nukkit.plugin.Plugin;
 import cn.nukkit.utils.Config;
-import xiaokai.knickers.form.MakeForm;
-import xiaokai.knickers.mtp.Kick;
-import xiaokai.knickers.mtp.MyPlayer;
-import xiaokai.tool.CustomForm;
-import xiaokai.tool.SimpleForm;
-import xiaokai.tool.Tool;
 
 /**
  * 修改按钮操作类
@@ -26,6 +27,8 @@ import xiaokai.tool.Tool;
  */
 @SuppressWarnings("unchecked")
 public class AlterButton {
+	public static final String[] LevelLL = { "无", "黑名单", "白名单" };
+
 	/**
 	 * 开始处理玩家点击的是哪一个按钮
 	 * 
@@ -126,6 +129,8 @@ public class AlterButton {
 			form.addInput("请输入图标的路径", map.get("IconPath"));
 			form.addStepSlider("过滤模式", Kick.FilteredModel, Tool.ObjectToInt("FilteredModel"));
 			form.addInput("黑/白 名单列表，多个使用;分割", ListToString(map.get("FilteredPlayer")));
+			form.addStepSlider("世界过滤选项", LevelLL, 0);
+			form.addInput("请输入过滤世界名，多个使用;分割", "");
 			form.sendPlayer(player);
 			return true;
 		}
@@ -140,7 +145,7 @@ public class AlterButton {
 				return MakeForm.Tip(player, kick.Message.getMessage("权限不足"));
 			CustomForm form = new CustomForm(kick.formID.getID(2), kick.Message.getText(config.getString("Title"),
 					new String[] { "{Player}" }, new Object[] { player.getName() }) + Tool.getColorFont("-Transfer"));
-			List<String> list = new ArrayList<String>();
+			List<String> list = new ArrayList<>();
 			int i = 0;
 			boolean isSB = false;
 			Map<Integer, Level> as = Server.getInstance().getLevels();
@@ -164,6 +169,8 @@ public class AlterButton {
 			form.addInput("请输入图标的路径", map.get("IconPath"));
 			form.addStepSlider("过滤模式", Kick.FilteredModel, Tool.ObjectToInt("FilteredModel"));
 			form.addInput("黑/白 名单列表，多个使用;分割", ListToString(map.get("FilteredPlayer")));
+			form.addStepSlider("世界过滤选项", LevelLL, 0);
+			form.addInput("请输入过滤世界名，多个使用;分割", "");
 			form.sendPlayer(player);
 			return true;
 		}
@@ -192,6 +199,8 @@ public class AlterButton {
 			form.addInput("请输入图标的路径", map.get("IconPath"));
 			form.addStepSlider("过滤模式", Kick.FilteredModel, Tool.ObjectToInt("FilteredModel"));
 			form.addInput("黑/白 名单列表，多个使用;分割", ListToString(map.get("FilteredPlayer")));
+			form.addStepSlider("世界过滤选项", LevelLL, 0);
+			form.addInput("请输入过滤世界名，多个使用;分割", "");
 			form.sendPlayer(player);
 			return true;
 		}
@@ -219,6 +228,8 @@ public class AlterButton {
 			form.addInput("请输入图标的路径", map.get("IconPath"));
 			form.addStepSlider("过滤模式", Kick.FilteredModel, Tool.ObjectToInt("FilteredModel"));
 			form.addInput("黑/白 名单列表，多个使用;分割", ListToString(map.get("FilteredPlayer")));
+			form.addStepSlider("世界过滤选项", LevelLL, 0);
+			form.addInput("请输入过滤世界名，多个使用;分割", "");
 			form.sendPlayer(player);
 			return true;
 		}
@@ -246,6 +257,8 @@ public class AlterButton {
 			form.addInput("请输入图标的路径", map.get("IconPath"));
 			form.addStepSlider("过滤模式", Kick.FilteredModel, Tool.ObjectToInt("FilteredModel"));
 			form.addInput("黑/白 名单列表，多个使用;分割", ListToString(map.get("FilteredPlayer")));
+			form.addStepSlider("世界过滤选项", LevelLL, 0);
+			form.addInput("请输入过滤世界名，多个使用;分割", "");
 			form.sendPlayer(player);
 			return true;
 		}
@@ -258,7 +271,7 @@ public class AlterButton {
 		}
 
 		public static String ListToString(Object obj) {
-			List<String> l = obj == null || !(obj instanceof List) ? new ArrayList<String>() : (ArrayList<String>) obj;
+			List<String> l = obj == null || !(obj instanceof List) ? new ArrayList<>() : (ArrayList<String>) obj;
 			String string = "";
 			for (int i = 0; i < l.size(); i++)
 				string += l.get(i) + ((i + 1 < l.size()) ? ";" : "");
@@ -279,11 +292,11 @@ public class AlterButton {
 		Kick kick = Kick.kick;
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		myPlayer.CacheFile = file;
-		List<String> Items = new ArrayList<String>();
+		List<String> Items = new ArrayList<>();
 		Config config = new Config(file, Config.YAML);
 		Map<String, Object> Buttons = (config.get("Buttons") != null && (config.get("Buttons") instanceof Map))
 				? (HashMap<String, Object>) config.get("Buttons")
-				: new HashMap<String, Object>();
+				: new HashMap<>();
 		if (Buttons.size() < 1)
 			return MakeForm.Tip(player, "§4这个界面没有发现按钮的存在！");
 		SimpleForm form = new SimpleForm(kick.formID.getID(23), Kick.kick.Message.getText(config.getString("Title")),
@@ -291,7 +304,7 @@ public class AlterButton {
 		for (String ike : Buttons.keySet()) {
 			Map<String, Object> Item = ((Buttons.get(ike) instanceof Map) && Buttons.get(ike) != null)
 					? (HashMap<String, Object>) Buttons.get(ike)
-					: new HashMap<String, Object>();
+					: new HashMap<>();
 			if (Item.size() > 0) {
 				String Path = (String) Item.get("IconPath");
 				form.addButton(String.valueOf(Item.get("Text")), !String.valueOf(Item.get("IconPath")).equals("2"),

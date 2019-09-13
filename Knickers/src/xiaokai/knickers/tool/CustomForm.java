@@ -1,4 +1,4 @@
-package xiaokai.tool;
+package xiaokai.knickers.tool;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,9 +19,9 @@ import cn.nukkit.form.window.FormWindowCustom;
 
 /**
  * @author Winfxk
- */
+ */ 
 public class CustomForm {
-	private List<Element> list = new ArrayList<Element>();
+	private List<Element> list = new ArrayList<>();
 	private int ID;
 	private String Title = "";
 	private String Icon = null;

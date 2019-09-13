@@ -1,4 +1,4 @@
-package xiaokai.tool;
+package xiaokai.knickers.tool;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -69,7 +69,7 @@ public class Tool {
 		int h = (int) (time / 3600);
 		time = time % 3600;
 		int i = (int) (time / 60);
-		double s = (double) (time % 60);
+		double s = time % 60;
 		return (y > 0 ? y + "年" : "") + (d > 0 ? d + "天" : "") + (h > 0 ? h + "小时" : "") + (i > 0 ? i + "分钟" : "")
 				+ (s > 0 ? Double2(s, 1) + "秒" : "");
 	}
@@ -296,7 +296,7 @@ public class Tool {
 	 * @return
 	 */
 	public static <K, V extends Comparable<? super V>> Map<K, V> sortByValueDescending(Map<K, V> map) {
-		List<Map.Entry<K, V>> list = new LinkedList<Map.Entry<K, V>>(map.entrySet());
+		List<Map.Entry<K, V>> list = new LinkedList<>(map.entrySet());
 		Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
 			@Override
 			public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
@@ -304,7 +304,7 @@ public class Tool {
 				return -compare;
 			}
 		});
-		Map<K, V> result = new LinkedHashMap<K, V>();
+		Map<K, V> result = new LinkedHashMap<>();
 		for (Map.Entry<K, V> entry : list)
 			result.put(entry.getKey(), entry.getValue());
 		return result;
@@ -445,8 +445,7 @@ public class Tool {
 		File file = new File(saveDir + File.separator + fileName);
 		FileOutputStream fos = new FileOutputStream(file);
 		fos.write(getData);
-		if (fos != null)
-			fos.close();
+		fos.close();
 		if (inputStream != null)
 			inputStream.close();
 	}
@@ -641,8 +640,7 @@ public class Tool {
 			saveDir.mkdirs();
 		FileOutputStream fos = new FileOutputStream(new File(saveDir, fileName));
 		fos.write(getData);
-		if (fos != null)
-			fos.close();
+		fos.close();
 		if (inputStream != null)
 			inputStream.close();
 	}

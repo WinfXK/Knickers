@@ -1,5 +1,11 @@
 package xiaokai.knickers.form.man;
 
+import xiaokai.knickers.form.MakeForm;
+import xiaokai.knickers.mtp.Kick;
+import xiaokai.knickers.mtp.MyPlayer;
+import xiaokai.knickers.tool.SimpleForm;
+import xiaokai.knickers.tool.Tool;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,15 +15,10 @@ import java.util.Map;
 import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponseSimple;
 import cn.nukkit.utils.Config;
-import xiaokai.knickers.form.MakeForm;
-import xiaokai.knickers.mtp.Kick;
-import xiaokai.knickers.mtp.MyPlayer;
-import xiaokai.tool.SimpleForm;
-import xiaokai.tool.Tool;
 
 /**
  * @author Winfxk
- */
+ */ 
 @SuppressWarnings("unchecked")
 public class DelButton {
 	public static boolean delButton(Player player, File file) {
@@ -26,11 +27,11 @@ public class DelButton {
 		Kick kick = Kick.kick;
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		myPlayer.CacheFile = file;
-		List<String> Items = new ArrayList<String>();
+		List<String> Items = new ArrayList<>();
 		Config config = new Config(file, Config.YAML);
 		Map<String, Object> Buttons = (config.get("Buttons") != null && (config.get("Buttons") instanceof Map))
 				? (HashMap<String, Object>) config.get("Buttons")
-				: new HashMap<String, Object>();
+				: new HashMap<>();
 		if (Buttons.size() < 1)
 			return MakeForm.Tip(player, "§4这个界面没有发现按钮的存在！");
 		SimpleForm form = new SimpleForm(kick.formID.getID(3), Kick.kick.Message.getText(config.getString("Title")),
@@ -38,7 +39,7 @@ public class DelButton {
 		for (String ike : Buttons.keySet()) {
 			Map<String, Object> Item = ((Buttons.get(ike) instanceof Map) && Buttons.get(ike) != null)
 					? (HashMap<String, Object>) Buttons.get(ike)
-					: new HashMap<String, Object>();
+					: new HashMap<>();
 			if (Item.size() > 0) {
 				String Path = (String) Item.get("IconPath");
 				form.addButton(String.valueOf(Item.get("Text")), !String.valueOf(Item.get("IconPath")).equals("2"),
@@ -60,7 +61,7 @@ public class DelButton {
 		Config config = new Config(file, Config.YAML);
 		Map<String, Object> Buttons = (config.get("Buttons") != null && (config.get("Buttons") instanceof Map))
 				? (HashMap<String, Object>) config.get("Buttons")
-				: new HashMap<String, Object>();
+				: new HashMap<>();
 		if (Buttons.size() < 1)
 			return MakeForm.Tip(player, "§4这个界面没有发现按钮的存在！");
 		if (Items.size() <= data.getClickedButtonId())
@@ -96,12 +97,12 @@ public class DelButton {
 		Config config = new Config(file, Config.YAML);
 		Map<String, Object> Buttons = (config.get("Buttons") != null && (config.get("Buttons") instanceof Map))
 				? (HashMap<String, Object>) config.get("Buttons")
-				: new HashMap<String, Object>();
+				: new HashMap<>();
 		if (id == 2) {
 			Map<String, Object> map = (Map<String, Object>) Buttons.get(Key);
 			String Type = String.valueOf(map.get("Type"));
 			if (Type.toLowerCase().equals("open")) {
-				myPlayer.DelFileList = new ArrayList<File>();
+				myPlayer.DelFileList = new ArrayList<>();
 				delFile(myPlayer, new File(new File(kick.mis.getDataFolder(), Kick.MenuConfigPath),
 						String.valueOf(map.get("Config"))));
 			}
@@ -124,7 +125,7 @@ public class DelButton {
 		Config config = new Config(file, Config.YAML);
 		Map<String, Object> Buttons = (config.get("Buttons") != null && (config.get("Buttons") instanceof Map))
 				? (HashMap<String, Object>) config.get("Buttons")
-				: new HashMap<String, Object>();
+				: new HashMap<>();
 		if (Buttons.size() > 0)
 			for (String ike : Buttons.keySet()) {
 				Map<String, Object> map = (Map<String, Object>) Buttons.get(ike);

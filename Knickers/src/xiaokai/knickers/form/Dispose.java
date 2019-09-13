@@ -1,5 +1,14 @@
 package xiaokai.knickers.form;
 
+import xiaokai.knickers.form.man.AddButton;
+import xiaokai.knickers.form.man.AlterButton;
+import xiaokai.knickers.form.man.DelButton;
+import xiaokai.knickers.mtp.Kick;
+import xiaokai.knickers.mtp.Message;
+import xiaokai.knickers.mtp.MyPlayer;
+import xiaokai.knickers.tool.ItemIDSunName;
+import xiaokai.knickers.tool.Tool;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,18 +18,10 @@ import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.form.response.FormResponseSimple;
 import cn.nukkit.utils.Config;
-import xiaokai.knickers.form.man.AddButton;
-import xiaokai.knickers.form.man.AlterButton;
-import xiaokai.knickers.form.man.DelButton;
-import xiaokai.knickers.mtp.Kick;
-import xiaokai.knickers.mtp.Message;
-import xiaokai.knickers.mtp.MyPlayer;
-import xiaokai.tool.ItemIDSunName;
-import xiaokai.tool.Tool;
 
 /**
  * @author Winfxk
- */
+ */ 
 public class Dispose {
 	private Player player;
 	private Kick kick;
@@ -116,7 +117,7 @@ public class Dispose {
 		if (!Tool.isInteger(ClickTimeString) || !((ClickTime = Float.valueOf(ClickTimeString).intValue()) > 0))
 			return MakeForm.Tip(player, "§4快捷工具屏蔽双击的时间仅支持大于零的纯整数！！");
 		boolean isWh = data.getToggleResponse(5);
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		String wsString = data.getInputResponse(6);
 		if (wsString != null && !wsString.isEmpty())
 			if (wsString.contains(";")) {

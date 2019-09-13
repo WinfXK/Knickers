@@ -11,14 +11,13 @@ import cn.nukkit.utils.TextFormat;
 import xiaokai.knickers.event.Monitor;
 import xiaokai.knickers.event.PlayerEvent;
 import xiaokai.knickers.mtp.Kick;
-import xiaokai.tool.Tool;
+import xiaokai.knickers.tool.Tool;
 
 /**
  * @author Winfxk
  */
 public class Knickers extends PluginBase {
 	private Instant loadTime = Instant.now();
-	private Instant EnableTime;
 	/**
 	 * 插件缓存数据集合
 	 */
@@ -29,7 +28,7 @@ public class Knickers extends PluginBase {
 	 */
 	@Override
 	public void onEnable() {
-		EnableTime = Instant.now();
+		Instant EnableTime = Instant.now();
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(new PlayerEvent(kick), this);
 		pm.registerEvents(new Monitor(kick), this);

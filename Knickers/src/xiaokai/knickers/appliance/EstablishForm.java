@@ -1,5 +1,15 @@
 package xiaokai.knickers.appliance;
 
+import xiaokai.knickers.form.MakeForm;
+import xiaokai.knickers.form.man.AddButton;
+import xiaokai.knickers.mtp.Kick;
+import xiaokai.knickers.mtp.MyPlayer;
+import xiaokai.knickers.tool.CustomForm;
+import xiaokai.knickers.tool.EnchantName;
+import xiaokai.knickers.tool.ItemIDSunName;
+import xiaokai.knickers.tool.SimpleForm;
+import xiaokai.knickers.tool.Tool;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,15 +20,6 @@ import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.form.response.FormResponseSimple;
 import cn.nukkit.utils.Config;
-import xiaokai.knickers.form.MakeForm;
-import xiaokai.knickers.form.man.AddButton;
-import xiaokai.knickers.mtp.Kick;
-import xiaokai.knickers.mtp.MyPlayer;
-import xiaokai.tool.CustomForm;
-import xiaokai.tool.EnchantName;
-import xiaokai.tool.ItemIDSunName;
-import xiaokai.tool.SimpleForm;
-import xiaokai.tool.Tool;
 
 /**
  * @author Winfxk
@@ -32,7 +33,7 @@ public class EstablishForm {
 	 * 
 	 * @param player 玩家对象
 	 * @param data   返回的数据
-	 * @return
+	 * @return 
 	 */
 	public static boolean disDelTool(Player player, FormResponseSimple data) {
 		if (!Kick.isAdmin(player))
@@ -85,7 +86,7 @@ public class EstablishForm {
 										new Object[] { player.getName() }) }),
 				kick.Message.getSun("界面", "快捷工具列表页", "项目打开的内容", new String[] { "{Player}", "{ItemData}" },
 						new Object[] { player.getName(), ItemData }));
-		List<String> It = new ArrayList<String>();
+		List<String> It = new ArrayList<>();
 		form.addButton(kick.Message.getSun("界面", "快捷工具列表页", "确定按钮", new String[] { "{Player}", player.getName() },
 				new Object[] { player.getName() }));
 		It.add("ok");
@@ -133,7 +134,7 @@ public class EstablishForm {
 						new Object[] { player.getName() }),
 				kick.Message.getSun("界面", "快捷工具列表页", "内容", new String[] { "{Player}" },
 						new Object[] { player.getName() }));
-		List<String> Keys = new ArrayList<String>();
+		List<String> Keys = new ArrayList<>();
 		for (String ike : map.keySet()) {
 			Map<String, Object> Item = (Map<String, Object>) map.get(ike);
 			Object obj = Item.get("ID");
@@ -172,7 +173,7 @@ public class EstablishForm {
 						new Object[] { player.getName() }),
 				kick.Message.getSun("界面", "快捷工具列表页", "内容", new String[] { "{Player}" },
 						new Object[] { player.getName() }));
-		List<String> Keys = new ArrayList<String>();
+		List<String> Keys = new ArrayList<>();
 		for (String ike : map.keySet()) {
 			Map<String, Object> Item = (Map<String, Object>) map.get(ike);
 			Object obj = Item.get("ID");
@@ -247,7 +248,7 @@ public class EstablishForm {
 		myPlayer.CacheFile = new File(kick.mis.getDataFolder(), Kick.MenuConfigPath);
 		if (myPlayer.CacheFile.list().length < 1)
 			return MakeForm.Tip(player, "当前还没有可以添加的界面！请先添加一个吧！");
-		ArrayList<String> Ops = new ArrayList<String>();
+		ArrayList<String> Ops = new ArrayList<>();
 		for (String FileName : myPlayer.CacheFile.list())
 			Ops.add(FileName + "§f(§9"
 					+ kick.Message.getText(
@@ -293,7 +294,7 @@ public class EstablishForm {
 			myPlayer.CacheFile = new File(kick.mis.getDataFolder(), Kick.MenuConfigPath);
 			if (myPlayer.CacheFile.list().length < 1)
 				return MakeForm.Tip(player, "当前还没有可以添加的界面！请先添加一个吧！");
-			ArrayList<String> Ops = new ArrayList<String>();
+			ArrayList<String> Ops = new ArrayList<>();
 			for (String FileName : myPlayer.CacheFile.list())
 				Ops.add(FileName + "§f(§9"
 						+ kick.Message.getText((new Config(new File(myPlayer.CacheFile, FileName), Config.YAML))
@@ -323,12 +324,12 @@ public class EstablishForm {
 			Config config = new Config(file, Config.YAML);
 			Object object = config.get("Buttons");
 			Map<String, Object> Buttons = (object != null && object instanceof Map) ? (HashMap<String, Object>) object
-					: new HashMap<String, Object>();
+					: new HashMap<>();
 			if (Buttons.size() < 1)
 				return MakeForm.Tip(player, "这个界面当前还没有可以添加的按钮！请先添加一个吧！");
 			CustomForm form = new CustomForm(kick.formID.getID(17), Tool.getColorFont(Kick.FastToolType[1]));
-			ArrayList<String> buttonStrings = new ArrayList<String>();
-			List<String> Keys = new ArrayList<String>();
+			ArrayList<String> buttonStrings = new ArrayList<>();
+			List<String> Keys = new ArrayList<>();
 			for (String s : Buttons.keySet()) {
 				buttonStrings.add(s + "§f(" + kick.Message.getText(((Map<String, Object>) Buttons.get(s)).get("Text"),
 						new String[] { "{Player}" }, new Object[] { player.getName() }) + "§f)");

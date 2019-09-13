@@ -1,5 +1,12 @@
 package xiaokai.knickers.form;
 
+import xiaokai.knickers.mtp.Kick;
+import xiaokai.knickers.mtp.Message;
+import xiaokai.knickers.mtp.MyPlayer;
+import xiaokai.knickers.tool.CustomForm;
+import xiaokai.knickers.tool.SimpleForm;
+import xiaokai.knickers.tool.Tool;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,12 +25,6 @@ import cn.nukkit.level.Level;
 import cn.nukkit.level.Position;
 import cn.nukkit.plugin.Plugin;
 import cn.nukkit.utils.Config;
-import xiaokai.knickers.mtp.Kick;
-import xiaokai.knickers.mtp.Message;
-import xiaokai.knickers.mtp.MyPlayer;
-import xiaokai.tool.CustomForm;
-import xiaokai.tool.SimpleForm;
-import xiaokai.tool.Tool;
 
 /**
  * @author Winfxk
@@ -54,9 +55,9 @@ public class OpenButton {
 		this.config = new Config(file, Config.YAML);
 		Item = ((config.get("Buttons") != null && config.get("Buttons") instanceof Map)
 				? (HashMap<String, Object>) config.get("Buttons")
-				: new HashMap<String, Object>());
+				: new HashMap<>());
 		Item = (Item.get(Key) != null && Item.get(Key) instanceof Map) ? (HashMap<String, Object>) Item.get(Key)
-				: new HashMap<String, Object>();
+				: new HashMap<>();
 		msg = kick.Message;
 	}
 
@@ -67,7 +68,20 @@ public class OpenButton {
 	 * @return
 	 */
 	public boolean isSB(Player player) {
-		return isSB(player.getName());
+		if (Kick.isAdmin(player))
+			return true;
+		int k = Tool.ObjectToInt(Item.get("FilteredModel"), 0);
+		Object obj = Item.get("FilteredPlayer");
+		List<String> Players = obj != null && (obj instanceof List) ? (ArrayList<String>) obj : new ArrayList<>();
+		if (k == 1) {
+			if (Players.contains(player.getName()))
+				return true;
+		} else if (k == 2) {
+			if (!Players.contains(player.getName()))
+				return true;
+		} else if (k == 0)
+			return false;
+		return false;
 	}
 
 	/**
@@ -76,15 +90,17 @@ public class OpenButton {
 	 * @param player
 	 * @return
 	 */
-	public boolean isSB(String player) {
-		int k = Tool.ObjectToInt(Item.get("FilteredModel"), 0);
-		Object obj = Item.get("FilteredPlayer");
-		List<String> Players = obj != null && (obj instanceof List) ? (ArrayList<String>) obj : new ArrayList<String>();
+	public boolean isLevelSB(Player player) {
+		if (Kick.isAdmin(player))
+			return true;
+		int k = Tool.ObjectToInt(Item.get("LevelFilteredModel"), 0);
+		Object obj = Item.get("LevelList");
+		List<String> Players = obj != null && (obj instanceof List) ? (ArrayList<String>) obj : new ArrayList<>();
 		if (k == 1) {
-			if (Players.contains(player))
+			if (Players.contains(player.getLevel().getFolderName()))
 				return true;
 		} else if (k == 2) {
-			if (!Players.contains(player))
+			if (!Players.contains(player.getLevel().getFolderName()))
 				return true;
 		} else if (k == 0)
 			return false;
@@ -107,6 +123,11 @@ public class OpenButton {
 		if (isSB(player)) {
 			player.sendMessage(
 					msg.getSon("界面", "被列入黑名单", new String[] { "{Player}" }, new String[] { player.getName() }));
+			return false;
+		}
+		if (isLevelSB(player)) {
+			player.sendMessage(
+					msg.getSon("界面", "该世界被列为黑名单", new String[] { "{Player}" }, new String[] { player.getName() }));
 			return false;
 		}
 		switch (String.valueOf(Item.get("Type")).toLowerCase()) {
@@ -327,7 +348,7 @@ public class OpenButton {
 		public boolean start(FormResponseSimple data) {
 			MyPlayer myPlayer = Kick.kick.PlayerDataMap.get(player.getName());
 			List<Player> Plist = myPlayer.players;
-			Player player2 = Plist.size() > data.getClickedButtonId() ? Plist.get(data.getClickedButtonId()) : null;
+			Player player2 = Plist.get(data.getClickedButtonId());
 			carryCommand(player, myPlayer.Item);
 			if (!Tool.ObjToBool(myPlayer.Item.get("isAffirm")))
 				return Tp(player2);
@@ -362,7 +383,7 @@ public class OpenButton {
 			} else
 				MakeForm.Tip(player,
 						kick.Message.getSun("界面", "Tpa界面", "玩家不在线", new String[] { "{Player}", "{TpaPlayer}" },
-								new Object[] { player2.getName(), player.getName() }));
+								new Object[] { player2 == null ? "null" : player2.getName(), player.getName() }));
 			return true;
 		}
 
@@ -380,8 +401,8 @@ public class OpenButton {
 			if (Players.size() < 2)
 				return MakeForm.Tip(player, kick.Message.getSun("界面", "Tpa界面", "无玩家在线", new String[] { "{Player}" },
 						new Object[] { player.getName() }));
-			List<Player> Plist = new ArrayList<Player>();
-			List<String> kList = new ArrayList<String>();
+			List<Player> Plist = new ArrayList<>();
+			List<String> kList = new ArrayList<>();
 			SimpleForm form = new SimpleForm(kick.formID.getID(5),
 					kick.Message.getSun("界面", "Tpa界面", "玩家列表标题", new String[] { "{Player}", "{BackTitle}" },
 							new Object[] { player.getName(),
@@ -455,10 +476,9 @@ public class OpenButton {
 			String[] Commands = Command.split("\\{msg\\}");
 			CustomForm form = new CustomForm(kick.formID.getID(7), kick.Message.getSun("界面", "执行命令", "标题",
 					new String[] { "{Player}" }, new Object[] { player.getName() }));
-			List<String> def = (Item.get("Msg") == null || !(Item.get("Msg") instanceof List)) ? new ArrayList<String>()
+			List<String> def = (Item.get("Msg") == null || !(Item.get("Msg") instanceof List)) ? new ArrayList<>()
 					: (ArrayList<String>) Item.get("Msg");
-			List<String> Hints = (Item.get("Hint") == null || !(Item.get("Hint") instanceof List))
-					? new ArrayList<String>()
+			List<String> Hints = (Item.get("Hint") == null || !(Item.get("Hint") instanceof List)) ? new ArrayList<>()
 					: (ArrayList<String>) Item.get("Hint");
 			for (int i = 0; i < Commands.length - 1; i++)
 				form.addInput(def.size() < i + 1 ? "" : def.get(i), "", Hints.size() < i + 1 ? "" : Hints.get(i));
@@ -516,6 +536,7 @@ public class OpenButton {
 			}
 			if (cmdr && !isOP)
 				new Thread() {
+					@Override
 					public void run() {
 						try {
 							sleep(Tool.ObjectToInt(Kick.kick.config.get("OP命令延时撤销"), 1000));
