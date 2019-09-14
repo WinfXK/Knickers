@@ -22,7 +22,7 @@ import cn.nukkit.utils.Config;
 
 /**
  * @author Winfxk
- */ 
+ */
 @SuppressWarnings("unchecked")
 public class MakeForm {
 	/**
@@ -132,6 +132,7 @@ public class MakeForm {
 		form.addToggle("快捷工具监听破坏", config.getBoolean("快捷工具监听破坏"));
 		form.addToggle("快捷工具监听快捷栏双击", config.getBoolean("快捷工具监听快捷栏双击"));
 		form.addInput("快捷工具快捷栏双击间隔", config.get("快捷工具快捷栏双击间隔"));
+		form.addToggle("屏蔽错误信息", config.getBoolean("屏蔽错误信息"));
 		form.sendPlayer(player);
 		return true;
 	}

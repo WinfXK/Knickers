@@ -21,7 +21,7 @@ import cn.nukkit.utils.Config;
 
 /**
  * @author Winfxk
- */ 
+ */
 public class Dispose {
 	private Player player;
 	private Kick kick;
@@ -154,6 +154,7 @@ public class Dispose {
 		if (快捷工具快捷栏双击间隔文字 == null || 快捷工具快捷栏双击间隔文字.isEmpty() || !Tool.isInteger(快捷工具快捷栏双击间隔文字)
 				|| Float.valueOf(快捷工具快捷栏双击间隔文字).intValue() < 1)
 			return MakeForm.Tip(player, "§4快捷工具快捷栏双击间隔仅支持大于等于0的纯整数！");
+		boolean 屏蔽错误信息 = data.getToggleResponse(20);
 		config.set("快捷工具", id);
 		config.set("货币单位", MoneyName);
 		config.set("检测更新", isUpdate);
@@ -174,6 +175,7 @@ public class Dispose {
 		config.set("快捷工具监听破坏", 快捷工具监听破坏);
 		config.set("快捷工具监听快捷栏双击", 快捷工具监听快捷栏双击);
 		config.set("快捷工具快捷栏双击间隔", 快捷工具快捷栏双击间隔);
+		config.set("屏蔽错误信息", 屏蔽错误信息);
 		kick.config = config;
 		kick.sThread.Update = Tool.ObjectToInt(config.get("检测更新间隔"), 500);
 		kick.sThread.time = Tool.ObjectToInt(config.get("定时检查快捷工具间隔"), 60);

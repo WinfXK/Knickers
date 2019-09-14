@@ -17,8 +17,8 @@ import cn.nukkit.utils.Config;
 public class Update {
 	private PluginBase mis;
 	protected static final String Url = "http://pluginsupdate.epicfx.cn";
-	//protected static final String Url = "http://192.168.0.102";
-	protected static final int V = 1;
+	// protected static final String Url = "http://192.168.0.102";
+	protected static final int V = 2;
 	protected static final String ConfigName = "/Update.yml";
 
 	public Update(PluginBase mis) {
@@ -42,7 +42,7 @@ public class Update {
 					if (Boolean.valueOf(userBean.Update)) {
 						mis.getLogger().info("§6已检测到更新！" + userBean.Msg + " §4相关数据以储存到§5" + ConfigName);
 						try {
-			 				String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+							String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
 							File fsFile = new File(path);
 							Tool.DownFile(userBean.Http, fsFile.getName(), mis.getServer().getPluginPath());
 							mis.getLogger().info("§6新版文件已下载到§4" + fsFile.getName() + "§6，正在尝试重启服务器");

@@ -24,7 +24,7 @@ import cn.nukkit.item.Item;
 
 /**
  * @author Winfxk
- */ 
+ */
 public class PlayerEvent implements Listener {
 	private Kick kick;
 
@@ -39,33 +39,38 @@ public class PlayerEvent implements Listener {
 	 */
 	@EventHandler
 	public void onClicks(PlayerItemHeldEvent e) {
-		if (!kick.config.getBoolean("快捷工具监听快捷栏双击"))
-			return;
-		Player player = e.getPlayer();
-		MyPlayer myPlayer = Kick.kick.PlayerDataMap.get(player.getName());
-		Item item = player.getInventory().getItemInHand();
-		if (Belle.isMaterials(item)) {
-			if (myPlayer.ClickHeldTime == null || Duration.between(myPlayer.ClickHeldTime, Instant.now())
-					.toMillis() > kick.config.getInt("快捷工具快捷栏双击间隔")) {
-				myPlayer.ClickHeldTime = Instant.now();
-				kick.PlayerDataMap.put(player.getName(), myPlayer);
+		try {
+			if (!kick.config.getBoolean("快捷工具监听快捷栏双击"))
+				return;
+			Player player = e.getPlayer();
+			MyPlayer myPlayer = Kick.kick.PlayerDataMap.get(player.getName());
+			Item item = player.getInventory().getItemInHand();
+			if (Belle.isMaterials(item)) {
+				if (myPlayer.ClickHeldTime == null || Duration.between(myPlayer.ClickHeldTime, Instant.now())
+						.toMillis() > kick.config.getInt("快捷工具快捷栏双击间隔")) {
+					myPlayer.ClickHeldTime = Instant.now();
+					kick.PlayerDataMap.put(player.getName(), myPlayer);
+					return;
+				}
+				MakeForm.Main(player);
+				if (kick.config.getBoolean("打开撤销"))
+					e.setCancelled();
+				return;
+			} else if (Appliance.isGirl(item)) {
+				if (myPlayer.ClickHeldTime == null || Duration.between(myPlayer.ClickHeldTime, Instant.now())
+						.toMillis() > kick.config.getInt("快捷工具快捷栏双击间隔")) {
+					myPlayer.ClickHeldTime = Instant.now();
+					kick.PlayerDataMap.put(player.getName(), myPlayer);
+					return;
+				}
+				kick.App.start(player, item);
+				if (kick.config.getBoolean("打开撤销"))
+					e.setCancelled();
 				return;
 			}
-			MakeForm.Main(player);
-			if (kick.config.getBoolean("打开撤销"))
-				e.setCancelled();
-			return;
-		} else if (Appliance.isGirl(item)) {
-			if (myPlayer.ClickHeldTime == null || Duration.between(myPlayer.ClickHeldTime, Instant.now())
-					.toMillis() > kick.config.getInt("快捷工具快捷栏双击间隔")) {
-				myPlayer.ClickHeldTime = Instant.now();
-				kick.PlayerDataMap.put(player.getName(), myPlayer);
-				return;
-			}
-			kick.App.start(player, item);
-			if (kick.config.getBoolean("打开撤销"))
-				e.setCancelled();
-			return;
+		} catch (Exception e2) {
+			if (!kick.config.getBoolean("屏蔽错误信息"))
+				e2.printStackTrace();
 		}
 	}
 
@@ -76,21 +81,28 @@ public class PlayerEvent implements Listener {
 	 */
 	@EventHandler
 	public void onDropItem(PlayerDropItemEvent e) {
-		Item item = e.getItem();
-		if (!kick.config.getBoolean("是否允许玩家丢弃快捷工具") && Belle.isMaterials(item)) {
-			e.setCancelled();
-			Player player = e.getPlayer();
-			player.sendMessage(
-					kick.Message.getMessage("撤销丢掉快捷工具的提示", new String[] { "{Player}", "{ItemName}", "{ItemID}" },
-							new Object[] { player.getName(), ItemIDSunName.getIDByName(item.getId(), item.getDamage()),
-									item.getId() + ":" + item.getDamage() }));
-		} else if (!Appliance.isDrop(item)) {
-			e.setCancelled();
-			Player player = e.getPlayer();
-			player.sendMessage(
-					kick.Message.getMessage("撤销丢掉自定义快捷工具的提示", new String[] { "{Player}", "{ItemName}", "{ItemID}" },
-							new Object[] { player.getName(), ItemIDSunName.getIDByName(item.getId(), item.getDamage()),
-									item.getId() + ":" + item.getDamage() }));
+		try {
+			Item item = e.getItem();
+			if (!kick.config.getBoolean("是否允许玩家丢弃快捷工具") && Belle.isMaterials(item)) {
+				e.setCancelled();
+				Player player = e.getPlayer();
+				player.sendMessage(
+						kick.Message.getMessage("撤销丢掉快捷工具的提示", new String[] { "{Player}", "{ItemName}", "{ItemID}" },
+								new Object[] { player.getName(),
+										ItemIDSunName.getIDByName(item.getId(), item.getDamage()),
+										item.getId() + ":" + item.getDamage() }));
+			} else if (!Appliance.isDrop(item)) {
+				e.setCancelled();
+				Player player = e.getPlayer();
+				player.sendMessage(
+						kick.Message.getMessage("撤销丢掉自定义快捷工具的提示", new String[] { "{Player}", "{ItemName}", "{ItemID}" },
+								new Object[] { player.getName(),
+										ItemIDSunName.getIDByName(item.getId(), item.getDamage()),
+										item.getId() + ":" + item.getDamage() }));
+			}
+		} catch (Exception e2) {
+			if (!kick.config.getBoolean("屏蔽错误信息"))
+				e2.printStackTrace();
 		}
 	}
 
@@ -101,18 +113,23 @@ public class PlayerEvent implements Listener {
 	 */
 	@EventHandler
 	public void onBreak(BlockBreakEvent e) {
-		if (!kick.config.getBoolean("快捷工具监听破坏"))
-			return;
-		Player player = e.getPlayer();
-		Item item = e.getItem();
-		if (Belle.isMaterials(item)) {
-			MakeForm.Main(player);
-			if (kick.config.getBoolean("打开撤销"))
-				e.setCancelled();
-		} else if (Appliance.isGirl(item)) {
-			kick.App.start(player, item);
-			if (kick.config.getBoolean("打开撤销"))
-				e.setCancelled();
+		try {
+			if (!kick.config.getBoolean("快捷工具监听破坏"))
+				return;
+			Player player = e.getPlayer();
+			Item item = e.getItem();
+			if (Belle.isMaterials(item)) {
+				MakeForm.Main(player);
+				if (kick.config.getBoolean("打开撤销"))
+					e.setCancelled();
+			} else if (Appliance.isGirl(item)) {
+				kick.App.start(player, item);
+				if (kick.config.getBoolean("打开撤销"))
+					e.setCancelled();
+			}
+		} catch (Exception e2) {
+			if (!kick.config.getBoolean("屏蔽错误信息"))
+				e2.printStackTrace();
 		}
 	}
 
@@ -123,22 +140,25 @@ public class PlayerEvent implements Listener {
 	 */
 	@EventHandler
 	public void onClick(PlayerInteractEvent e) {
-		if (!kick.config.getBoolean("快捷工具监听点击"))
-			return;
-		Player player = e.getPlayer();
-		Action ac = e.getAction();
-		Item item = e.getItem();
-		if (!ac.equals(Action.PHYSICAL)) {
-			if (Belle.isMaterials(item)) {
-				MakeForm.Main(player);
-				if (kick.config.getBoolean("打开撤销"))
-					e.setCancelled();
-			} else if (Appliance.isGirl(item)) {
-				kick.App.start(player, item);
-				if (kick.config.getBoolean("打开撤销"))
-					e.setCancelled();
-
-			}
+		try {
+			if (!kick.config.getBoolean("快捷工具监听点击"))
+				return;
+			Player player = e.getPlayer();
+			Action ac = e.getAction();
+			Item item = e.getItem();
+			if (!ac.equals(Action.PHYSICAL))
+				if (Belle.isMaterials(item)) {
+					MakeForm.Main(player);
+					if (kick.config.getBoolean("打开撤销"))
+						e.setCancelled();
+				} else if (Appliance.isGirl(item)) {
+					kick.App.start(player, item);
+					if (kick.config.getBoolean("打开撤销"))
+						e.setCancelled();
+				}
+		} catch (Exception e2) {
+			if (!kick.config.getBoolean("屏蔽错误信息"))
+				e2.printStackTrace();
 		}
 	}
 
@@ -149,9 +169,14 @@ public class PlayerEvent implements Listener {
 	 */
 	@EventHandler
 	public void onQuit(PlayerQuitEvent e) {
-		Player player = e.getPlayer();
-		if (kick.PlayerDataMap.containsKey(player.getName()))
-			kick.PlayerDataMap.remove(player.getName());
+		try {
+			Player player = e.getPlayer();
+			if (kick.PlayerDataMap.containsKey(player.getName()))
+				kick.PlayerDataMap.remove(player.getName());
+		} catch (Exception e2) {
+			if (!kick.config.getBoolean("屏蔽错误信息"))
+				e2.printStackTrace();
+		}
 	}
 
 	/**
@@ -161,14 +186,19 @@ public class PlayerEvent implements Listener {
 	 */
 	@EventHandler
 	public void onPlayerSpawn(PlayerRespawnEvent e) {
-		Player player = e.getPlayer();
-		if (!kick.PlayerDataMap.containsKey(player.getName()))
-			kick.PlayerDataMap.put(player.getName(), new MyPlayer(player));
-		new Thread() {
-			@Override
-			public void run() {
-				Belle.exMaterials(player);
-			}
-		}.start();
+		try {
+			Player player = e.getPlayer();
+			if (!kick.PlayerDataMap.containsKey(player.getName()))
+				kick.PlayerDataMap.put(player.getName(), new MyPlayer(player));
+			new Thread() {
+				@Override
+				public void run() {
+					Belle.exMaterials(player);
+				}
+			}.start();
+		} catch (Exception e2) {
+			if (!kick.config.getBoolean("屏蔽错误信息"))
+				e2.printStackTrace();
+		}
 	}
 }
