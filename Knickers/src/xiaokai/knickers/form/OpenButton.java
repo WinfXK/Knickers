@@ -69,7 +69,7 @@ public class OpenButton {
 	 */
 	public boolean isSB(Player player) {
 		if (Kick.isAdmin(player))
-			return true;
+			return false;
 		int k = Tool.ObjectToInt(Item.get("FilteredModel"), 0);
 		Object obj = Item.get("FilteredPlayer");
 		List<String> Players = obj != null && (obj instanceof List) ? (ArrayList<String>) obj : new ArrayList<>();
@@ -92,7 +92,7 @@ public class OpenButton {
 	 */
 	public boolean isLevelSB(Player player) {
 		if (Kick.isAdmin(player))
-			return true;
+			return false;
 		int k = Tool.ObjectToInt(Item.get("LevelFilteredModel"), 0);
 		Object obj = Item.get("LevelList");
 		List<String> Players = obj != null && (obj instanceof List) ? (ArrayList<String>) obj : new ArrayList<>();
