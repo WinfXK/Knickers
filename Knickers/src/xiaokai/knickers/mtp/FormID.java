@@ -7,7 +7,7 @@ import java.util.Map;
 
 /**
  * @author Winfxk
- */ 
+ */
 public class FormID {
 	private Map<String, Integer> config;
 	private Kick kick;
@@ -23,6 +23,10 @@ public class FormID {
 
 	public int getID(int Key) {
 		return getID(kick.FormIDName[Key]);
+	}
+
+	public boolean isMyFormID(int ID) {
+		return config.containsValue(ID);
 	}
 
 	public void setConfig(Map<String, Object> config) {

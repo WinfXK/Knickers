@@ -9,6 +9,7 @@ import xiaokai.knickers.form.man.AlterButton;
 import xiaokai.knickers.form.man.DelButton;
 import xiaokai.knickers.mtp.FormID;
 import xiaokai.knickers.mtp.Kick;
+import xiaokai.knickers.mtp.MyPlayer;
 
 import cn.nukkit.Player;
 import cn.nukkit.event.EventHandler;
@@ -44,8 +45,14 @@ public class Monitor implements Listener {
 			if (player == null || e.wasClosed() || e.getResponse() == null
 					|| (!(e.getResponse() instanceof FormResponseCustom)
 							&& !(e.getResponse() instanceof FormResponseSimple)
-							&& !(e.getResponse() instanceof FormResponseModal)))
+							&& !(e.getResponse() instanceof FormResponseModal))) {
+				if (player != null && e.wasClosed() && fId.isMyFormID(ID)) {
+					MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
+					myPlayer.OpenMenuList = null;
+					kick.PlayerDataMap.put(player.getName(), myPlayer);
+				}
 				return;
+			}
 			if (ID == fId.getID(0) || ID == fId.getID(8) || ID == fId.getID(10) || ID == fId.getID(11)
 					|| ID == fId.getID(12) || ID == fId.getID(13))
 				(new Dispose(kick, player)).start((FormResponseSimple) data);

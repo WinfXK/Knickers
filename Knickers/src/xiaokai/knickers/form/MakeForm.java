@@ -181,8 +181,11 @@ public class MakeForm {
 					msg.getSon("界面", "被列入黑名单", new String[] { "{Player}" }, new String[] { player.getName() }));
 		}
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
-		if (isBack)
+		if (isBack) {
+			if (myPlayer.OpenMenuList == null)
+				myPlayer.OpenMenuList = new ArrayList<>();
 			myPlayer.OpenMenuList.add(file);
+		}
 		List<Map<String, Object>> Items = new ArrayList<>();
 		int ID = isMain ? kick.formID.getID(0) : getID(myPlayer);
 		SimpleForm form = new SimpleForm(ID,
@@ -216,8 +219,8 @@ public class MakeForm {
 			if (myPlayer.OpenMenuList == null || myPlayer.OpenMenuList.size() < 1
 					|| file.getAbsolutePath()
 							.equals(new File(kick.mis.getDataFolder(), kick.MainFileName).getAbsolutePath())
-					|| (myPlayer.BackFile != null
-							&& file.getAbsolutePath().equals(myPlayer.BackFile.getAbsolutePath()))) {
+					|| (myPlayer.BackFile != null && file.getAbsolutePath().equals(myPlayer.BackFile.getAbsolutePath()))
+					|| (myPlayer.OpenMenuList.size() == 1 && myPlayer.OpenMenuList.get(0).equals(file))) {
 				form.addButton(
 						msg.getSon("界面", "取消按钮", new String[] { "{Player}" }, new Object[] { player.getName() }));
 				kis.add("quit");

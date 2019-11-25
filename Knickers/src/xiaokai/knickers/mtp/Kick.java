@@ -20,7 +20,7 @@ import cn.nukkit.utils.Config;
 
 /**
  * @author Winfxk
- */ 
+ */
 @SuppressWarnings("unchecked")
 public class Kick {
 	public static Kick kick;
@@ -137,7 +137,6 @@ public class Kick {
 		formID.setConfig(formIdConfig.getAll());
 		Message = new Message(this);
 		App = new Appliance(this);
-		command = new toCommand(this);
 		sThread = new startThread();
 		sThread.start();
 	}
@@ -167,6 +166,11 @@ public class Kick {
 
 		@Override
 		public void run() {
+			Map<UUID, Player> Players;
+			Map<String, Object> item, map;
+			String ID;
+			Object obj;
+			Item Item;
 			while (true) {
 				try {
 					sleep(1000);
@@ -175,31 +179,28 @@ public class Kick {
 						Update = Tool.ObjectToInt(config.get("检测更新间隔"), 500);
 					}
 					if (time-- < 0 && config.getBoolean("定时检查快捷工具")) {
-						Map<UUID, Player> Players = Server.getInstance().getOnlinePlayers();
-						for (UUID u : Players.keySet()) {
-							Player player = Players.get(u);
+						Players = Server.getInstance().getOnlinePlayers();
+						for (Player player : Players.values())
 							if (player.isOnline())
 								Belle.exMaterials(player);
-						}
 						time = Tool.ObjectToInt(config.get("定时检查快捷工具间隔"), 60);
 					}
 					if (config.getBoolean("自定义工具异步检查持有") && UpdateAutoTool-- < 0) {
-						Map<UUID, Player> Players = Server.getInstance().getOnlinePlayers();
-						for (UUID u : Players.keySet()) {
-							Player player = Players.get(u);
+						Players = Server.getInstance().getOnlinePlayers();
+						for (Player player : Players.values()) {
 							if (player.isOnline() && !player.getInventory().isFull()) {
-								Map<String, Object> map = Appliance.config.getAll();
+								map = Appliance.config.getAll();
 								for (String ike : map.keySet()) {
-									Map<String, Object> item = (Map<String, Object>) map.get(ike);
+									item = (Map<String, Object>) map.get(ike);
 									if (Tool.ObjToBool(item.get("isThread"), true)
 											&& !Appliance.isAlready(player, ike)) {
-										Object obj = item.get("ID");
+										obj = item.get("ID");
 										if (obj != null) {
-											String ID = String.valueOf(obj);
+											ID = String.valueOf(obj);
 											if (!ID.isEmpty()) {
 												int[] IDs = Tool.IDtoFullID(ID);
 												if (IDs[0] != 0) {
-													Item Item = new Item(IDs[0], IDs[1]);
+													Item = new Item(IDs[0], IDs[1]);
 													Item = Appliance.setData(Item, item);
 													player.getInventory().addItem(Item);
 													player.sendMessage(kick.Message.getSun("界面", "快捷工具列表页",

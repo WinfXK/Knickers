@@ -2,29 +2,13 @@ name: Knickers
 main: xiaokai.knickers.Knickers
 api:
 - 1.0.0
-version: 2.1.4
+version: 2.1.5
 load: POSTWORLD
 website: http://Winfxk.EpicFX.cn
 description: 多功能菜单，如传送、命令、提示等功能，并且支持自定义快捷菜单，将一个菜单装进物品内！后期还会加入更多功能哦！
 author: Winfxk
 loadbefore:
 - EconomyAPI
-commands:
-   tool:
-      description: §9菜单快捷工具主命令
-      permission: Knickers.Command.Tool
-      usage: §b/§6mis §chelp
-   mis:
-      description: §9菜单工具主命令
-      permission: Knickers.Command.main
-      usage: §b/§6mis §chelp
-      aliases:
-      - miniature
-      - miniatures
-      - 菜单
-      - knickers
-      - 内裤
-      - 胖次
 permissions:
    Knickers.Command.main:
       description: 菜单工具主命令

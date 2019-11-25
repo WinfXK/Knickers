@@ -1,17 +1,15 @@
 package xiaokai.knickers;
 
-import java.time.Duration;
-import java.time.Instant;
-
-import cn.nukkit.command.Command;
-import cn.nukkit.command.CommandSender;
-import cn.nukkit.plugin.PluginBase;
-import cn.nukkit.plugin.PluginManager;
-import cn.nukkit.utils.TextFormat;
 import xiaokai.knickers.event.Monitor;
 import xiaokai.knickers.event.PlayerEvent;
 import xiaokai.knickers.mtp.Kick;
 import xiaokai.knickers.tool.Tool;
+
+import java.time.Duration;
+import java.time.Instant;
+
+import cn.nukkit.plugin.PluginBase;
+import cn.nukkit.utils.TextFormat;
 
 /**
  * @author Winfxk
@@ -29,9 +27,10 @@ public class Knickers extends PluginBase {
 	@Override
 	public void onEnable() {
 		Instant EnableTime = Instant.now();
-		PluginManager pm = getServer().getPluginManager();
-		pm.registerEvents(new PlayerEvent(kick), this);
-		pm.registerEvents(new Monitor(kick), this);
+		getServer().getPluginManager().registerEvents(new PlayerEvent(kick), this);
+		getServer().getPluginManager().registerEvents(new Monitor(kick), this);
+		getServer().getCommandMap().register(getName(), new ToolCommand());
+		getServer().getCommandMap().register(getName(), new toCommand());
 		this.getServer().getLogger()
 				.info(Tool.getColorFont(this.getName() + "启动！") + "§6总耗时:§9"
 						+ ((float) (Duration.between(loadTime, Instant.now()).toMillis())) + "§6ms 启动耗时:§9"
@@ -79,10 +78,5 @@ public class Knickers extends PluginBase {
 	 */
 	public static Knickers getPY() {
 		return kick.mis;
-	}
-
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		return kick.command.onCommand(sender, command, label, args);
 	}
 }

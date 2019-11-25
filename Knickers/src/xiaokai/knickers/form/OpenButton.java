@@ -410,8 +410,7 @@ public class OpenButton {
 											new Object[] { player.getName() }) }),
 					kick.Message.getSun("界面", "Tpa界面", "玩家列表内容", new String[] { "{Player}" },
 							new Object[] { player.getName() }));
-			for (UUID uuid : Players.keySet()) {
-				Player player2 = Players.get(uuid);
+			for (Player player2 : Players.values()) {
 				if (player2.getName().equals(player.getName()))
 					continue;
 				Plist.add(player2);
@@ -503,7 +502,6 @@ public class OpenButton {
 				Command = Kick.kick.Message.getText(Command, new String[] { "{Player}" },
 						new Object[] { player.getName() });
 				Command = (Command.lastIndexOf("}") == Command.length() - 1) ? Command + " " : Command;
-				System.out.println(Command);
 				if (Command.contains("{msg}")) {
 					return make(Command, Commander, Item);
 				} else
@@ -522,31 +520,19 @@ public class OpenButton {
 		 * @return
 		 */
 		private static boolean carryCommand(Player player, String Command, String Commander) {
-			boolean isOP = player.isOp();
-			boolean cmdr = Commander.toLowerCase().equals("playerbyop");
+			boolean isOP = player.isOp(), cmdr = Commander.toLowerCase().equals("playerbyop"), cmd = false;
 			if (cmdr && !isOP)
 				player.setOp(true);
-			boolean cmd = false;
 			try {
 				cmd = Server.getInstance().dispatchCommand(
 						(Commander.toLowerCase().equals("player") || cmdr) ? player : new ConsoleCommandSender(),
 						Command);
 			} catch (Exception e) {
 				Kick.kick.mis.getLogger().error("§4执行命令出现错误！" + e.getMessage());
+			} finally {
+				if (cmdr && !isOP)
+					player.setOp(false);
 			}
-			if (cmdr && !isOP)
-				new Thread() {
-					@Override
-					public void run() {
-						try {
-							sleep(Tool.ObjectToInt(Kick.kick.config.get("OP命令延时撤销"), 1000));
-						} catch (InterruptedException e) {
-							Kick.kick.mis.getLogger().error("§4警告！OP命令执行出现问题！Op撤销可能已经失败！请检查OP列表！玩家名：§e"
-									+ player.getName() + "\nError: \n " + e.getMessage());
-						}
-						player.setOp(false);
-					}
-				}.start();
 			return cmd;
 		}
 	}
