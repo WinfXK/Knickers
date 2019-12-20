@@ -19,7 +19,7 @@ import cn.nukkit.form.window.FormWindowCustom;
 
 /**
  * @author Winfxk
- */ 
+ */
 public class CustomForm {
 	private List<Element> list = new ArrayList<>();
 	private int ID;
@@ -304,26 +304,10 @@ public class CustomForm {
 	 * 
 	 * @return 是否有发送给玩家
 	 */
-	public boolean sendPlayer(List<Player> players) {
-		if (players.size() < 1)
-			return false;
-		boolean isOK = false;
-		for (Player player : players) {
-			isOK = true;
-			player.showFormWindow(
+	public int sendPlayer(Player... player) {
+		for (Player p : player)
+			p.showFormWindow(
 					Icon != null ? (new FormWindowCustom(Title, list, Icon)) : (new FormWindowCustom(Title, list)), ID);
-		}
-		return isOK;
-	}
-
-	/**
-	 * 将表单数据发送给指定玩家
-	 * 
-	 * @return 是否有发送给玩家
-	 */
-	public int sendPlayer(Player player) {
-		player.showFormWindow(
-				Icon != null ? (new FormWindowCustom(Title, list, Icon)) : (new FormWindowCustom(Title, list)), ID);
 		return ID;
 	}
 

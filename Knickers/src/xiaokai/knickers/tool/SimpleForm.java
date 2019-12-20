@@ -16,6 +16,7 @@ public class SimpleForm {
 	private int ID;
 	private String Title = "";
 	private String Content = "";
+	public List<String> Keys = new ArrayList<>();
 
 	/**
 	 * @param ID    表单ID
@@ -155,20 +156,21 @@ public class SimpleForm {
 	 * @param players
 	 * @return
 	 */
-	public int sendPlayers(List<Player> players) {
-		for (Player player : players)
-			player.showFormWindow(new FormWindowSimple(Title, Content, list), ID);
+	public int sendPlayer(Player... player) {
+		for (Player p : player)
+			p.showFormWindow(new FormWindowSimple(Title, Content, list), ID);
 		return ID;
 	}
 
 	/**
-	 * 将表单发送给指定玩家
+	 * 添加一些按钮
 	 * 
-	 * @param player
-	 * @return 表单ID
+	 * @param Text
+	 * @return
 	 */
-	public int sendPlayer(Player player) {
-		player.showFormWindow(new FormWindowSimple(Title, Content, list), ID);
-		return ID;
+	public SimpleForm addButtons(String... Text) {
+		for (String string : Text)
+			addButton(string);
+		return this;
 	}
 }

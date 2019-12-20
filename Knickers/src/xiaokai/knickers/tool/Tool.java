@@ -20,9 +20,11 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.Temporal;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,12 +40,59 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import cn.nukkit.Player;
+import cn.nukkit.item.Item;
+
 /**
  * @author Winfxk
  */
-public class Tool {
+public class Tool implements X509TrustManager, HostnameVerifier {
 	private static String colorKeyString = "123456789abcdef";
 	private static String randString = "-+abcdefghijklmnopqrstuvwxyz_";
+
+	public static Map<String, String> getLanguages() {
+		Map<String, String> Languages = new HashMap<>();
+		Languages.put("English", "eng");
+		Languages.put("中文(简体)", "chs");
+		Languages.put("中文(繁體)", "cht");
+		Languages.put("日本語", "jpn");
+		Languages.put("Pyccĸий", "rus");
+		Languages.put("Español", "spa");
+		Languages.put("Polish", "pol");
+		Languages.put("Português", "bra");
+		Languages.put("한국어", "kor");
+		Languages.put("Українська", "ukr");
+		Languages.put("Deutsch", "deu");
+		Languages.put("Lietuvių", "ltu");
+		Languages.put("Indonesian", "idn");
+		Languages.put("Czech", "cze");
+		Languages.put("Turkish", "tur");
+		Languages.put("Suomi", "fin");
+		return Languages;
+	}
+
+	/**
+	 * Object对象转换为String
+	 * 
+	 * @param obj
+	 * @return
+	 */
+	public static String objToString(Object obj) {
+		return objToString(obj, null);
+	}
+
+	/**
+	 * Object对象转换为String
+	 * 
+	 * @param obj
+	 * @param string
+	 * @return
+	 */
+	public static String objToString(Object obj, String string) {
+		if (obj == null)
+			return string;
+		return String.valueOf(obj);
+	}
 
 	/**
 	 * 获取从一个时间点到现在的时间差
@@ -290,27 +339,6 @@ public class Tool {
 	}
 
 	/**
-	 * 将Map按数据升序排列
-	 * 
-	 * @param map
-	 * @return
-	 */
-	public static <K, V extends Comparable<? super V>> Map<K, V> sortByValueDescending(Map<K, V> map) {
-		List<Map.Entry<K, V>> list = new LinkedList<>(map.entrySet());
-		Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
-			@Override
-			public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
-				int compare = (o1.getValue()).compareTo(o2.getValue());
-				return -compare;
-			}
-		});
-		Map<K, V> result = new LinkedHashMap<>();
-		for (Map.Entry<K, V> entry : list)
-			result.put(entry.getKey(), entry.getValue());
-		return result;
-	}
-
-	/**
 	 * 设置小数长度</br>
 	 * 默认保留两位小数</br>
 	 * 
@@ -485,8 +513,12 @@ public class Tool {
 	 * @return
 	 */
 	public static int ObjectToInt(Object object, int i) {
-		return object == null || object.toString().isEmpty() ? i
-				: isInteger(object) ? Float.valueOf(object.toString()).intValue() : i;
+		if (object == null)
+			return i;
+		String string = String.valueOf(object);
+		if (string.isEmpty() || !isInteger(object))
+			return i;
+		return string.contains(".") ? Float.valueOf(object.toString()).intValue() : Integer.valueOf(string);
 	}
 
 	/**
@@ -563,7 +595,7 @@ public class Tool {
 			throws UnsupportedEncodingException, IOException, KeyManagementException, NoSuchAlgorithmException {
 		StringBuffer buffer = null;
 		SSLContext sslContext = SSLContext.getInstance("SSL");
-		TrustManager[] tm = { new MyX509Trust() };
+		TrustManager[] tm = { new Tool() };
 		sslContext.init(null, tm, new java.security.SecureRandom());
 		SSLSocketFactory ssf = sslContext.getSocketFactory();
 		URL url = new URL(requestUrl);
@@ -622,12 +654,12 @@ public class Tool {
 	 */
 	public static void downLoadFromUrlHttps(String urlStr, String fileName, String savePath) throws Exception {
 		SSLContext sslContext = SSLContext.getInstance("SSL");
-		TrustManager[] tm = { new MyX509Trust() };
+		TrustManager[] tm = { new Tool() };
 		sslContext.init(null, tm, new java.security.SecureRandom());
 		SSLSocketFactory ssf = sslContext.getSocketFactory();
 		URL url = new URL(urlStr);
 		HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
-		conn.setHostnameVerifier(new MyX509Trust());
+		conn.setHostnameVerifier(new Tool());
 		conn.setDoOutput(true);
 		conn.setDoInput(true);
 		conn.setUseCaches(false);
@@ -645,27 +677,176 @@ public class Tool {
 			inputStream.close();
 	}
 
+	@Override
+	public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+	}
+
+	@Override
+	public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+	}
+
+	@Override
+	public X509Certificate[] getAcceptedIssuers() {
+		return null;
+	}
+
+	@Override
+	public boolean verify(String arg0, SSLSession arg1) {
+		return true;
+	}
+
 	/**
-	 * @author Winfxk
+	 * 将一个数据物品化
+	 * 
+	 * @param map
+	 * @param file
+	 * @return
 	 */
-	public static class MyX509Trust implements X509TrustManager, HostnameVerifier {
-
-		@Override
-		public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+	public static Item loadItem(Map<String, Object> map) {
+		Item item = new Item((int) map.get("ID"), (int) map.get("Damage"), (int) map.get("Count"));
+		String name = (String) map.get("Name");
+		if (name != null && !name.isEmpty())
+			item.setCustomName(name);
+		try {
+			item.setCompoundTag((byte[]) map.get("Nbt"));
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		return item;
+	}
 
-		@Override
-		public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-		}
+	/**
+	 * 将一个物品数据化
+	 * 
+	 * @param item
+	 * @return
+	 */
+	public static Map<String, Object> saveItem(Item item) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("Nbt", item.getCompoundTag());
+		map.put("ID", item.getId());
+		map.put("Damage", item.getDamage());
+		map.put("Name", item.hasCustomName() ? item.getName() : null);
+		map.put("Count", item.getCount());
+		return map;
+	}
 
-		@Override
-		public X509Certificate[] getAcceptedIssuers() {
-			return null;
+	/**
+	 * 将保存起来的玩家背包读取到一个对象 </br>
+	 * <b>player.getInventory().setContents(取得的对象);</b>
+	 * 
+	 * @return
+	 */
+	public static Map<Integer, Item> loadInventory(List<Map<String, Object>> list) {
+		Map<Integer, Item> Contents = new HashMap<>();
+		for (int i = 0; i < list.size(); i++) {
+			Map<String, Object> map = list.get(i);
+			Item item = new Item((int) map.get("ID"), (int) map.get("Damage"), (int) map.get("Count"),
+					(String) map.get("Name"));
+			item.setCompoundTag((byte[]) map.get("Nbt"));
+			Contents.put(i, item);
 		}
+		return Contents;
+	}
 
-		@Override
-		public boolean verify(String arg0, SSLSession arg1) {
-			return true;
+	/**
+	 * 将一个玩家的背包保存到文件
+	 * 
+	 * @param player 要保存背包的玩家对象
+	 * @return
+	 */
+	public static List<Map<String, Object>> saveInventory(Player player) {
+		List<Map<String, Object>> list = new ArrayList<>();
+		Map<Integer, Item> Contents = player.getInventory().getContents();
+		for (Integer i : Contents.keySet()) {
+			Item item = Contents.get(i);
+			Map<String, Object> map = new HashMap<>();
+			map.put("Nbt", item.getCompoundTag());
+			map.put("ID", item.getId());
+			map.put("Damage", item.getDamage());
+			map.put("Name", item.getName());
+			map.put("Count", item.getCount());
+			list.add(map);
 		}
+		return list;
+	}
+
+	/**
+	 * 将未知参数转换为小数
+	 * 
+	 * @param obj
+	 * @param double1
+	 * @return
+	 */
+	public static Double ObjectToDouble(Object obj) {
+		return ObjectToDouble(obj, 0d);
+	}
+
+	/**
+	 * 将未知参数转换为小数
+	 * 
+	 * @param obj
+	 * @param double1
+	 * @return
+	 */
+	public static Double ObjectToDouble(Object obj, Double double1) {
+		if (obj == null)
+			return double1;
+		double d;
+		try {
+			String S = String.valueOf(obj);
+			if (S == null || S.isEmpty())
+				return double1;
+			d = Double.valueOf(S);
+		} catch (Exception e) {
+			return double1;
+		}
+		return d;
+	}
+
+	/**
+	 * 将Map按数据升序排列
+	 * 
+	 * @param <K>
+	 * @param <V>
+	 * @param map
+	 * @return
+	 */
+	public static <K, V extends Comparable<? super V>> Map<K, V> sortByValueAscending(Map<K, V> map) {
+		List<Map.Entry<K, V>> list = new LinkedList<>(map.entrySet());
+		Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
+			@Override
+			public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
+				int compare = (o1.getValue()).compareTo(o2.getValue());
+				return compare;
+			}
+		});
+		Map<K, V> result = new LinkedHashMap<>();
+		for (Map.Entry<K, V> entry : list)
+			result.put(entry.getKey(), entry.getValue());
+		return result;
+	}
+
+	/**
+	 * 将Map降序排序
+	 * 
+	 * @param <K>
+	 * @param <V>
+	 * @param map
+	 * @return
+	 */
+	public static <K, V extends Comparable<? super V>> Map<K, V> sortByValueDescending(Map<K, V> map) {
+		List<Map.Entry<K, V>> list = new LinkedList<>(map.entrySet());
+		Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
+			@Override
+			public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
+				int compare = (o1.getValue()).compareTo(o2.getValue());
+				return -compare;
+			}
+		});
+		Map<K, V> result = new LinkedHashMap<>();
+		for (Map.Entry<K, V> entry : list)
+			result.put(entry.getKey(), entry.getValue());
+		return result;
 	}
 }
