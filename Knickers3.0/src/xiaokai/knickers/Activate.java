@@ -1,5 +1,9 @@
 package xiaokai.knickers;
 
+import xiaokai.knickers.money.EconomyAPI;
+import xiaokai.knickers.money.Money;
+import xiaokai.knickers.money.MyMoney;
+
 import cn.nukkit.utils.Config;
 
 /**
@@ -13,7 +17,9 @@ public class Activate {
 	private static Activate activate;
 	public final static String MessageFileName = "Message.yml", ConfigFileName = "Config.yml",
 			MainMenuFileName = "Main.yml", CommandFileName = "Command.yml", ItemIDConfigName = "ItemID.yml";
-	protected static final String[] loadFile = { ConfigFileName, CommandFileName, MessageFileName };
+	protected static final String[] loadFile = { ConfigFileName, CommandFileName };
+	protected static final String[] defaultFile = { ConfigFileName, CommandFileName, MainMenuFileName,
+			MessageFileName };
 
 	/**
 	 * 插件数据的集合类

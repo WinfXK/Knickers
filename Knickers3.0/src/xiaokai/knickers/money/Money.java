@@ -1,4 +1,4 @@
-package xiaokai.knickers;
+package xiaokai.knickers.money;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

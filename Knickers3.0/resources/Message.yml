@@ -19,6 +19,8 @@
 金币不足: §4您的{MoneyName}不足！
 撤销丢掉快捷工具的提示: §6{ItemName}§f(§9{ItemID}§f)§4是你的命根子！你不能丢掉你的命根子！
 插件启动: '{RGBTextStart}{PluginName}启动...{RGBTextEnd}'
+无法初始化配置: §4无法初始化配置文件：{FileName}，请检查!
+无法效验语言文件: §4无法效验语言文件！请检查！
 自定义物品列表:
    构建失败:
       Path: §4构建自定义ID时出现错误：§5{ItemID}§4 所属的Path为空！请检查

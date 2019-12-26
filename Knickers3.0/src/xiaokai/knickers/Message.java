@@ -163,6 +163,16 @@ public class Message {
 	/**
 	 * 从配置文件中获取一级默认文本并插入数据
 	 * 
+	 * @param t 一级Key
+	 * @return
+	 */
+	public String getMessage(String t) {
+		return getMessage(t, new String[] {}, new Object[] {});
+	}
+
+	/**
+	 * 从配置文件中获取一级默认文本并插入数据
+	 * 
 	 * @param t      一级Key
 	 * @param player 默认处理的玩家数据对象
 	 * @return

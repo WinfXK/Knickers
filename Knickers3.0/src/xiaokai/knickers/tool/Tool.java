@@ -41,6 +41,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.item.Item;
 
 /**
@@ -49,6 +50,10 @@ import cn.nukkit.item.Item;
 public class Tool implements X509TrustManager, HostnameVerifier {
 	private static String colorKeyString = "123456789abcdef";
 	private static String randString = "-+abcdefghijklmnopqrstuvwxyz_";
+
+	public static String getLanguage() {
+		return getLanguages().get(Server.getInstance().getLanguage().getName());
+	}
 
 	public static Map<String, String> getLanguages() {
 		Map<String, String> Languages = new HashMap<>();

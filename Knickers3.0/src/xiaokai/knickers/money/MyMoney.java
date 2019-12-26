@@ -1,4 +1,4 @@
-package xiaokai.knickers;
+package xiaokai.knickers.money;
 
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;

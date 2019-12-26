@@ -1,4 +1,6 @@
-package xiaokai.knickers;
+package xiaokai.knickers.money;
+
+import xiaokai.knickers.Activate;
 
 /**
  * @author Winfxk

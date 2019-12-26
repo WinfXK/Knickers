@@ -1,5 +1,7 @@
 package xiaokai.knickers;
 
+import xiaokai.knickers.tool.Tool;
+
 import cn.nukkit.plugin.PluginBase;
 
 /**
@@ -16,6 +18,7 @@ public class Knickers extends PluginBase {
 	@Override
 	public void onEnable() {
 		ac = new Activate(this);
+		getLogger().info(ac.message.getMessage("插件启动"));
 	}
 
 	public static Activate getInstance() {
@@ -24,6 +27,8 @@ public class Knickers extends PluginBase {
 
 	@Override
 	public void onLoad() {
-		getLogger().info(getName() + " load...");
+		getLogger().info(Tool.getColorFont(getName() + " load..."));
+		if (!getDataFolder().exists())
+			getDataFolder().mkdirs();
 	}
 }
