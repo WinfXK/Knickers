@@ -1,10 +1,14 @@
 package xiaokai.knickers;
 
+import xiaokai.knickers.base.MakeForm;
+import xiaokai.knickers.base.PlayerEvent;
 import xiaokai.knickers.module.ModuleManage;
 import xiaokai.knickers.money.EconomyAPI;
 import xiaokai.knickers.money.EconomyManage;
-import xiaokai.knickers.money.MyEconomy;
 
+import java.util.LinkedHashMap;
+
+import cn.nukkit.Player;
 import cn.nukkit.utils.Config;
 
 /**
@@ -22,9 +26,11 @@ public class Activate {
 	protected static final String[] loadFile = { ConfigFileName, CommandFileName };
 	protected static final String[] defaultFile = { ConfigFileName, CommandFileName, MainMenuFileName,
 			MessageFileName };
-	public final static String[] FormIDs = { /* 0 */"主页0", /* 1 */"主页1" };
+	public final static String[] FormIDs = { /* 0 */"主页0", /* 1 */"主页1", /* 2 */"显示可供创建的按钮列表界面", /* 3 */"创建按钮" };
 	protected FormID FormID;
 	protected ModuleManage moduleManage;
+	private MakeForm makeForm;
+	private LinkedHashMap<String, MyPlayer> Players;
 
 	/**
 	 * 插件数据的集合类
@@ -39,8 +45,51 @@ public class Activate {
 		money.addEconomyAPI(new EconomyAPI(this));
 		FormID = new FormID();
 		moduleManage = new ModuleManage(this);
+		kis.getServer().getPluginManager().registerEvents(new PlayerEvent(this), kis);
+		Players = new LinkedHashMap<>();
 	}
 
+	public void removePlayers(Player player) {
+		removePlayers(player.getName());
+	}
+
+	public void removePlayers(String player) {
+		if (Players.containsKey(player))
+			Players.remove(player);
+	}
+
+	public void setPlayers(Player player, MyPlayer myPlayer) {
+		setPlayers(player.getName(), myPlayer);
+	}
+
+	public void setPlayers(String player, MyPlayer myPlayer) {
+		Players.put(player, myPlayer);
+	}
+
+	public LinkedHashMap<String, MyPlayer> getPlayers() {
+		return Players;
+	}
+
+	public MakeForm getMakeForm() {
+		return makeForm;
+	}
+
+	/**
+	 * 返回经济支持管理器</br>
+	 * Return to the economic support manager
+	 * 
+	 * @return
+	 */
+	public EconomyManage getEconomyManage() {
+		return money;
+	}
+
+	/**
+	 * 返回按钮模块管理器</br>
+	 * Return to the button module manager
+	 * 
+	 * @return
+	 */
 	public ModuleManage getModuleManage() {
 		return moduleManage;
 	}
@@ -55,17 +104,6 @@ public class Activate {
 
 	public Message getMessage() {
 		return message;
-	}
-
-	/**
-	 * 添加经济插件支持</br>
-	 * Add Economy plug-in support
-	 * 
-	 * @param economy
-	 * @return
-	 */
-	public boolean addEconomyAPI(EconomyAPI economy) {
-		return money.addEconomyAPI(economy);
 	}
 
 	public static Activate getActivate() {
@@ -87,17 +125,5 @@ public class Activate {
 
 	public Config getConfig() {
 		return config;
-	}
-
-	/**
-	 * 获取一个Knickers支持的经济插件</br>
-	 * Get a Knickers supported Economy plug-in
-	 * 
-	 * @param EconomyName 经济插件的名称</br>
-	 *                    The name of the Economy plug-in
-	 * @return
-	 */
-	public MyEconomy getEconomy(String EconomyName) {
-		return money.getEconomy(EconomyName);
 	}
 }

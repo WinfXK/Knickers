@@ -213,7 +213,29 @@ public class Message {
 	 * @param tex 要插入修改的文本
 	 * @return
 	 */
-	public String getText(String text) {
+	public String getText(Object t, MyPlayer myPlayer) {
+		return getText(t, new String[] { "{Player}", "{Money}" },
+				new Object[] { myPlayer.getPlayer().getName(), myPlayer.getMoney() });
+	}
+
+	/**
+	 * 将数据插入文本中
+	 * 
+	 * @param tex 要插入修改的文本
+	 * @return
+	 */
+	public String getText(Object text, Player player) {
+		return getText(text, new String[] { "{Player}", "{Money}" },
+				new Object[] { player.getName(), MyPlayer.getMoney(player.getName()) });
+	}
+
+	/**
+	 * 将数据插入文本中
+	 * 
+	 * @param tex 要插入修改的文本
+	 * @return
+	 */
+	public String getText(Object text) {
 		return getText(text, new String[] {}, new String[] {});
 	}
 

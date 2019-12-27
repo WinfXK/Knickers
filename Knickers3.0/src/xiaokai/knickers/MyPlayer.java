@@ -30,7 +30,7 @@ public class MyPlayer {
 	 * @return
 	 */
 	public double getMoney() {
-		return ac.getEconomy(ac.getConfig().getString("默认货币")).getMoney(player);
+		return ac.getEconomyManage().getEconomy(ac.getConfig().getString("默认货币")).getMoney(player);
 	}
 
 	/**
@@ -39,6 +39,7 @@ public class MyPlayer {
 	 * @return
 	 */
 	public static double getMoney(String player) {
-		return Activate.getActivate().getEconomy(Activate.getActivate().getConfig().getString("默认货币")).getMoney(player);
+		return Activate.getActivate().getEconomyManage()
+				.getEconomy(Activate.getActivate().getConfig().getString("默认货币")).getMoney(player);
 	}
 }
