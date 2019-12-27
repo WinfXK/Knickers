@@ -1,14 +1,27 @@
 package xiaokai.knickers.money;
 
+import xiaokai.knickers.Activate;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import cn.nukkit.utils.Config;
+
 /**
  * @author Winfxk
  */
-public class Money {
-	private LinkedHashMap<String, MyMoney> Economy = new LinkedHashMap<>();
+public class EconomyManage {
+	private LinkedHashMap<String, MyEconomy> Economy;
+	private Config config;
+
+	public EconomyManage() {
+		Economy = new LinkedHashMap<>();
+		config = new Config(
+				new File(Activate.getActivate().getKnickers().getDataFolder(), Activate.EconomyListConfigName),
+				Config.YAML);
+	}
 
 	/**
 	 * 获取一个Knickers支持的经济插件</br>
@@ -18,14 +31,14 @@ public class Money {
 	 *                    The name of the Economy plug-in
 	 * @return
 	 */
-	public MyMoney getEconomy(String EconomyName) {
+	public MyEconomy getEconomy(String EconomyName) {
 		if (!supportEconomy(EconomyName))
 			return null;
 		return Economy.get(EconomyName);
 	}
 
 	/**
-	 * 时候已经支持某个经济插件</br>
+	 * 是否已经支持某个经济插件</br>
 	 * An Economy plug-in is already supported
 	 * 
 	 * @param EconomyName
@@ -46,6 +59,7 @@ public class Money {
 		if (Economy.containsKey(economy.getEconomyName()))
 			return false;
 		Economy.put(economy.getEconomyName(), economy);
+		Write();
 		return true;
 	}
 
@@ -61,6 +75,7 @@ public class Money {
 		if (!Economy.containsKey(EconomyName))
 			return true;
 		Economy.remove(EconomyName);
+		Write();
 		return !Economy.containsKey(EconomyName);
 	}
 
@@ -71,5 +86,13 @@ public class Money {
 	 */
 	public List<String> getEconomy() {
 		return new ArrayList<>(Economy.keySet());
+	}
+
+	/**
+	 * 写入已经支持了的经济插件
+	 */
+	public void Write() {
+		config.set("Economys", new ArrayList<>(Economy.keySet()));
+		config.save();
 	}
 }

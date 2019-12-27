@@ -5,7 +5,7 @@ import xiaokai.knickers.Activate;
 /**
  * @author Winfxk
  */
-public class EconomyAPI extends MyMoney {
+public class EconomyAPI extends MyEconomy {
 	private me.onebone.economyapi.EconomyAPI eApi;
 	public final static String Name = "EconomyAPI";
 

@@ -6,7 +6,7 @@ import cn.nukkit.command.CommandSender;
 /**
  * @author Winfxk
  */
-public abstract class MyMoney {
+public abstract class MyEconomy {
 	private String EconomyName, MoneyName;
 
 	/**
@@ -19,7 +19,7 @@ public abstract class MyMoney {
 	 * @param MoneyName   货币单位的名称，如：金币</br>
 	 *                    The name of a unit of money, such as a gold coin
 	 */
-	public MyMoney(String EconomyName, String MoneyName) {
+	public MyEconomy(String EconomyName, String MoneyName) {
 		this.EconomyName = EconomyName;
 		this.MoneyName = MoneyName;
 	}

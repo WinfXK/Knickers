@@ -8,7 +8,6 @@ import java.util.Map;
 
 import cn.nukkit.Player;
 import cn.nukkit.utils.Config;
-import cn.nukkit.utils.TextFormat;
 
 /**
  * @author Winfxk
@@ -242,9 +241,18 @@ public class Message {
 				text += (text.isEmpty() ? "" : Tool.getRandColor()) + s;
 		}
 		if (text.contains("{RGBTextStart}") && text.contains("{RGBTextEnd}")) {
-			String s = Tool.cutString(text, "{RGBTextStart}", "{RGBTextEnd}");
-			if (s != null && !s.isEmpty())
-				text = text.replace("{RGBTextStart}" + s + "{RGBTextEnd}", Tool.getColorFont(TextFormat.clean(s)));
+			String rgb = "", rString, gString;
+			String[] rgbStrings = text.split("\\{RGBTextEnd\\}");
+			for (String rgbString : rgbStrings)
+				if (rgbString.contains("{RGBTextStart}")) {
+					rString = rgbString + "{RGBTextEnd}";
+					gString = Tool.cutString(rString, "{RGBTextStart}", "{RGBTextEnd}");
+					if (gString == null || gString.isEmpty())
+						gString = "";
+					rgb += rString.replace("{RGBTextStart}" + gString + "{RGBTextEnd}", Tool.getColorFont(gString));
+				} else
+					rgb += rgbString;
+			text = rgb;
 		}
 		return text;
 	}

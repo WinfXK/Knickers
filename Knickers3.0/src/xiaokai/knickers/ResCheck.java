@@ -22,10 +22,12 @@ import org.yaml.snakeyaml.Yaml;
 public class ResCheck {
 	private Activate ac;
 	private Knickers kis;
+	private PluginLogger log;
 
 	public ResCheck(Activate activate) {
 		this.ac = activate;
 		kis = activate.getKnickers();
+		log = kis.getLogger();
 	}
 
 	public void start() {
@@ -34,18 +36,18 @@ public class ResCheck {
 		if (!file.exists()) {
 			if (lang != null && getClass().getResource("/language/" + lang + ".yml") != null) {
 				try {
-					getLogger().info("Writing to the default language:" + lang);
+					log.info("Writing to the default language:" + lang);
 					Utils.writeFile(Message.getFile(),
 							Utils.readFile(getClass().getResourceAsStream("/language/" + lang + ".yml")));
 				} catch (IOException e) {
 					e.printStackTrace();
-					getLogger().error("§4The default language could not be initialized！");
+					log.error("§4The default language could not be initialized！");
 					try {
 						Utils.writeFile(Message.getFile(),
 								Utils.readFile(getClass().getResourceAsStream("/resources/Message.yml")));
 					} catch (IOException e1) {
 						e1.printStackTrace();
-						getLogger().error("§4The default language could not be initialized！");
+						log.error("§4The default language could not be initialized！");
 						kis.setEnabled(false);
 						return;
 					}
@@ -56,7 +58,7 @@ public class ResCheck {
 							Utils.readFile(getClass().getResourceAsStream("/resources/Message.yml")));
 				} catch (IOException e1) {
 					e1.printStackTrace();
-					getLogger().error("§4The default language could not be initialized！");
+					log.error("§4The default language could not be initialized！");
 					kis.setEnabled(false);
 					return;
 				}
@@ -68,7 +70,7 @@ public class ResCheck {
 					Utils.writeFile(file, Utils.readFile(getClass().getResourceAsStream("/resources/" + s)));
 				} catch (IOException e) {
 					e.printStackTrace();
-					getLogger().error("§4Unable to load default file!");
+					log.error("§4Unable to load default file!");
 					kis.setEnabled(false);
 					return;
 				}
@@ -80,12 +82,12 @@ public class ResCheck {
 						Utils.readFile(getClass().getResourceAsStream("/resources/" + Activate.ConfigFileName)));
 			} catch (IOException e) {
 				e.printStackTrace();
-				getLogger().error("§4Error initializing default configuration!");
+				log.error("§4Error initializing default configuration!");
 				kis.setEnabled(false);
 				return;
 			}
 		}
-		ac.config = new Config(new File(kis.getDataFolder(), Activate.ConfigFileName), 2);
+		ac.config = new Config(new File(kis.getDataFolder(), Activate.ConfigFileName), Config.YAML);
 		ac.message = new Message(ac);
 		Config config;
 		DumperOptions dumperOptions = new DumperOptions();
@@ -103,7 +105,7 @@ public class ResCheck {
 				config.save();
 			} catch (IOException e1) {
 				e1.printStackTrace();
-				getLogger().info(ac.message.getMessage("无法初始化配置", new String[] { "{FileName}" },
+				log.info(ac.message.getMessage("无法初始化配置", new String[] { "{FileName}" },
 						new Object[] { file.getName() }));
 			}
 		}
@@ -116,8 +118,13 @@ public class ResCheck {
 			config.save();
 		} catch (IOException e) {
 			e.printStackTrace();
-			getLogger().info(ac.message.getMessage("无法效验语言文件"));
+			log.info(ac.message.getMessage("无法效验语言文件"));
 		}
+		ac.config = new Config(new File(kis.getDataFolder(), Activate.ConfigFileName), Config.YAML);
+		ac.message = new Message(ac);
+		ac.MainMenu = new Config(new File(kis.getDataFolder(), Activate.MainMenuFileName), Config.YAML);
+		ac.CommandConfig = new Config(new File(kis.getDataFolder(), Activate.CommandFileName), Config.YAML);
+		ac.FormID.FormIDConfig = new Config(new File(kis.getDataFolder(), Activate.FormIDFileName), Config.YAML);
 	}
 
 	/**
@@ -189,9 +196,4 @@ public class ResCheck {
 		}
 		return (LinkedHashMap<String, Object>) map1;
 	}
-
-	private PluginLogger getLogger() {
-		return kis.getLogger();
-	}
-
 }

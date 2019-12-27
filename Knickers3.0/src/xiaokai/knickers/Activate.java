@@ -1,8 +1,9 @@
 package xiaokai.knickers;
 
+import xiaokai.knickers.module.ModuleManage;
 import xiaokai.knickers.money.EconomyAPI;
-import xiaokai.knickers.money.Money;
-import xiaokai.knickers.money.MyMoney;
+import xiaokai.knickers.money.EconomyManage;
+import xiaokai.knickers.money.MyEconomy;
 
 import cn.nukkit.utils.Config;
 
@@ -11,15 +12,19 @@ import cn.nukkit.utils.Config;
  */
 public class Activate {
 	private Knickers mis;
-	protected Config config, MainMenu;
-	private Money money = new Money();
+	protected Config config, MainMenu, CommandConfig;
+	private EconomyManage money;
 	protected Message message;
 	private static Activate activate;
 	public final static String MessageFileName = "Message.yml", ConfigFileName = "Config.yml",
-			MainMenuFileName = "Main.yml", CommandFileName = "Command.yml", ItemIDConfigName = "ItemID.yml";
+			MainMenuFileName = "Main.yml", CommandFileName = "Command.yml", ItemIDConfigName = "ItemID.yml",
+			EconomyListConfigName = "EconomyList.yml", FormIDFileName = "FormID.yml";
 	protected static final String[] loadFile = { ConfigFileName, CommandFileName };
 	protected static final String[] defaultFile = { ConfigFileName, CommandFileName, MainMenuFileName,
 			MessageFileName };
+	public final static String[] FormIDs = { /* 0 */"主页0", /* 1 */"主页1" };
+	protected FormID FormID;
+	protected ModuleManage moduleManage;
 
 	/**
 	 * 插件数据的集合类
@@ -30,7 +35,18 @@ public class Activate {
 		activate = this;
 		mis = kis;
 		new ResCheck(this).start();
+		money = new EconomyManage();
 		money.addEconomyAPI(new EconomyAPI(this));
+		FormID = new FormID();
+		moduleManage = new ModuleManage(this);
+	}
+
+	public ModuleManage getModuleManage() {
+		return moduleManage;
+	}
+
+	public FormID getFormID() {
+		return FormID;
 	}
 
 	public Config getMainMenu() {
@@ -81,7 +97,7 @@ public class Activate {
 	 *                    The name of the Economy plug-in
 	 * @return
 	 */
-	public MyMoney getEconomy(String EconomyName) {
+	public MyEconomy getEconomy(String EconomyName) {
 		return money.getEconomy(EconomyName);
 	}
 }
