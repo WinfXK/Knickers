@@ -1,0 +1,32 @@
+#各种可以自定义的内容
+#注：若是可以使用变量，变量一律用{}包围，如{ServerName}
+#注：变量对大小写敏感！
+#注意！！！！
+#注意！！！！#注意！！！！#注意！！！！
+#注意！！！！#注意！！！！#注意！！！！#注意！！！！#注意！！！！
+#大阔海开头的值请一律用'包围！如以下，若不是大括号开头，则可以不限
+#FF_SB: '{true}'
+#Winfxk: 是{帅逼}
+#注：当前已有全局变量包括：n：换行、ServerName：服务器名称、PluginName：插件名称、RandColor：随机颜色、服务器货币名称：{MoneyName}
+# 进服若是检测没有快捷菜单将提示的内容，可用变量：Player：玩家名
+lang: chs-中文
+权限不足: §4你无权限执行此操作！
+金币不足: §4您的{MoneyName}不足！
+插件启动: '{RGBTextStart}{PluginName}启动(耗时: {loadTime})...{RGBTextEnd}        §6欢迎{RGBTextStart}使用{PluginName}{RGBTextEnd}§f(*￣︶￣)'
+无法初始化配置: §4无法初始化配置文件：{FileName}，请检查!
+无法效验语言文件: §4无法效验语言文件！请检查！
+请在游戏内自行命令: §4请在游戏内执行此命令！
+插件关闭: '{RGBTextStart}{PluginName}已关闭！感谢使用！{RGBTextEnd}{RandColor}若经济允许，希望能赞助一下！支付宝：2508543202@qq.com'
+数据加载错误: §4无法读取游戏数据！请删除所有数据后尝试重新创建！
+无法获取已支持的语言列表: §4无法获取已支持的语言列表!
+MainCommand:
+   Description: §6{PluginName}主命令
+Update:
+   Start: §6检查更新中！若不想使用该功能或出现问题，请关闭该功能.
+   Update: §6已检测到更新！{Msg} §4相关数据以储存到§5{ConfigName}
+   Donwload: §6新版文件下载到§4{FileName}§6，正在尝试重启服务器
+   Downerror: §4自动下载新版文件以失败！请尝试手动下载！错误详情：{Error}
+   NotUpdate: §6暂无更新！
+   UpdateError: §4更新数据错误！
+   ErrorConnect: §4无法连接到更新服务器！
+   UpdateThreadError: §4更新出现错误！请检查！§f{Error}

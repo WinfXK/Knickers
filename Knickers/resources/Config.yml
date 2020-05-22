@@ -1,0 +1,6 @@
+#配置开始==================
+Tool: '347:0'
+EconomyName: 金币
+Economy: EconomyAPI
+OnlyAdmin: false
+Admin: []

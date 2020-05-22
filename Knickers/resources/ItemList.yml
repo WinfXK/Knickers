@@ -1,0 +1,2850 @@
+Item1:
+  Path: textures/blocks/mushroom_brown.png
+  ID: 39
+  Damage: 0
+  Name: 棕色蘑菇
+Item2:
+  Path: textures/items/chainmail_leggings.png
+  ID: 304
+  Damage: 0
+  Name: 锁链护腿
+Item3:
+  Path: textures/blocks/coal_ore.png
+  ID: 16
+  Damage: 0
+  Name: 煤矿石
+Item4:
+  Path: textures/blocks/coal_block.png
+  ID: 173
+  Damage: 0
+  Name: 煤炭块
+Item5:
+  Path: textures/items/wood_axe.png
+  ID: 271
+  Damage: 0
+  Name: 木斧
+Item6:
+  Path: textures/items/gold_hoe.png
+  ID: 294
+  Damage: 0
+  Name: 金锄
+Item7:
+  Path: textures/items/armor_stand.png
+  ID: 425
+  Damage: 0
+  Name: 盔甲架
+Item8:
+  Path: textures/blocks/brick.png
+  ID: 108
+  Damage: 0
+  Name: 砖块阶梯
+Item9:
+  Path: textures/blocks/leaves_big_oak_opaque.png
+  ID: 161
+  Damage: 1
+  Name: 深色橡树叶
+Item10:
+  Path: textures/blocks/leaves_acacia_opaque.png
+  ID: 161
+  Damage: 0
+  Name: 金合欢叶
+Item11:
+  Path: textures/items/paper.png
+  ID: 339
+  Damage: 0
+  Name: 纸
+Item12:
+  Path: textures/items/gold_leggings.png
+  ID: 316
+  Damage: 0
+  Name: 金护腿
+Item13:
+  Path: textures/items/potato.png
+  ID: 392
+  Damage: 0
+  Name: 马铃薯
+Item14:
+  Path: textures/blocks/rail_golden.png
+  ID: 27
+  Damage: 0
+  Name: 动力铁轨
+Item15:
+  Path: textures/blocks/door_birch_upper.png
+  ID: 184
+  Damage: 0
+  Name: 桦木围墙大门
+Item16:
+  Path: textures/blocks/snow.png
+  ID: 80
+  Damage: 0
+  Name: 雪
+Item17:
+  Path: textures/blocks/glazed_terracotta_cyan.png
+  ID: 229
+  Damage: 0
+  Name: 青色带釉陶瓦
+Item18:
+  Path: textures/items/mushroom_stew.png
+  ID: 282
+  Damage: 0
+  Name: 蘑菇煲
+Item19:
+  Path: textures/blocks/end_bricks.png
+  ID: 206
+  Damage: 0
+  Name: 末地石砖
+Item20:
+  Path: textures/items/dragons_breath.png
+  ID: 437
+  Damage: 0
+  Name: 龙息
+Item21:
+  Path: textures/items/rabbit_foot.png
+  ID: 414
+  Damage: 0
+  Name: 兔子脚
+Item22:
+  Path: textures/blocks/flower_rose.png
+  ID: 38
+  Damage: 0
+  Name: 罂粟
+Item23:
+  Path: textures/blocks/flower_blue_orchid.png
+  ID: 38
+  Damage: 1
+  Name: 蓝色的兰花
+Item24:
+  Path: textures/blocks/flower_allium.png
+  ID: 38
+  Damage: 2
+  Name: 绒球葱
+Item25:
+  Path: textures/blocks/flower_houstonia.png
+  ID: 38
+  Damage: 3
+  Name: 茜草花
+Item26:
+  Path: textures/blocks/flower_tulip_red.png
+  ID: 38
+  Damage: 4
+  Name: 红色郁金香
+Item27:
+  Path: textures/blocks/glazed_terracotta_purple.png
+  ID: 219
+  Damage: 0
+  Name: 紫色带釉陶瓦
+Item28:
+  Path: textures/blocks/ice_packed.png
+  ID: 174
+  Damage: 0
+  Name: 浮冰
+Item29:
+  Path: textures/items/minecart_normal.png
+  ID: 328
+  Damage: 0
+  Name: 矿车
+Item30:
+  Path: textures/items/ender_eye.png
+  ID: 381
+  Damage: 0
+  Name: 末影之眼
+Item31:
+  Path: textures/items/chainmail_boots.png
+  ID: 305
+  Damage: 0
+  Name: 锁链靴子
+Item32:
+  Path: textures/blocks/iron_ore.png
+  ID: 15
+  Damage: 0
+  Name: 铁矿石
+Item33:
+  Path: textures/blocks/pumpkin_face_on.png
+  ID: 91
+  Damage: 0
+  Name: 南瓜灯
+Item34:
+  Path: textures/items/stone_sword.png
+  ID: 272
+  Damage: 0
+  Name: 石剑
+Item35:
+  Path: textures/items/end_crystal.png
+  ID: 426
+  Damage: 0
+  Name: 末影水晶
+Item36:
+  Path: textures/items/book_enchanted.png
+  ID: 403
+  Damage: 0
+  Name: 附魔书
+Item37:
+  Path: textures/items/seeds_wheat.png
+  ID: 295
+  Damage: 0
+  Name: 种子
+Item38:
+  Path: textures/blocks/obsidian.png
+  ID: 49
+  Damage: 0
+  Name: 黑曜石
+Item39:
+  Path: textures/blocks/log_acacia.png
+  ID: 162
+  Damage: 0
+  Name: 金合欢木
+Item40:
+  Path: textures/blocks/door_acacia_upper.png
+  ID: 185
+  Damage: 0
+  Name: 丛林木围墙大门
+Item41:
+  Path: textures/items/gold_boots.png
+  ID: 317
+  Damage: 0
+  Name: 金靴子
+Item42:
+  Path: textures/items/ghast_tear.png
+  ID: 370
+  Damage: 0
+  Name: 恶魂泪
+Item43:
+  Path: textures/items/potato_baked.png
+  ID: 393
+  Damage: 0
+  Name: 烤马铃薯
+Item44:
+  Path: textures/blocks/bed_head_top.png
+  ID: 26
+  Damage: 0
+  Name: 方块床
+Item45:
+  Path: textures/blocks/log_acacia.png
+  ID: 162
+  Damage: 1
+  Name: 深色橡木
+Item46:
+  Path: textures/blocks/flower_tulip_orange.png
+  ID: 38
+  Damage: 5
+  Name: 橙色郁金香
+Item47:
+  Path: textures/blocks/flower_tulip_white.png
+  ID: 38
+  Damage: 6
+  Name: 白色郁金香
+Item48:
+  Path: textures/blocks/stonebrick.png
+  ID: 109
+  Damage: 0
+  Name: 石砖阶梯
+Item49:
+  Path: textures/items/gold_sword.png
+  ID: 283
+  Damage: 0
+  Name: 金剑
+Item50:
+  Path: textures/blocks/flower_tulip_pink.png
+  ID: 38
+  Damage: 7
+  Name: 粉色郁金香
+Item51:
+  Path: textures/blocks/flower_oxeye_daisy.png
+  ID: 38
+  Damage: 8
+  Name: 滨菊
+Item52:
+  Path: textures/items/apple.png
+  ID: 260
+  Damage: 0
+  Name: 苹果
+Item53:
+  Path: textures/items/potion_bottle_splash.png
+  ID: 438
+  Damage: 0
+  Name: 喷溅的水瓶
+Item54:
+  Path: textures/items/rabbit_hide.png
+  ID: 415
+  Damage: 0
+  Name: 兔子皮
+Item55:
+  Path: textures/blocks/glazed_terracotta_yellow.png
+  ID: 37
+  Damage: 0
+  Name: 黄花
+Item56:
+  Path: textures/blocks/tallgrass.png
+  ID: 175
+  Damage: 3
+  Name: 大型蕨
+Item57:
+  Path: textures/blocks/sweet_berry_bush_stage3.png
+  ID: 175
+  Damage: 4
+  Name: 玫瑰丛
+Item58:
+  Path: textures/blocks/flower_allium.png
+  ID: 175
+  Damage: 5
+  Name: 牡丹
+Item59:
+  Path: textures/blocks/double_plant_sunflower_front.png
+  ID: 175
+  Damage: 0
+  Name: 向日葵
+Item60:
+  Path: textures/blocks/flower_cornflower.png
+  ID: 175
+  Damage: 1
+  Name: 丁香
+Item61:
+  Path: textures/items/iron_helmet.png
+  ID: 306
+  Damage: 0
+  Name: 铁头盔
+Item62:
+  Path: textures/blocks/double_plant_grass_carried.png
+  ID: 175
+  Damage: 2
+  Name: 高草丛
+Item63:
+  Path: textures/blocks/end_rod.png
+  ID: 198
+  Damage: 0
+  Name: 绿茵小道
+Item64:
+  Path: textures/items/melon_speckled.png
+  ID: 382
+  Damage: 0
+  Name: 金西瓜
+Item65:
+  Path: textures/blocks/gold_ore.png
+  ID: 14
+  Damage: 0
+  Name: 金矿石
+Item66:
+  Path: textures/blocks/redstone_block.png
+  ID: 152
+  Damage: 0
+  Name: 红石块
+Item67:
+  Path: textures/items/saddle.png
+  ID: 329
+  Damage: 0
+  Name: 鞍
+Item68:
+  Path: textures/blocks/portal_placeholder.png
+  ID: 90
+  Damage: 0
+  Name: 传送门
+Item69:
+  Path: textures/items/door_jungle.png
+  ID: 427
+  Damage: 0
+  Name: 云杉木门
+Item70:
+  Path: textures/items/comparator.png
+  ID: 404
+  Damage: 0
+  Name: 比较器
+Item71:
+  Path: textures/items/stone_shovel.png
+  ID: 273
+  Damage: 0
+  Name: 石锹
+Item72:
+  Path: textures/items/wheat.png
+  ID: 296
+  Damage: 0
+  Name: 小麦
+Item73:
+  Path: textures/blocks/cobblestone_mossy.png
+  ID: 48
+  Damage: 0
+  Name: 苔石
+Item74:
+  Path: textures/blocks/end_rod.png
+  ID: 208
+  Damage: 0
+  Name: 末地棒
+Item75:
+  Path: textures/blocks/door_dark_oak_lower.png
+  ID: 186
+  Damage: 0
+  Name: 深色橡木围墙大门
+Item76:
+  Path: textures/items/gold_nugget.png
+  ID: 371
+  Damage: 0
+  Name: 金粒
+Item77:
+  Path: textures/items/potato_poisonous.png
+  ID: 394
+  Damage: 0
+  Name: 毒马铃薯
+Item78:
+  Path: textures/blocks/noteblock.png
+  ID: 25
+  Damage: 0
+  Name: 音符盒
+Item79:
+  Path: textures/blocks/planks_acacia.png
+  ID: 163
+  Damage: 0
+  Name: 金合欢木阶梯
+Item80:
+  Path: textures/items/flint.png
+  ID: 318
+  Damage: 0
+  Name: 燧石
+Item81:
+  Path: textures/items/bow_standby.png
+  ID: 261
+  Damage: 0
+  Name: 弓
+Item82:
+  Path: textures/items/saddle.png
+  ID: 416
+  Damage: 0
+  Name: 皮革马鞍
+Item83:
+  Path: textures/items/gold_shovel.png
+  ID: 284
+  Damage: 0
+  Name: 金锹
+Item84:
+  Path: textures/items/wheat.png
+  ID: 59
+  Damage: 0
+  Name: 小麦
+Item85:
+  Path: textures/items/melon.png
+  ID: 360
+  Damage: 0
+  Name: 西瓜
+Item86:
+  Path: textures/items/door_birch.png
+  ID: 428
+  Damage: 0
+  Name: 桦树木门
+Item87:
+  Path: textures/blocks/bone_block_side.png
+  ID: 176
+  Damage: 0
+  Name: 旗帜
+Item88:
+  Path: textures/blocks/ender_chest_front.png
+  ID: 130
+  Damage: 0
+  Name: 末影箱
+Item89:
+  Path: textures/blocks/quartz_ore.png
+  ID: 153
+  Damage: 0
+  Name: 地狱石英矿石
+Item90:
+  Path: textures/blocks/gravel.png
+  ID: 13
+  Damage: 0
+  Name: 砾石
+Item91:
+  Path: textures/blocks/wool_colored_purple.png
+  ID: 35
+  Damage: 10
+  Name: 紫色羊毛
+Item92:
+  Path: textures/items/iron_chestplate.png
+  ID: 307
+  Damage: 0
+  Name: 铁胸甲
+Item93:
+  Path: textures/blocks/wool_colored_black.png
+  ID: 35
+  Damage: 15
+  Name: 黑色羊毛
+Item94:
+  Path: textures/blocks/wool_colored_red.png
+  ID: 35
+  Damage: 14
+  Name: 红色羊毛
+Item95:
+  Path: textures/items/netherbrick.png
+  ID: 405
+  Damage: 0
+  Name: 地狱砖
+Item96:
+  Path: textures/blocks/wool_colored_green.png
+  ID: 35
+  Damage: 13
+  Name: 绿色羊毛
+Item97:
+  Path: textures/items/bread.png
+  ID: 297
+  Damage: 0
+  Name: 面包
+Item98:
+  Path: textures/blocks/wool_colored_brown.png
+  ID: 35
+  Damage: 12
+  Name: 棕色羊毛
+Item99:
+  Path: textures/blocks/wool_colored_blue.png
+  ID: 35
+  Damage: 11
+  Name: 蓝色羊毛
+Item100:
+  Path: textures/items/stone_pickaxe.png
+  ID: 274
+  Damage: 0
+  Name: 石镐
+Item101:
+  Path: textures/blocks/bookshelf.png
+  ID: 47
+  Damage: 0
+  Name: 书架
+Item102:
+  Path: textures/items/iron_horse_armor.png
+  ID: 417
+  Damage: 0
+  Name: 铁马鞍
+Item103:
+  Path: textures/blocks/end_gateway.png
+  ID: 209
+  Damage: 0
+  Name: 末地门2
+Item104:
+  Path: textures/blocks/door_spruce_lower.png
+  ID: 187
+  Damage: 0
+  Name: 金合欢木围墙大门
+Item105:
+  Path: textures/items/nether_wart.png
+  ID: 372
+  Damage: 0
+  Name: 地狱疣
+Item106:
+  Path: textures/items/map_empty.png
+  ID: 395
+  Damage: 0
+  Name: 空地图
+Item107:
+  Path: textures/blocks/sandstone_smooth.png
+  ID: 24
+  Damage: 2
+  Name: 光滑沙石
+Item108:
+  Path: textures/blocks/sandstone_carved.png
+  ID: 24
+  Damage: 1
+  Name: 錾制沙石
+Item109:
+  Path: textures/blocks/planks_big_oak.png
+  ID: 164
+  Damage: 0
+  Name: 深色橡木阶梯
+Item110:
+  Path: textures/blocks/sandstone_normal.png
+  ID: 24
+  Damage: 0
+  Name: 沙石
+Item111:
+  Path: textures/items/porkchop_raw.png
+  ID: 319
+  Damage: 0
+  Name: 生猪排
+Item112:
+  Path: textures/items/phantom_membrane.png
+  ID: 470
+  Damage: 0
+  Name: 幻影薄膜
+Item113:
+  Path: textures/items/arrow.png
+  ID: 262
+  Damage: 0
+  Name: 箭
+Item114:
+  Path: textures/items/gold_pickaxe.png
+  ID: 285
+  Damage: 0
+  Name: 金镐
+Item115:
+  Path: textures/blocks/sand.png
+  ID: 12
+  Damage: 0
+  Name: 沙子
+Item116:
+  Path: textures/blocks/crafting_table_top.png
+  ID: 58
+  Damage: 0
+  Name: 工作台
+Item117:
+  Path: textures/blocks/cobblestone_mossy.png
+  ID: 139
+  Damage: 1
+  Name: 苔石墙
+Item118:
+  Path: textures/items/blaze_rod.png
+  ID: 369
+  Damage: 0
+  Name: 烈焰棒
+Item119:
+  Path: textures/blocks/enchanting_table_side.png
+  ID: 116
+  Damage: 0
+  Name: 附魔台
+Item120:
+  Path: textures/blocks/cobblestone.png
+  ID: 139
+  Damage: 0
+  Name: 圆石墙
+Item121:
+  Path: textures/blocks/wool_colored_gray.png
+  ID: 35
+  Damage: 7
+  Name: 灰色羊毛
+Item122:
+  Path: textures/blocks/concrete_powder_yellow.png
+  ID: 237
+  Damage: 4
+  Name: 黄色混凝土粉末
+Item123:
+  Path: textures/blocks/wool_colored_pink.png
+  ID: 35
+  Damage: 6
+  Name: 粉红色羊毛
+Item124:
+  Path: textures/blocks/concrete_powder_lime.png
+  ID: 237
+  Damage: 5
+  Name: 黄绿色混凝土粉末
+Item125:
+  Path: textures/blocks/wool_colored_lime.png
+  ID: 35
+  Damage: 5
+  Name: 黄绿色羊毛
+Item126:
+  Path: textures/blocks/concrete_powder_pink.png
+  ID: 237
+  Damage: 6
+  Name: 粉色混凝土粉末
+Item127:
+  Path: textures/blocks/wool_colored_yellow.png
+  ID: 35
+  Damage: 4
+  Name: 黄色羊毛
+Item128:
+  Path: textures/blocks/concrete_powder_gray.png
+  ID: 237
+  Damage: 7
+  Name: 灰色混凝土粉末
+Item129:
+  Path: textures/blocks/wool_colored_light_blue.png
+  ID: 35
+  Damage: 3
+  Name: 淡蓝色羊毛
+Item130:
+  Path: textures/items/leather_leggings.tga
+  ID: 300
+  Damage: 0
+  Name: 皮革护腿
+Item131:
+  Path: textures/items/sign.png
+  ID: 323
+  Damage: 0
+  Name: 告示牌
+Item132:
+  Path: textures/items/fishing_rod_cast.png
+  ID: 346
+  Damage: 0
+  Name: 鱼竿
+Item133:
+  Path: textures/blocks/concrete_powder_silver.png
+  ID: 237
+  Damage: 8
+  Name: 淡灰色混凝土粉末
+Item134:
+  Path: textures/blocks/wool_colored_magenta.png
+  ID: 35
+  Damage: 2
+  Name: 品红色羊毛
+Item135:
+  Path: textures/blocks/concrete_powder_cyan.png
+  ID: 237
+  Damage: 9
+  Name: 青色混凝土粉末
+Item136:
+  Path: textures/blocks/wool_colored_orange.png
+  ID: 35
+  Damage: 1
+  Name: 橙色羊毛
+Item137:
+  Path: textures/blocks/red_sand.png
+  ID: 12
+  Damage: 1
+  Name: 红沙
+Item138:
+  Path: textures/blocks/wool_colored_white.png
+  ID: 35
+  Damage: 0
+  Name: 白色羊毛
+Item139:
+  Path: textures/blocks/red_sandstone_carved.png
+  ID: 180
+  Damage: 0
+  Name: 红沙石阶梯
+Item140:
+  Path: textures/blocks/concrete_powder_white.png
+  ID: 237
+  Damage: 0
+  Name: 白色混凝土粉末
+Item141:
+  Path: textures/blocks/concrete_powder_orange.png
+  ID: 237
+  Damage: 1
+  Name: 橙色混凝土粉末
+Item142:
+  Path: textures/blocks/concrete_powder_magenta.png
+  ID: 237
+  Damage: 2
+  Name: 品红色混凝土粉末
+Item143:
+  Path: textures/blocks/concrete_powder_light_blue.png
+  ID: 237
+  Damage: 3
+  Name: 淡蓝色混凝土粉末
+Item144:
+  Path: textures/items/name_tag.png
+  ID: 421
+  Damage: 0
+  Name: 命名牌
+Item145:
+  Path: textures/items/heartofthesea_closed.png
+  ID: 467
+  Damage: 0
+  Name: 海洋之心
+Item146:
+  Path: textures/items/elytra.png
+  ID: 444
+  Damage: 0
+  Name: 翅鞘
+Item147:
+  Path: textures/blocks/dispenser_front_horizontal.png
+  ID: 23
+  Damage: 0
+  Name: 发射器
+Item148:
+  Path: textures/blocks/tnt_side.png
+  ID: 46
+  Damage: 0
+  Name: TNT
+Item149:
+  Path: textures/blocks/lever.png
+  ID: 69
+  Damage: 0
+  Name: 拉杆
+Item150:
+  Path: textures/blocks/pumpkin_stem_disconnected.png
+  ID: 104
+  Damage: 0
+  Name: 南瓜梗
+Item151:
+  Path: textures/items/map_nautilus.png
+  ID: 358
+  Damage: 0
+  Name: 地图(满)
+Item152:
+  Path: textures/items/kelp.png
+  ID: 335
+  Damage: 0
+  Name: 海带
+Item153:
+  Path: textures/blocks/water_placeholder.png
+  ID: 9
+  Damage: 0
+  Name: 水
+Item154:
+  Path: textures/items/diamond_leggings.png
+  ID: 312
+  Damage: 0
+  Name: 钻石护腿
+Item155:
+  Path: textures/blocks/glazed_terracotta_lime.png
+  ID: 225
+  Damage: 0
+  Name: 黄绿色带釉陶瓦
+Item156:
+  Path: textures/blocks/wool_colored_cyan.png
+  ID: 35
+  Damage: 9
+  Name: 青色羊毛
+Item157:
+  Path: textures/blocks/wool_colored_silver.png
+  ID: 35
+  Damage: 8
+  Name: 淡灰色羊毛
+Item158:
+  Path: textures/blocks/hopper_top.png
+  ID: 410
+  Damage: 0
+  Name: 漏斗
+Item159:
+  Path: textures/items/chorus_fruit_popped.png
+  ID: 433
+  Damage: 0
+  Name: 爆裂共鸣果
+Item160:
+  Path: textures/blocks/piston_top_normal.png
+  ID: 34
+  Damage: 0
+  Name: 活塞臂
+Item161:
+  Path: textures/blocks/diamond_block.png
+  ID: 57
+  Damage: 0
+  Name: 钻石块
+Item162:
+  Path: textures/blocks/lava_placeholder.png
+  ID: 11
+  Damage: 0
+  Name: 岩浆
+Item163:
+  Path: textures/blocks/brewing_stand.png
+  ID: 117
+  Damage: 0
+  Name: 酿造台
+Item164:
+  Path: textures/items/clock_item.png
+  ID: 347
+  Damage: 0
+  Name: 时钟
+Item165:
+  Path: textures/blocks/hay_block_side.png
+  ID: 170
+  Damage: 0
+  Name: 干草捆
+Item166:
+  Path: textures/items/door_wood.png
+  ID: 324
+  Damage: 0
+  Name: 橡木门
+Item167:
+  Path: textures/items/leather_boots.tga
+  ID: 301
+  Damage: 0
+  Name: 皮革靴子
+Item168:
+  Path: textures/items/stone_hoe.png
+  ID: 291
+  Damage: 0
+  Name: 石锄
+Item169:
+  Path: textures/items/prismarine_crystals.png
+  ID: 422
+  Damage: 0
+  Name: 海晶砂砾
+Item170:
+  Path: textures/items/shulker_shell.png
+  ID: 445
+  Damage: 0
+  Name: 潜匿之壳
+Item171:
+  Path: textures/blocks/lapis_block.png
+  ID: 22
+  Damage: 0
+  Name: 青金石块
+Item172:
+  Path: textures/items/dye_powder_yellow.png
+  ID: 351
+  Damage: 11
+  Name: 黄色染料
+Item173:
+  Path: textures/items/dye_powder_lime.png
+  ID: 351
+  Damage: 10
+  Name: 黄绿色染料
+Item174:
+  Path: textures/items/wood_hoe.png
+  ID: 290
+  Damage: 0
+  Name: 木锄
+Item175:
+  Path: textures/items/dye_powder_red.png
+  ID: 351
+  Damage: 13
+  Name: 红色染料
+Item176:
+  Path: textures/items/dye_powder_light_blue.png
+  ID: 351
+  Damage: 12
+  Name: 淡蓝色染料
+Item177:
+  Path: textures/items/dye_powder_white.png
+  ID: 351
+  Damage: 15
+  Name: 骨粉
+Item178:
+  Path: textures/blocks/sandstone_bottom.png
+  ID: 128
+  Damage: 0
+  Name: 沙石阶梯
+Item179:
+  Path: textures/items/dye_powder_orange.png
+  ID: 351
+  Damage: 14
+  Name: 橙色染料
+Item180:
+  Path: textures/items/brick.png
+  ID: 336
+  Damage: 0
+  Name: 红砖
+Item181:
+  Path: textures/items/shears.png
+  ID: 359
+  Damage: 0
+  Name: 剪刀
+Item182:
+  Path: textures/blocks/water_placeholder.png
+  ID: 8
+  Damage: 0
+  Name: 流动的水
+Item183:
+  Path: textures/items/diamond_boots.png
+  ID: 313
+  Damage: 0
+  Name: 钻石靴子
+Item184:
+  Path: textures/blocks/brick.png
+  ID: 45
+  Damage: 0
+  Name: 砖
+Item185:
+  Path: textures/blocks/glazed_terracotta_pink.png
+  ID: 226
+  Damage: 0
+  Name: 粉红色带釉陶瓦
+Item186:
+  Path: textures/items/rabbit_raw.png
+  ID: 411
+  Damage: 0
+  Name: 生兔子肉
+Item187:
+  Path: textures/items/beetroot.png
+  ID: 457
+  Damage: 0
+  Name: 甜菜根
+Item188:
+  Path: textures/blocks/purpur_block.png
+  ID: 203
+  Damage: 0
+  Name: 紫珀阶梯
+Item189:
+  Path: textures/blocks/piston_top_normal.png
+  ID: 33
+  Damage: 0
+  Name: 活塞
+Item190:
+  Path: textures/blocks/ice.png
+  ID: 79
+  Damage: 0
+  Name: 冰
+Item191:
+  Path: textures/blocks/lava_placeholder.png
+  ID: 10
+  Damage: 0
+  Name: 流动的岩浆
+Item192:
+  Path: textures/blocks/wool_colored_gray.png
+  ID: 171
+  Damage: 7
+  Name: 灰色地毯
+Item193:
+  Path: textures/blocks/wool_colored_silver.png
+  ID: 171
+  Damage: 8
+  Name: 淡灰色地毯
+Item194:
+  Path: textures/blocks/wool_colored_cyan.png
+  ID: 171
+  Damage: 9
+  Name: 青色地毯
+Item195:
+  Path: textures/blocks/cauldron_side.png
+  ID: 118
+  Damage: 0
+  Name: 炼药锅
+Item196:
+  Path: textures/blocks/wool_colored_light_blue.png
+  ID: 171
+  Damage: 3
+  Name: 淡蓝色地毯
+Item197:
+  Path: textures/blocks/wool_colored_yellow.png
+  ID: 171
+  Damage: 4
+  Name: 黄色地毯
+Item198:
+  Path: textures/blocks/wool_colored_lime.png
+  ID: 171
+  Damage: 5
+  Name: 黄绿色地毯
+Item199:
+  Path: textures/items/bucket_empty.png
+  ID: 325
+  Damage: 0
+  Name: 桶
+Item200:
+  Path: textures/items/glowstone_dust.png
+  ID: 348
+  Damage: 0
+  Name: 荧石粉
+Item201:
+  Path: textures/blocks/wool_colored_pink.png
+  ID: 171
+  Damage: 6
+  Name: 粉红色地毯
+Item202:
+  Path: textures/blocks/wool_colored_white.png
+  ID: 171
+  Damage: 0
+  Name: 白色地毯
+Item203:
+  Path: textures/blocks/wool_colored_orange.png
+  ID: 171
+  Damage: 1
+  Name: 橙色地毯
+Item204:
+  Path: textures/items/chainmail_helmet.png
+  ID: 302
+  Damage: 0
+  Name: 锁链头盔
+Item205:
+  Path: textures/blocks/diamond_ore.png
+  ID: 56
+  Damage: 0
+  Name: 钻石矿
+Item206:
+  Path: textures/blocks/wool_colored_magenta.png
+  ID: 171
+  Damage: 2
+  Name: 品红色地毯
+Item207:
+  Path: textures/blocks/door_birch_upper.png
+  ID: 194
+  Damage: 0
+  Name: 桦木门
+Item208:
+  Path: textures/blocks/concrete_red.png
+  ID: 236
+  Damage: 14
+  Name: 红色混凝土
+Item209:
+  Path: textures/blocks/concrete_black.png
+  ID: 236
+  Damage: 15
+  Name: 黑色混凝土
+Item210:
+  Path: textures/items/pumpkin_pie.png
+  ID: 400
+  Damage: 0
+  Name: 南瓜派
+Item211:
+  Path: textures/items/iron_hoe.png
+  ID: 292
+  Damage: 0
+  Name: 铁锄
+Item212:
+  Path: textures/items/turtle_helmet.png
+  ID: 469
+  Damage: 0
+  Name: 海龟壳
+Item213:
+  Path: textures/blocks/concrete_brown.png
+  ID: 236
+  Damage: 12
+  Name: 棕色混凝土
+Item214:
+  Path: textures/blocks/concrete_green.png
+  ID: 236
+  Damage: 13
+  Name: 绿色混凝土
+Item215:
+  Path: textures/blocks/concrete_purple.png
+  ID: 236
+  Damage: 10
+  Name: 紫色混凝土
+Item216:
+  Path: textures/items/mutton_raw.png
+  ID: 423
+  Damage: 0
+  Name: 生羊肉
+Item217:
+  Path: textures/blocks/concrete_blue.png
+  ID: 236
+  Damage: 11
+  Name: 蓝色混凝土
+Item218:
+  Path: textures/blocks/cobblestone.png
+  ID: 44
+  Damage: 3
+  Name: 圆石台阶
+Item219:
+  Path: textures/blocks/lapis_ore.png
+  ID: 21
+  Damage: 0
+  Name: 青金石矿
+Item220:
+  Path: textures/blocks/brick.png
+  ID: 44
+  Damage: 4
+  Name: 砖台阶
+Item221:
+  Path: textures/blocks/stonebrick.png
+  ID: 44
+  Damage: 5
+  Name: 石砖台阶
+Item222:
+  Path: textures/blocks/nether_brick.png
+  ID: 44
+  Damage: 6
+  Name: 石英台阶
+Item223:
+  Path: textures/blocks/vine_carried.png
+  ID: 106
+  Damage: 0
+  Name: 藤蔓
+Item224:
+  Path: textures/blocks/emerald_ore.png
+  ID: 129
+  Damage: 0
+  Name: 绿宝石矿石
+Item225:
+  Path: textures/blocks/quartz_block_top.png
+  ID: 44
+  Damage: 7
+  Name: 地狱砖台阶
+Item226:
+  Path: textures/items/gold_helmet.png
+  ID: 314
+  Damage: 0
+  Name: 金头盔
+Item227:
+  Path: textures/items/flower_pot.png
+  ID: 390
+  Damage: 0
+  Name: 花盆
+Item228:
+  Path: textures/items/clay_ball.png
+  ID: 337
+  Damage: 0
+  Name: 粘土球
+Item229:
+  Path: textures/blocks/bedrock.png
+  ID: 7
+  Damage: 0
+  Name: 基岩
+Item230:
+  Path: textures/blocks/red_sandstone_smooth.png
+  ID: 182
+  Damage: 0
+  Name: 红沙石台阶
+Item231:
+  Path: textures/blocks/stone_slab_top.png
+  ID: 44
+  Damage: 0
+  Name: 石台阶
+Item232:
+  Path: textures/blocks/cobblestone.png
+  ID: 67
+  Damage: 0
+  Name: 圆石阶梯
+Item233:
+  Path: textures/blocks/sandstone_top.png
+  ID: 44
+  Damage: 1
+  Name: 沙石台阶
+Item234:
+  Path: textures/blocks/glazed_terracotta_gray.png
+  ID: 227
+  Damage: 0
+  Name: 灰色带釉陶瓦
+Item235:
+  Path: textures/items/rabbit_cooked.png
+  ID: 412
+  Damage: 0
+  Name: 熟兔子肉
+Item236:
+  Path: textures/items/stick.png
+  ID: 280
+  Damage: 0
+  Name: 木棍
+Item237:
+  Path: textures/blocks/deadbush.png
+  ID: 32
+  Damage: 0
+  Name: 枯死的灌木
+Item238:
+  Path: textures/blocks/end_portal.png
+  ID: 119
+  Damage: 0
+  Name: 末地门
+Item239:
+  Path: textures/items/chainmail_chestplate.png
+  ID: 303
+  Damage: 0
+  Name: 锁链胸甲
+Item240:
+  Path: textures/items/fish_raw.png
+  ID: 349
+  Damage: 0
+  Name: 鱼
+Item241:
+  Path: textures/blocks/redstone_dust_line.png
+  ID: 55
+  Damage: 0
+  Name: 红石粉
+Item242:
+  Path: textures/blocks/snow.png
+  ID: 78
+  Damage: 0
+  Name: 顶层雪
+Item243:
+  Path: textures/blocks/hardened_clay.png
+  ID: 172
+  Damage: 0
+  Name: 陶瓦
+Item244:
+  Path: textures/items/mutton_cooked.png
+  ID: 424
+  Damage: 0
+  Name: 熟羊肉
+Item245:
+  Path: textures/items/diamond_hoe.png
+  ID: 293
+  Damage: 0
+  Name: 钻石锄
+Item246:
+  Path: textures/items/wood_pickaxe.png
+  ID: 270
+  Damage: 0
+  Name: 木镐
+Item247:
+  Path: textures/blocks/cobblestone.png
+  ID: 43
+  Damage: 3
+  Name: 双圆石台阶
+Item248:
+  Path: textures/blocks/brick.png
+  ID: 43
+  Damage: 4
+  Name: 双砖台阶
+Item249:
+  Path: textures/blocks/glass_pane_top_cyan.png
+  ID: 160
+  Damage: 9
+  Name: 青色玻璃板
+Item250:
+  Path: textures/blocks/stonebrick.png
+  ID: 43
+  Damage: 5
+  Name: 双石砖台阶
+Item251:
+  Path: textures/blocks/glass_brown.png
+  ID: 160
+  Damage: 8
+  Name: 淡灰色玻璃板
+Item252:
+  Path: textures/blocks/glass.png
+  ID: 20
+  Damage: 0
+  Name: 玻璃
+Item253:
+  Path: textures/blocks/nether_brick.png
+  ID: 43
+  Damage: 6
+  Name: 双石英台阶
+Item254:
+  Path: textures/blocks/glass_gray.png
+  ID: 160
+  Damage: 7
+  Name: 灰色玻璃板
+Item255:
+  Path: textures/blocks/quartz_block_top.png
+  ID: 43
+  Damage: 7
+  Name: 双地狱砖台阶
+Item256:
+  Path: textures/blocks/planks_oak.png
+  ID: 107
+  Damage: 0
+  Name: 橡木围墙大门
+Item257:
+  Path: textures/blocks/glass_pane_top_magenta.png
+  ID: 160
+  Damage: 2
+  Name: 品红色玻璃板
+Item258:
+  Path: textures/items/gold_chestplate.png
+  ID: 315
+  Damage: 0
+  Name: 金胸甲
+Item259:
+  Path: textures/items/reeds.png
+  ID: 338
+  Damage: 0
+  Name: 甘蔗
+Item260:
+  Path: textures/items/carrot.png
+  ID: 391
+  Damage: 0
+  Name: 胡萝卜
+Item261:
+  Path: textures/blocks/glass_pane_top_orange.png
+  ID: 160
+  Damage: 1
+  Name: 橙色玻璃板
+Item262:
+  Path: textures/blocks/glass_pane_top_white.png
+  ID: 160
+  Damage: 0
+  Name: 白色玻璃板
+Item263:
+  Path: textures/blocks/sapling_oak.png
+  ID: 6
+  Damage: 0
+  Name: 橡树苗
+Item264:
+  Path: textures/blocks/glass_pane_top_pink.png
+  ID: 160
+  Damage: 6
+  Name: 粉红色玻璃板
+Item265:
+  Path: textures/blocks/sapling_spruce.png
+  ID: 6
+  Damage: 1
+  Name: 云杉树苗
+Item266:
+  Path: textures/blocks/stone_slab_side.png
+  ID: 43
+  Damage: 0
+  Name: 双石台阶
+Item267:
+  Path: textures/blocks/glowstone.png
+  ID: 89
+  Damage: 0
+  Name: 萤石
+Item268:
+  Path: textures/blocks/glass_pane_top_lime.png
+  ID: 160
+  Damage: 5
+  Name: 黄绿色玻璃板
+Item269:
+  Path: textures/blocks/sapling_birch.png
+  ID: 6
+  Damage: 2
+  Name: 桦树苗
+Item270:
+  Path: textures/blocks/sandstone_bottom.png
+  ID: 43
+  Damage: 1
+  Name: 双沙石台阶
+Item271:
+  Path: textures/blocks/glass_yellow.png
+  ID: 160
+  Damage: 4
+  Name: 黄色玻璃板
+Item272:
+  Path: textures/blocks/door_spruce_lower.png
+  ID: 183
+  Damage: 0
+  Name: 云杉围墙大门
+Item273:
+  Path: textures/blocks/sapling_jungle.png
+  ID: 6
+  Damage: 3
+  Name: 丛林树苗
+Item274:
+  Path: textures/blocks/planks_oak.png
+  ID: 43
+  Damage: 2
+  Name: 双橡木台阶
+Item275:
+  Path: textures/blocks/rail_normal.png
+  ID: 66
+  Damage: 0
+  Name: 铁轨
+Item276:
+  Path: textures/blocks/glass_light_blue.png
+  ID: 160
+  Damage: 3
+  Name: 淡蓝色玻璃板
+Item277:
+  Path: textures/blocks/sapling_acacia.png
+  ID: 6
+  Damage: 4
+  Name: 金合欢树苗
+Item278:
+  Path: textures/blocks/sapling_roofed_oak.png
+  ID: 6
+  Damage: 5
+  Name: 深色橡树苗
+Item279:
+  Path: textures/blocks/glazed_terracotta_silver.png
+  ID: 228
+  Damage: 0
+  Name: 淡灰色带釉陶瓦
+Item280:
+  Path: textures/items/shulker_shell.png
+  ID: 205
+  Damage: 0
+  Name: 潜匿之贝箱子
+Item281:
+  Path: textures/items/bowl.png
+  ID: 281
+  Damage: 0
+  Name: 碗
+Item282:
+  Path: textures/items/rabbit_stew.png
+  ID: 413
+  Damage: 0
+  Name: 兔子煲
+Item283:
+  Path: textures/items/minecart_chest.png
+  ID: 342
+  Damage: 0
+  Name: 箱子矿车
+Item284:
+  Path: textures/items/chicken_raw.png
+  ID: 365
+  Damage: 0
+  Name: 生鸡肉
+Item285:
+  Path: textures/blocks/fern_carried.tga
+  ID: 31
+  Damage: 2
+  Name: 蕨
+Item286:
+  Path: textures/blocks/nether_brick.png
+  ID: 112
+  Damage: 0
+  Name: 地狱砖块
+Item287:
+  Path: textures/blocks/planks_oak.png
+  ID: 158
+  Damage: 0
+  Name: 橡木台阶
+Item288:
+  Path: textures/items/emerald.png
+  ID: 388
+  Damage: 0
+  Name: 绿宝石
+Item289:
+  Path: textures/blocks/tallgrass_carried.tga
+  ID: 31
+  Damage: 1
+  Name: 草
+Item290:
+  Path: textures/blocks/deadbush.png
+  ID: 31
+  Damage: 0
+  Name: 高草
+Item291:
+  Path: textures/blocks/planks_birch.png
+  ID: 135
+  Damage: 0
+  Name: 桦木阶梯
+Item292:
+  Path: textures/blocks/chest_front.png
+  ID: 54
+  Damage: 0
+  Name: 箱子
+Item293:
+  Path: textures/blocks/stone.png
+  ID: 77
+  Damage: 0
+  Name: 石质按钮
+Item294:
+  Path: textures/blocks/glazed_terracotta_green.png
+  ID: 233
+  Damage: 0
+  Name: 绿色带釉陶瓦
+Item295:
+  Path: textures/items/iron_shovel.png
+  ID: 256
+  Damage: 0
+  Name: 铁锹
+Item296:
+  Path: textures/items/diamond_axe.png
+  ID: 279
+  Damage: 0
+  Name: 钻石斧
+Item297:
+  Path: textures/blocks/sea_lantern.png
+  ID: 169
+  Damage: 0
+  Name: 海晶灯
+Item298:
+  Path: textures/items/redstone_dust.png
+  ID: 331
+  Damage: 0
+  Name: 红石
+Item299:
+  Path: textures/items/blaze_powder.png
+  ID: 377
+  Damage: 0
+  Name: 烈焰粉
+Item300:
+  Path: textures/blocks/dropper_front_horizontal.png
+  ID: 123
+  Damage: 0
+  Name: 投掷器
+Item301:
+  Path: textures/blocks/trapped_chest_front.png
+  ID: 146
+  Damage: 0
+  Name: 陷阱箱
+Item302:
+  Path: textures/blocks/planks_oak.png
+  ID: 5
+  Damage: 0
+  Name: 橡树木板
+Item303:
+  Path: textures/blocks/planks_spruce.png
+  ID: 5
+  Damage: 1
+  Name: 云杉木板
+Item304:
+  Path: textures/blocks/iron_block.png
+  ID: 42
+  Damage: 0
+  Name: 铁块
+Item305:
+  Path: textures/blocks/ladder.png
+  ID: 65
+  Damage: 0
+  Name: 梯子
+Item306:
+  Path: textures/blocks/soul_sand.png
+  ID: 88
+  Damage: 0
+  Name: 灵魂沙
+Item307:
+  Path: textures/blocks/planks_birch.png
+  ID: 5
+  Damage: 2
+  Name: 桦木板
+Item308:
+  Path: textures/blocks/planks_jungle.png
+  ID: 5
+  Damage: 3
+  Name: 丛林树木板
+Item309:
+  Path: textures/blocks/mushroom_block_skin_red.png
+  ID: 100
+  Damage: 0
+  Name: 红色蘑菇块
+Item310:
+  Path: textures/blocks/planks_acacia.png
+  ID: 5
+  Damage: 4
+  Name: 金合欢木板
+Item311:
+  Path: textures/items/cake.png
+  ID: 354
+  Damage: 0
+  Name: 蛋糕
+Item312:
+  Path: textures/blocks/planks_big_oak.png
+  ID: 5
+  Damage: 5
+  Name: 深色橡木木板
+Item313:
+  Path: textures/items/iron_sword.png
+  ID: 267
+  Damage: 0
+  Name: 铁剑
+Item314:
+  Path: textures/blocks/concrete_powder_black.png
+  ID: 237
+  Damage: 15
+  Name: 黑色混凝土粉末
+Item315:
+  Path: textures/blocks/concrete_powder_purple.png
+  ID: 237
+  Damage: 10
+  Name: 紫色混凝土粉末
+Item316:
+  Path: textures/blocks/concrete_powder_green.png
+  ID: 237
+  Damage: 13
+  Name: 绿色混凝土粉末
+Item317:
+  Path: textures/blocks/concrete_powder_red.png
+  ID: 237
+  Damage: 14
+  Name: 红色混凝土粉末
+Item318:
+  Path: textures/blocks/concrete_powder_blue.png
+  ID: 237
+  Damage: 11
+  Name: 蓝色混凝土粉末
+Item319:
+  Path: textures/blocks/glazed_terracotta_orange.png
+  ID: 221
+  Damage: 0
+  Name: 橙色带釉陶瓦
+Item320:
+  Path: textures/blocks/concrete_powder_brown.png
+  ID: 237
+  Damage: 12
+  Name: 棕色混凝土粉末
+Item321:
+  Path: textures/blocks/nether_brick.png
+  ID: 113
+  Damage: 0
+  Name: 地狱砖围墙
+Item322:
+  Path: textures/blocks/planks_jungle.png
+  ID: 136
+  Damage: 0
+  Name: 丛林木阶梯
+Item323:
+  Path: textures/blocks/hardened_clay_stained_white.png
+  ID: 159
+  Damage: 0
+  Name: 白色陶瓦
+Item324:
+  Path: textures/items/porkchop_cooked.png
+  ID: 320
+  Damage: 0
+  Name: 熟猪排
+Item325:
+  Path: textures/items/chicken_cooked.png
+  ID: 366
+  Damage: 0
+  Name: 熟鸡肉
+Item326:
+  Path: textures/items/item_frame.png
+  ID: 389
+  Damage: 0
+  Name: 展示框
+Item327:
+  Path: textures/blocks/web.png
+  ID: 30
+  Damage: 0
+  Name: 蜘蛛网
+Item328:
+  Path: textures/blocks/hardened_clay_stained_yellow.png
+  ID: 159
+  Damage: 4
+  Name: 黄色陶瓦
+Item329:
+  Path: textures/blocks/hardened_clay_stained_light_blue.png
+  ID: 159
+  Damage: 3
+  Name: 淡蓝色陶瓦
+Item330:
+  Path: textures/blocks/hardened_clay_stained_magenta.png
+  ID: 159
+  Damage: 2
+  Name: 品红色陶瓦
+Item331:
+  Path: textures/blocks/hardened_clay_stained_orange.png
+  ID: 159
+  Damage: 1
+  Name: 橙色陶瓦
+Item332:
+  Path: textures/blocks/planks_oak.png
+  ID: 53
+  Damage: 0
+  Name: 橡木阶梯
+Item333:
+  Path: textures/blocks/mushroom_block_skin_brown.png
+  ID: 99
+  Damage: 0
+  Name: 棕色蘑菇块
+Item334:
+  Path: textures/blocks/glazed_terracotta_red.png
+  ID: 234
+  Damage: 0
+  Name: 红色带釉陶瓦
+Item335:
+  Path: textures/items/potion_bottle_lingering_waterBreathing.png
+  ID: 441
+  Damage: 0
+  Name: 遗留的水瓶
+Item336:
+  Path: textures/items/iron_pickaxe.png
+  ID: 257
+  Damage: 0
+  Name: 铁镐
+Item337:
+  Path: textures/blocks/concrete_gray.png
+  ID: 159
+  Damage: 8
+  Name: 淡灰色陶瓦
+Item338:
+  Path: textures/blocks/hardened_clay_stained_gray.png
+  ID: 159
+  Damage: 7
+  Name: 灰色陶瓦
+Item339:
+  Path: textures/blocks/hardened_clay_stained_pink.png
+  ID: 159
+  Damage: 6
+  Name: 粉红色陶瓦
+Item340:
+  Path: textures/blocks/hardened_clay_stained_lime.png
+  ID: 159
+  Damage: 5
+  Name: 黄绿色陶瓦
+Item341:
+  Path: textures/items/dried_kelp.png
+  ID: 464
+  Damage: 0
+  Name: 干海带
+Item342:
+  Path: textures/blocks/hardened_clay_stained_lime.png
+  ID: 159
+  Damage: 9
+  Name: 青色陶瓦
+Item343:
+  Path: textures/blocks/gold_block.png
+  ID: 147
+  Damage: 0
+  Name: 重力压力板(轻型)
+Item344:
+  Path: textures/blocks/iron_bars.png
+  ID: 101
+  Damage: 0
+  Name: 铁栏杆
+Item345:
+  Path: textures/items/magma_cream.png
+  ID: 378
+  Damage: 0
+  Name: 岩浆膏
+Item346:
+  Path: textures/blocks/cobblestone.png
+  ID: 4
+  Damage: 0
+  Name: 圆石
+Item347:
+  Path: textures/blocks/gold_block.png
+  ID: 41
+  Damage: 0
+  Name: 黄金块
+Item348:
+  Path: textures/items/snowball.png
+  ID: 332
+  Damage: 0
+  Name: 雪球
+Item349:
+  Path: textures/items/bed_red.png
+  ID: 355
+  Damage: 0
+  Name: 床
+Item350:
+  Path: textures/blocks/netherrack.png
+  ID: 87
+  Damage: 0
+  Name: 地狱岩
+Item351:
+  Path: textures/blocks/glazed_terracotta_magenta.png
+  ID: 222
+  Damage: 0
+  Name: 品红色带釉陶瓦
+Item352:
+  Path: textures/items/wood_sword.png
+  ID: 268
+  Damage: 0
+  Name: 木剑
+Item353:
+  Path: textures/items/door_acacia.png
+  ID: 430
+  Damage: 0
+  Name: 金合欢木门
+Item354:
+  Path: textures/blocks/command_block.png
+  ID: 137
+  Damage: 0
+  Name: 命令方块
+Item355:
+  Path: textures/blocks/stonebrick_carved.png
+  ID: 98
+  Damage: 3
+  Name: 錾制石砖
+Item356:
+  Path: textures/items/rotten_flesh.png
+  ID: 367
+  Damage: 0
+  Name: 腐肉
+Item357:
+  Path: textures/blocks/nether_brick.png
+  ID: 114
+  Damage: 0
+  Name: 地狱砖阶梯
+Item358:
+  Path: textures/blocks/mob_spawner.png
+  ID: 52
+  Damage: 0
+  Name: 刷怪笼
+Item359:
+  Path: textures/blocks/stonebrick_mossy.png
+  ID: 98
+  Damage: 1
+  Name: 苔石砖
+Item360:
+  Path: textures/blocks/redstone_torch_off.png
+  ID: 75
+  Damage: 0
+  Name: 红石火把
+Item361:
+  Path: textures/blocks/stonebrick_cracked.png
+  ID: 98
+  Damage: 2
+  Name: 裂石砖
+Item362:
+  Path: textures/items/painting.png
+  ID: 321
+  Damage: 0
+  Name: 画
+Item363:
+  Path: textures/items/egg.png
+  ID: 344
+  Damage: 0
+  Name: 鸡蛋
+Item364:
+  Path: textures/blocks/stonebrick.png
+  ID: 98
+  Damage: 0
+  Name: 石砖
+Item365:
+  Path: textures/blocks/glowing_obsidian.png
+  ID: 235
+  Damage: 0
+  Name: 黑色带釉陶瓦
+Item366:
+  Path: textures/items/iron_axe.png
+  ID: 258
+  Damage: 0
+  Name: 铁斧
+Item367:
+  Path: textures/items/nautilus.png
+  ID: 465
+  Damage: 0
+  Name: 鹦鹉螺壳
+Item368:
+  Path: textures/blocks/glass_pane_top.png
+  ID: 102
+  Damage: 0
+  Name: 玻璃板
+Item369:
+  Path: textures/blocks/iron_block.png
+  ID: 148
+  Damage: 0
+  Name: 重力压力板(重型)
+Item370:
+  Path: textures/blocks/dirt.png
+  ID: 3
+  Damage: 0
+  Name: 泥土
+Item371:
+  Path: textures/blocks/mushroom_red.png
+  ID: 40
+  Damage: 0
+  Name: 红色蘑菇
+Item372:
+  Path: textures/items/sign.png
+  ID: 63
+  Damage: 0
+  Name: 告示牌
+Item373:
+  Path: textures/items/diamond_helmet.png
+  ID: 310
+  Damage: 0
+  Name: 钻石头盔
+Item374:
+  Path: textures/items/repeater.png
+  ID: 356
+  Damage: 0
+  Name: 中继器
+Item375:
+  Path: textures/blocks/pumpkin_face_off.png
+  ID: 86
+  Damage: 0
+  Name: 南瓜
+Item376:
+  Path: textures/items/boat.png
+  ID: 333
+  Damage: 0
+  Name: 橡木船
+Item377:
+  Path: textures/blocks/glazed_terracotta_light_blue.png
+  ID: 223
+  Damage: 0
+  Name: 淡蓝色带釉陶瓦
+Item378:
+  Path: textures/items/wood_shovel.png
+  ID: 269
+  Damage: 0
+  Name: 木锹
+Item379:
+  Path: textures/items/door_dark_oak.png
+  ID: 431
+  Damage: 0
+  Name: 深色橡木门
+Item380:
+  Path: textures/items/sweet_berries.png
+  ID: 477
+  Damage: 0
+  Name: 甜梅
+Item381:
+  Path: textures/blocks/chorus_flower.png
+  ID: 200
+  Damage: 0
+  Name: 共鸣花
+Item382:
+  Path: textures/items/ender_pearl.png
+  ID: 368
+  Damage: 0
+  Name: 末影珍珠
+Item383:
+  Path: textures/blocks/beacon.png
+  ID: 138
+  Damage: 0
+  Name: 信标
+Item384:
+  Path: textures/blocks/concrete_lime.png
+  ID: 236
+  Damage: 5
+  Name: 黄绿色混凝土
+Item385:
+  Path: textures/blocks/concrete_pink.png
+  ID: 236
+  Damage: 6
+  Name: 粉色混凝土
+Item386:
+  Path: textures/blocks/fire_0_placeholder.png
+  ID: 51
+  Damage: 0
+  Name: 火
+Item387:
+  Path: textures/blocks/redstone_ore.png
+  ID: 74
+  Damage: 0
+  Name: 发光的红石矿
+Item388:
+  Path: textures/blocks/concrete_gray.png
+  ID: 236
+  Damage: 7
+  Name: 灰色混凝土
+Item389:
+  Path: textures/blocks/concrete_silver.png
+  ID: 236
+  Damage: 8
+  Name: 淡灰色混凝土
+Item390:
+  Path: textures/blocks/stonebrick.png
+  ID: 97
+  Damage: 2
+  Name: 石砖刷怪蛋
+Item391:
+  Path: textures/blocks/concrete_cyan.png
+  ID: 236
+  Damage: 9
+  Name: 青色混凝土
+Item392:
+  Path: textures/items/compass_item.png
+  ID: 345
+  Damage: 0
+  Name: 指南针
+Item393:
+  Path: textures/blocks/stone.png
+  ID: 97
+  Damage: 0
+  Name: 石头刷怪蛋
+Item394:
+  Path: textures/blocks/Cobblestone.png
+  ID: 97
+  Damage: 1
+  Name: 圆石刷怪蛋
+Item395:
+  Path: textures/items/apple_golden.png
+  ID: 322
+  Damage: 0
+  Name: 金苹果
+Item396:
+  Path: textures/blocks/concrete_white.png
+  ID: 236
+  Damage: 0
+  Name: 白色混凝土
+Item397:
+  Path: textures/blocks/concrete_orange.png
+  ID: 236
+  Damage: 1
+  Name: 橙色混凝土
+Item398:
+  Path: textures/items/flint_and_steel.png
+  ID: 259
+  Damage: 0
+  Name: 打火石
+Item399:
+  Path: textures/blocks/concrete_magenta.png
+  ID: 236
+  Damage: 2
+  Name: 品红色混凝土
+Item400:
+  Path: textures/blocks/concrete_light_blue.png
+  ID: 236
+  Damage: 3
+  Name: 淡蓝色混凝土
+Item401:
+  Path: textures/blocks/concrete_yellow.png
+  ID: 236
+  Damage: 4
+  Name: 黄色混凝土
+Item402:
+  Path: textures/items/lead.png
+  ID: 420
+  Damage: 0
+  Name: 栓绳
+Item403:
+  Path: textures/items/apple_golden.png
+  ID: 466
+  Damage: 0
+  Name: 附魔金苹果
+Item404:
+  Path: textures/blocks/magma.png
+  ID: 213
+  Damage: 0
+  Name: 岩浆块
+Item405:
+  Path: textures/blocks/melon_side.png
+  ID: 103
+  Damage: 0
+  Name: 西瓜块
+Item406:
+  Path: textures/blocks/grass_side_carried.png
+  ID: 2
+  Damage: 0
+  Name: 草方块
+Item407:
+  Path: textures/blocks/planks_oak.png
+  ID: 85
+  Damage: 0
+  Name: 橡木围墙
+Item408:
+  Path: textures/items/diamond_chestplate.png
+  ID: 311
+  Damage: 0
+  Name: 钻石胸甲
+Item409:
+  Path: textures/items/leather.png
+  ID: 334
+  Damage: 0
+  Name: 皮革
+Item410:
+  Path: textures/items/cookie.png
+  ID: 357
+  Damage: 0
+  Name: 曲奇
+Item411:
+  Path: textures/blocks/glazed_terracotta_yellow.png
+  ID: 224
+  Damage: 0
+  Name: 黄色带釉陶瓦
+Item412:
+  Path: textures/items/chorus_fruit.png
+  ID: 432
+  Damage: 0
+  Name: 共鸣果
+Item413:
+  Path: textures/blocks/purpur_block.png
+  ID: 201
+  Damage: 0
+  Name: 紫珀方块
+Item414:
+  Path: textures/items/trident.png
+  ID: 455
+  Damage: 0
+  Name: 三叉戟
+Item415:
+  Path: textures/items/quartz.png
+  ID: 406
+  Damage: 0
+  Name: 地狱石英
+Item416:
+  Path: textures/items/door_spruce.png
+  ID: 429
+  Damage: 0
+  Name: 丛林木门
+Item417:
+  Path: textures/blocks/glass_red.png
+  ID: 241
+  Damage: 14
+  Name: 红色玻璃
+Item418:
+  Path: textures/blocks/torch_on.png
+  ID: 50
+  Damage: 0
+  Name: 火把
+Item419:
+  Path: textures/blocks/trapdoor.png
+  ID: 96
+  Damage: 0
+  Name: 木质陷阱门
+Item420:
+  Path: textures/blocks/glass_black.png
+  ID: 241
+  Damage: 15
+  Name: 黑色玻璃
+Item421:
+  Path: textures/blocks/glass_brown.png
+  ID: 241
+  Damage: 12
+  Name: 棕色玻璃
+Item422:
+  Path: textures/blocks/redstone_ore.png
+  ID: 73
+  Damage: 0
+  Name: 红石矿
+Item423:
+  Path: textures/blocks/bone_block_side.png
+  ID: 177
+  Damage: 0
+  Name: 悬挂的旗帜
+Item424:
+  Path: textures/blocks/glass_green.png
+  ID: 241
+  Damage: 13
+  Name: 绿色玻璃
+Item425:
+  Path: textures/blocks/glass_purple.png
+  ID: 241
+  Damage: 10
+  Name: 紫色玻璃
+Item426:
+  Path: textures/blocks/glass_blue.png
+  ID: 241
+  Damage: 11
+  Name: 蓝色玻璃
+Item427:
+  Path: textures/items/experience_bottle.png
+  ID: 384
+  Damage: 0
+  Name: 经验瓶
+Item428:
+  Path: textures/blocks/trip_wire_source.png
+  ID: 131
+  Damage: 0
+  Name: 拌线钩
+Item429:
+  Path: textures/items/iron_leggings.png
+  ID: 308
+  Damage: 0
+  Name: 铁护腿
+Item430:
+  Path: textures/items/stone_axe.png
+  ID: 275
+  Damage: 0
+  Name: 石斧
+Item431:
+  Path: textures/items/leather_helmet.tga
+  ID: 298
+  Damage: 0
+  Name: 皮革头盔
+Item432:
+  Path: textures/items/gold_horse_armor.png
+  ID: 418
+  Damage: 0
+  Name: 金马鞍
+Item433:
+  Path: textures/items/fish_cooked.png
+  ID: 350
+  Damage: 0
+  Name: 熟鱼
+Item434:
+  Path: textures/blocks/stone.png
+  ID: 1
+  Damage: 0
+  Name: 石头
+Item435:
+  Path: textures/blocks/stone_granite.png
+  ID: 1
+  Damage: 1
+  Name: 花岗岩
+Item436:
+  Path: textures/blocks/furnace_front_off.png
+  ID: 61
+  Damage: 0
+  Name: 熔炉
+Item437:
+  Path: textures/blocks/jukebox_top.png
+  ID: 84
+  Damage: 0
+  Name: 音乐盒
+Item438:
+  Path: textures/blocks/stone_granite_smooth.png
+  ID: 1
+  Damage: 2
+  Name: 磨制花岗岩
+Item439:
+  Path: textures/blocks/stone_diorite.png
+  ID: 1
+  Damage: 3
+  Name: 闪长岩
+Item440:
+  Path: textures/blocks/stone_diorite_smooth.png
+  ID: 1
+  Damage: 4
+  Name: 磨制闪长岩
+Item441:
+  Path: textures/blocks/chain_command_block_conditional_mipmap.png
+  ID: 188
+  Damage: 0
+  Name: 重复命令块
+Item442:
+  Path: textures/blocks/stone_andesite.png
+  ID: 1
+  Damage: 5
+  Name: 安山岩
+Item443:
+  Path: textures/blocks/stone_andesite_smooth.png
+  ID: 1
+  Damage: 6
+  Name: 磨制安山岩
+Item444:
+  Path: textures/blocks/slime.png
+  ID: 165
+  Damage: 0
+  Name: 粘液块
+Item445:
+  Path: textures/items/potion_bottle_drinkable.png
+  ID: 373
+  Damage: 0
+  Name: 水瓶
+Item446:
+  Path: textures/blocks/potatoes_stage_3.png
+  ID: 142
+  Damage: 0
+  Name: 土豆
+Item447:
+  Path: textures/items/carrot_golden.png
+  ID: 396
+  Damage: 0
+  Name: 金胡萝卜
+Item448:
+  Path: textures/blocks/chorus_plant.png
+  ID: 240
+  Damage: 0
+  Name: 共鸣植物
+Item449:
+  Path: textures/items/coal.png
+  ID: 263
+  Damage: 0
+  Name: 煤炭
+Item450:
+  Path: textures/items/gold_axe.png
+  ID: 286
+  Damage: 0
+  Name: 金斧
+Item451:
+  Path: textures/items/charcoal.png
+  ID: 263
+  Damage: 1
+  Name: 木炭
+Item452:
+  Path: textures/blocks/quartz_block_chiseled_top.png
+  ID: 155
+  Damage: 2
+  Name: 錾制石英块
+Item453:
+  Path: textures/items/seeds_melon.png
+  ID: 362
+  Damage: 0
+  Name: 南瓜种子
+Item454:
+  Path: textures/items/minecart_tnt.png
+  ID: 407
+  Damage: 0
+  Name: tnt矿车
+Item455:
+  Path: textures/blocks/quartz_block_lines.png
+  ID: 155
+  Damage: 1
+  Name: 竖纹石英块
+Item456:
+  Path: textures/blocks/daylight_detector_inverted_top.png
+  ID: 178
+  Damage: 0
+  Name: 阳光传感器
+Item457:
+  Path: textures/blocks/sponge_wet.png
+  ID: 19
+  Damage: 1
+  Name: 湿海绵
+Item458:
+  Path: textures/blocks/planks_oak.png
+  ID: 72
+  Damage: 0
+  Name: 木质压力板
+Item459:
+  Path: textures/blocks/glass_white.png
+  ID: 95
+  Damage: 0
+  Name: 隐形基岩
+Item460:
+  Path: textures/blocks/sponge.png
+  ID: 19
+  Damage: 0
+  Name: 干海绵
+Item461:
+  Path: textures/blocks/trip_wire.png
+  ID: 132
+  Damage: 0
+  Name: 拌线
+Item462:
+  Path: textures/blocks/quartz_block_top.png
+  ID: 155
+  Damage: 0
+  Name: 石英块
+Item463:
+  Path: textures/items/fireball.png
+  ID: 385
+  Damage: 0
+  Name: 火球
+Item464:
+  Path: textures/items/leather_chestplate.png
+  ID: 299
+  Damage: 0
+  Name: 皮革胸甲
+Item465:
+  Path: textures/items/iron_boots.png
+  ID: 309
+  Damage: 0
+  Name: 铁靴子
+Item466:
+  Path: textures/items/diamond_sword.png
+  ID: 276
+  Damage: 0
+  Name: 钻石剑
+Item467:
+  Path: textures/items/dye_powder_green.png
+  ID: 351
+  Damage: 2
+  Name: 绿色染料
+Item468:
+  Path: textures/blocks/observer_front.png
+  ID: 397
+  Damage: 2
+  Name: 僵尸头
+Item469:
+  Path: textures/items/dye_powder_purple.png
+  ID: 351
+  Damage: 1
+  Name: 品红色染料
+Item470:
+  Path: textures/blocks/observer_front.png
+  ID: 397
+  Damage: 1
+  Name: 凋零骷髅头
+Item471:
+  Path: textures/items/diamond_horse_armor.png
+  ID: 419
+  Damage: 0
+  Name: 钻石马鞍
+Item472:
+  Path: textures/items/dye_powder_black.png
+  ID: 351
+  Damage: 0
+  Name: 墨囊
+Item473:
+  Path: textures/blocks/observer_front.png
+  ID: 397
+  Damage: 4
+  Name: 苦力怕头
+Item474:
+  Path: textures/ui/Friend2.png
+  ID: 397
+  Damage: 3
+  Name: 史蒂夫头
+Item475:
+  Path: textures/blocks/repeating_command_block_back_mipmap.png
+  ID: 189
+  Damage: 0
+  Name: 链命令块
+Item476:
+  Path: textures/blocks/observer_front.png
+  ID: 397
+  Damage: 5
+  Name: 龙头
+Item477:
+  Path: textures/blocks/farmland_dry.png
+  ID: 60
+  Damage: 0
+  Name: 农田
+Item478:
+  Path: textures/items/dye_powder_pink.png
+  ID: 351
+  Damage: 9
+  Name: 粉红色染料
+Item479:
+  Path: textures/items/dye_powder_pink.png
+  ID: 351
+  Damage: 8
+  Name: 灰色染料
+Item480:
+  Path: textures/items/reeds.png
+  ID: 83
+  Damage: 0
+  Name: 甘蔗
+Item481:
+  Path: textures/items/dye_powder_silver.png
+  ID: 351
+  Damage: 7
+  Name: 淡灰色染料
+Item482:
+  Path: textures/blocks/end_portal.png
+  ID: 120
+  Damage: 0
+  Name: 末地传送门
+Item483:
+  Path: textures/blocks/planks_oak.png
+  ID: 143
+  Damage: 0
+  Name: 木质按钮
+Item484:
+  Path: textures/items/dye_powder_cyan.png
+  ID: 351
+  Damage: 6
+  Name: 青色染料
+Item485:
+  Path: textures/items/dye_powder_purple.png
+  ID: 351
+  Damage: 5
+  Name: 紫色染料
+Item486:
+  Path: textures/items/dye_powder_blue.png
+  ID: 351
+  Damage: 4
+  Name: 蓝色染料
+Item487:
+  Path: textures/items/potion_bottle_empty.png
+  ID: 374
+  Damage: 0
+  Name: 玻璃瓶
+Item488:
+  Path: textures/items/bone.png
+  ID: 397
+  Damage: 0
+  Name: 骷髅头
+Item489:
+  Path: textures/items/dye_powder_brown.png
+  ID: 351
+  Damage: 3
+  Name: 可可豆
+Item490:
+  Path: textures/blocks/glass_light_blue.png
+  ID: 241
+  Damage: 3
+  Name: 淡蓝色玻璃
+Item491:
+  Path: textures/blocks/glass_yellow.png
+  ID: 241
+  Damage: 4
+  Name: 黄色玻璃
+Item492:
+  Path: textures/blocks/glass_lime.png
+  ID: 241
+  Damage: 5
+  Name: 黄绿色玻璃
+Item493:
+  Path: textures/blocks/glass_pink.png
+  ID: 241
+  Damage: 6
+  Name: 粉红色玻璃
+Item494:
+  Path: textures/blocks/glass_gray.png
+  ID: 241
+  Damage: 7
+  Name: 灰色玻璃
+Item495:
+  Path: textures/blocks/glass_silver.png
+  ID: 241
+  Damage: 8
+  Name: 淡灰色玻璃
+Item496:
+  Path: textures/blocks/glass_cyan.png
+  ID: 241
+  Damage: 9
+  Name: 青色玻璃
+Item497:
+  Path: textures/blocks/glass_white.png
+  ID: 241
+  Damage: 0
+  Name: 白色玻璃
+Item498:
+  Path: textures/items/string.png
+  ID: 287
+  Damage: 0
+  Name: 蛛丝
+Item499:
+  Path: textures/blocks/glass_orange.png
+  ID: 241
+  Damage: 1
+  Name: 橙色玻璃
+Item500:
+  Path: textures/blocks/glass_magenta.png
+  ID: 241
+  Damage: 2
+  Name: 品红色玻璃
+Item501:
+  Path: textures/items/diamond.png
+  ID: 264
+  Damage: 0
+  Name: 钻石
+Item502:
+  Path: textures/items/minecart_hopper.png
+  ID: 408
+  Damage: 0
+  Name: 漏斗矿车
+Item503:
+  Path: textures/items/book_normal.png
+  ID: 340
+  Damage: 0
+  Name: 书
+Item504:
+  Path: textures/blocks/quartz_block_top.png
+  ID: 156
+  Damage: 0
+  Name: 石英阶梯
+Item505:
+  Path: textures/blocks/hardened_clay_stained_green.png
+  ID: 159
+  Damage: 13
+  Name: 绿色陶瓦
+Item506:
+  Path: textures/blocks/hardened_clay_stained_brown.png
+  ID: 159
+  Damage: 12
+  Name: 棕色陶瓦
+Item507:
+  Path: textures/blocks/red_sandstone_bottom.png
+  ID: 179
+  Damage: 0
+  Name: 红沙石
+Item508:
+  Path: textures/blocks/hardened_clay_stained_blue.png
+  ID: 159
+  Damage: 11
+  Name: 蓝色陶瓦
+Item509:
+  Path: textures/blocks/red_sandstone_carved.png
+  ID: 179
+  Damage: 1
+  Name: 錾制红沙石
+Item510:
+  Path: textures/blocks/hardened_clay_stained_purple.png
+  ID: 159
+  Damage: 10
+  Name: 紫色陶瓦
+Item511:
+  Path: textures/blocks/red_sandstone_smooth.png
+  ID: 179
+  Damage: 2
+  Name: 平滑红沙石
+Item512:
+  Path: textures/blocks/leaves_birch_carried.tga
+  ID: 18
+  Damage: 2
+  Name: 桦树叶
+Item513:
+  Path: textures/blocks/wool_colored_black.png
+  ID: 171
+  Damage: 15
+  Name: 黑色地毯
+Item514:
+  Path: textures/blocks/leaves_spruce_carried.tga
+  ID: 18
+  Damage: 1
+  Name: 云杉叶
+Item515:
+  Path: textures/blocks/wool_colored_red.png
+  ID: 171
+  Damage: 14
+  Name: 红色地毯
+Item516:
+  Path: textures/blocks/leaves_oak_carried.tga
+  ID: 18
+  Damage: 0
+  Name: 橡树叶
+Item517:
+  Path: textures/blocks/hardened_clay_stained_black.png
+  ID: 159
+  Damage: 15
+  Name: 黑色陶瓦
+Item518:
+  Path: textures/blocks/wool_colored_green.png
+  ID: 171
+  Damage: 13
+  Name: 绿色地毯
+Item519:
+  Path: textures/blocks/hardened_clay_stained_red.png
+  ID: 159
+  Damage: 14
+  Name: 红色陶瓦
+Item520:
+  Path: textures/blocks/wool_colored_brown.png
+  ID: 171
+  Damage: 12
+  Name: 棕色地毯
+Item521:
+  Path: textures/blocks/emerald_block.png
+  ID: 133
+  Damage: 0
+  Name: 绿宝石块
+Item522:
+  Path: textures/items/beef_raw.png
+  ID: 363
+  Damage: 0
+  Name: 生牛肉
+Item523:
+  Path: textures/blocks/mycelium_side.png
+  ID: 110
+  Damage: 0
+  Name: 菌丝
+Item524:
+  Path: textures/items/diamond_shovel.png
+  ID: 277
+  Damage: 0
+  Name: 钻石锹
+Item525:
+  Path: textures/blocks/wool_colored_blue.png
+  ID: 171
+  Damage: 11
+  Name: 蓝色地毯
+Item526:
+  Path: textures/blocks/wool_colored_purple.png
+  ID: 171
+  Damage: 10
+  Name: 紫色地毯
+Item527:
+  Path: textures/blocks/glazed_terracotta_blue.png
+  ID: 231
+  Damage: 0
+  Name: 蓝色带釉陶瓦
+Item528:
+  Path: textures/items/bone.png
+  ID: 352
+  Damage: 0
+  Name: 骨头
+Item529:
+  Path: textures/items/carrot_on_a_stick.png
+  ID: 398
+  Damage: 0
+  Name: 胡萝卜杆
+Item530:
+  Path: textures/blocks/piston_top_sticky.png
+  ID: 29
+  Damage: 0
+  Name: 粘性活塞
+Item531:
+  Path: textures/blocks/clay.png
+  ID: 82
+  Damage: 0
+  Name: 粘土
+Item532:
+  Path: textures/blocks/end_stone.png
+  ID: 121
+  Damage: 0
+  Name: 末地石
+Item533:
+  Path: textures/items/spider_eye.png
+  ID: 375
+  Damage: 0
+  Name: 蜘蛛眼
+Item534:
+  Path: textures/items/totem.png
+  ID: 450
+  Damage: 0
+  Name: 不死图腾
+Item535:
+  Path: textures/items/feather.png
+  ID: 288
+  Damage: 0
+  Name: 羽毛
+Item536:
+  Path: textures/blocks/leaves_jungle_carried.tga
+  ID: 18
+  Damage: 3
+  Name: 丛林树叶
+Item537:
+  Path: textures/items/iron_ingot.png
+  ID: 265
+  Damage: 0
+  Name: 铁锭
+Item538:
+  Path: textures/items/book_written.png
+  ID: 387
+  Damage: 0
+  Name: 书
+Item539:
+  Path: textures/items/prismarine_shard.png
+  ID: 409
+  Damage: 0
+  Name: 海晶碎片
+Item540:
+  Path: textures/items/slimeball.png
+  ID: 341
+  Damage: 0
+  Name: 粘液球
+Item541:
+  Path: textures/blocks/planks_spruce.png
+  ID: 134
+  Damage: 0
+  Name: 云杉木阶梯
+Item542:
+  Path: textures/blocks/log_jungle.png
+  ID: 17
+  Damage: 3
+  Name: 丛林木
+Item543:
+  Path: textures/blocks/log_birch.png
+  ID: 17
+  Damage: 2
+  Name: 桦木
+Item544:
+  Path: textures/blocks/log_spruce.png
+  ID: 17
+  Damage: 1
+  Name: 云杉木
+Item545:
+  Path: textures/blocks/log_oak.png
+  ID: 17
+  Damage: 0
+  Name: 橡木
+Item546:
+  Path: textures/blocks/carried_waterlily.png
+  ID: 111
+  Damage: 0
+  Name: 睡莲
+Item547:
+  Path: textures/items/beef_cooked.png
+  ID: 364
+  Damage: 0
+  Name: 熟牛肉
+Item548:
+  Path: textures/items/diamond_pickaxe.png
+  ID: 278
+  Damage: 0
+  Name: 钻石镐
+Item549:
+  Path: textures/blocks/stone.png
+  ID: 70
+  Damage: 0
+  Name: 石质压力板
+Item550:
+  Path: textures/blocks/glazed_terracotta_brown.png
+  ID: 232
+  Damage: 0
+  Name: 棕色带釉陶瓦
+Item551:
+  Path: textures/blocks/door_iron_upper.png
+  ID: 330
+  Damage: 0
+  Name: 铁门
+Item552:
+  Path: textures/blocks/prismarine_bricks.png
+  ID: 168
+  Damage: 2
+  Name: 海晶石砖
+Item553:
+  Path: textures/items/sugar.png
+  ID: 353
+  Damage: 0
+  Name: 糖
+Item554:
+  Path: textures/items/spider_eye_fermented.png
+  ID: 376
+  Damage: 0
+  Name: 发酵蜘蛛眼
+Item555:
+  Path: textures/items/nether_star.png
+  ID: 399
+  Damage: 0
+  Name: 下届之星
+Item556:
+  Path: textures/blocks/prismarine_dark.png
+  ID: 168
+  Damage: 1
+  Name: 暗海晶石
+Item557:
+  Path: textures/blocks/anvil_top_damaged_0.png
+  ID: 145
+  Damage: 0
+  Name: 铁砧
+Item558:
+  Path: textures/blocks/glass_blue.png
+  ID: 160
+  Damage: 11
+  Name: 蓝色玻璃板
+Item559:
+  Path: textures/blocks/prismarine_dark.png
+  ID: 168
+  Damage: 0
+  Name: 海晶石
+Item560:
+  Path: textures/blocks/glass_pane_top_purple.png
+  ID: 160
+  Damage: 10
+  Name: 紫色玻璃板
+Item561:
+  Path: textures/blocks/rail_detector.png
+  ID: 28
+  Damage: 0
+  Name: 探测铁轨
+Item562:
+  Path: textures/blocks/dragon_egg.png
+  ID: 122
+  Damage: 0
+  Name: 龙蛋
+Item563:
+  Path: textures/items/gold_ingot.png
+  ID: 266
+  Damage: 0
+  Name: 金锭
+Item564:
+  Path: textures/items/gunpowder.png
+  ID: 289
+  Damage: 0
+  Name: 火药
+Item565:
+  Path: textures/blocks/cactus_side.tga
+  ID: 81
+  Damage: 0
+  Name: 仙人掌
+Item566:
+  Path: textures/blocks/glass_pane_top_green.png
+  ID: 160
+  Damage: 13
+  Name: 绿色玻璃板
+Item567:
+  Path: textures/blocks/glass_brown.png
+  ID: 160
+  Damage: 12
+  Name: 棕色玻璃板
+Item568:
+  Path: textures/blocks/glass_black.png
+  ID: 160
+  Damage: 15
+  Name: 黑色玻璃板
+Item569:
+  Path: textures/blocks/glazed_terracotta_white.png
+  ID: 220
+  Damage: 0
+  Name: 白色带釉陶瓦
+Item570:
+  Path: textures/blocks/glass_red.png
+  ID: 160
+  Damage: 14
+  Name: 红色玻璃板
