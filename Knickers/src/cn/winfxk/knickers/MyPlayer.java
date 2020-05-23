@@ -9,6 +9,8 @@ import cn.nukkit.utils.Config;
 import cn.winfxk.knickers.form.FormBase;
 
 /**
+ * 玩家数据类
+ * 
  * @author Winfxk
  */
 public class MyPlayer {

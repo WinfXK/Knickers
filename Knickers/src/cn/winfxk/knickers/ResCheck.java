@@ -22,6 +22,8 @@ import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
 /**
+ * 数据检测类
+ * 
  * @author Winfxk
  */
 public class ResCheck {

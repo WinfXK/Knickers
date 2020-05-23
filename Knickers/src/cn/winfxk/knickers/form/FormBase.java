@@ -43,7 +43,8 @@ public abstract class FormBase implements Cloneable {
 		this.player = player;
 		ac = Activate.getActivate();
 		msg = ac.getMessage();
-		myPlayer = ac.getPlayers(player.getName());
+		if (player != null)
+			myPlayer = ac.getPlayers(player.getName());
 		reload();
 		formID = ac.getFormID();
 		Son = getClass().getSimpleName();
@@ -64,9 +65,18 @@ public abstract class FormBase implements Cloneable {
 	protected FormBase reload() {
 		if (K.length <= 0)
 			setK("{Player}", "{Money}");
-		if (D.length <= 0)
+		if (D.length <= 0 && player != null)
 			setD(player.getName(), myPlayer.getMoney());
 		return this;
+	}
+
+	/**
+	 * 返回打开界面的玩家对象
+	 * 
+	 * @return
+	 */
+	public Player getPlayer() {
+		return player;
 	}
 
 	/**
@@ -85,7 +95,16 @@ public abstract class FormBase implements Cloneable {
 	 * @return
 	 */
 	protected String getBack() {
-		return msg.getSon(t, upForm != null ? "Back" : "Close", this);
+		return msg.getMessage(upForm != null ? "Back" : "Close", this);
+	}
+
+	/**
+	 * 返回确定按钮的文本
+	 * 
+	 * @return
+	 */
+	protected String getConfirm() {
+		return msg.getMessage("Confirm", this);
 	}
 
 	/**
@@ -293,7 +312,7 @@ public abstract class FormBase implements Cloneable {
 	 * @return
 	 */
 	protected String getString(String string, String[] K, Object[] D) {
-		return msg.getSun(t, Son, string, K, D);
+		return msg.getSun(t, Son, string, K, D, this, player);
 	}
 
 	/**
@@ -303,7 +322,7 @@ public abstract class FormBase implements Cloneable {
 	 * @return
 	 */
 	protected String getString(String string) {
-		return msg.getSun(t, Son, string, this);
+		return msg.getSun(t, Son, string, this, player);
 	}
 
 	/**
@@ -325,5 +344,28 @@ public abstract class FormBase implements Cloneable {
 		base.listKey = new ArrayList<>();
 		base.make = null;
 		return base;
+	}
+
+	/**
+	 * 发送一个消息给玩家并且返回一个布尔值
+	 * 
+	 * @param string 要发送的内容
+	 * @return
+	 */
+	public boolean sendMessage(String string) {
+		player.sendMessage(string);
+		return false;
+	}
+
+	/**
+	 * 发送一个消息给玩家并且返回一个布尔值
+	 * 
+	 * @param string 要发送的内容
+	 * @param ret    要返回的内容
+	 * @return
+	 */
+	public boolean sendMessage(String string, boolean ret) {
+		player.sendMessage(string);
+		return ret;
 	}
 }

@@ -15,6 +15,8 @@ import cn.nukkit.form.response.FormResponseSimple;
 import cn.nukkit.plugin.PluginBase;
 
 /**
+ * 菜单插件主类
+ * 
  * @Createdate 2020/05/22 18:56:27
  * @author Winfxk
  */

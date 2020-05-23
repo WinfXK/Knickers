@@ -14,6 +14,8 @@ import cn.winfxk.knickers.money.MyEconomy;
 import cn.winfxk.knickers.tool.Tool;
 
 /**
+ * 文本消息过滤累<性能可能差的一批！该更新了>
+ * 
  * @author Winfxk
  */
 public class Message {
@@ -21,6 +23,7 @@ public class Message {
 	private String[] Data;
 	private Map<String, Object> map;
 	private Config config;
+	private MyMap<String, Alternate> alts = new MyMap<>();
 	private static final String[] Key = { "{n}", "{ServerName}", "{PluginName}", "{MoneyName}", "{Time}", "{Date}" };
 	public static final List<String> Dk = new ArrayList<>();
 	public static final String EconomyKey = "Economy}";
@@ -31,6 +34,18 @@ public class Message {
 
 	public Config getConfig() {
 		return config;
+	}
+
+	/**
+	 * 添加一个自定义变量
+	 * 
+	 * @param Key
+	 * @param alternate
+	 * @return
+	 */
+	public Message addAlternate(String Key, Alternate alternate) {
+		alts.put(Key, alternate);
+		return this;
 	}
 
 	/**
@@ -113,8 +128,22 @@ public class Message {
 	 * @return
 	 */
 	public String getSun(String t, String Son, String Sun, String[] k, Object[] d) {
+		return getSun(t, Son, Sun, k, d, null, null);
+	}
+
+	/**
+	 * 从配置文件中获取三级默认文本并插入数据
+	 *
+	 * @param t   一级Key
+	 * @param Son 二级Key
+	 * @param Sun 三级Key
+	 * @param k   要插入的对应变量
+	 * @param d   要插入的数据
+	 * @return
+	 */
+	public String getSun(String t, String Son, String Sun, String[] k, Object[] d, FormBase base, Player player) {
 		return k == null || k.length <= 1 || d == null || d.length <= 1 ? getSon(t, Son)
-				: getSun(t, Son, Sun, Arrays.asList(k), Arrays.asList(d));
+				: getSun(t, Son, Sun, k, d, base, player);
 	}
 
 	/**
@@ -133,6 +162,28 @@ public class Message {
 	/**
 	 * 从配置文件中获取三级默认文本并插入数据
 	 *
+	 * @param t      一级Key
+	 * @param Son    二级Key
+	 * @param Sun    三级Key
+	 * @param form   正在操作的界面
+	 * @param player 可能调用的玩家对象
+	 * @return
+	 */
+	public String getSun(String t, String Son, String Sun, FormBase form, Player player) {
+		if (this.map.containsKey(t) && this.map.get(t) instanceof Map) {
+			HashMap<String, Object> map = (HashMap<String, Object>) this.map.get(t);
+			if (map.containsKey(Son) && map.get(Son) instanceof Map) {
+				map = (HashMap<String, Object>) map.get(Son);
+				if (map.containsKey(Sun))
+					return getText(map.get(Sun).toString(), form.getK(), form.getD(), form, player);
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 从配置文件中获取三级默认文本并插入数据
+	 *
 	 * @param t   一级Key
 	 * @param Son 二级Key
 	 * @param Sun 三级Key
@@ -146,7 +197,7 @@ public class Message {
 			if (map.containsKey(Son) && map.get(Son) instanceof Map) {
 				map = (HashMap<String, Object>) map.get(Son);
 				if (map.containsKey(Sun))
-					return getText(map.get(Sun).toString(), k, d);
+					return getText(map.get(Sun).toString(), k, d, null, null);
 			}
 		}
 		return null;
@@ -271,7 +322,7 @@ public class Message {
 		if (this.map.containsKey(t) && this.map.get(t) instanceof Map) {
 			HashMap<String, Object> map = (HashMap<String, Object>) this.map.get(t);
 			if (map.containsKey(Son))
-				return getText(map.get(Son).toString(), k, d);
+				return getText(map.get(Son).toString(), k, d, null, null);
 		}
 		return null;
 	}
@@ -297,6 +348,19 @@ public class Message {
 	 */
 	public String getMessage(String t, Player player, FormBase form) {
 		return getMessage(t, form.getK(), form.getD());
+	}
+
+	/**
+	 * 从配置文件中获取一级默认文本并插入数据
+	 *
+	 * @param t    一级Key
+	 * @param form 玩家正在使用的界面对象
+	 * @return
+	 */
+	public String getMessage(String t, FormBase form) {
+		if (map.containsKey(t))
+			return getText(map.get(t), form.getK(), form.getD(), form, form.getPlayer());
+		return null;
 	}
 
 	/**
@@ -358,7 +422,7 @@ public class Message {
 	 */
 	public String getMessage(String t, List<String> k, List<Object> d) {
 		if (this.map.containsKey(t))
-			return getText(this.map.get(t), k, d);
+			return getText(this.map.get(t), k, d, null, null);
 		return null;
 	}
 
@@ -369,6 +433,12 @@ public class Message {
 	 * @return
 	 */
 	public String getText(Object t, MyPlayer myPlayer) {
+		String string = Tool.objToString(t);
+		for (String key : alts.keySet()) {
+			if (!string.contains(key))
+				continue;
+			string.replace(key, alts.get(key).getString(null, myPlayer.getPlayer()));
+		}
 		return getText(t, new String[] { "{Player}", "{Money}" },
 				new Object[] { myPlayer.getPlayer().getName(), myPlayer.getMoney() });
 	}
@@ -380,7 +450,13 @@ public class Message {
 	 * @return
 	 */
 	public String getText(Object text, Player player) {
-		return getText(text, new String[] { "{Player}", "{Money}" },
+		String string = Tool.objToString(text);
+		for (String key : alts.keySet()) {
+			if (!string.contains(key))
+				continue;
+			string.replace(key, alts.get(key).getString(null, player));
+		}
+		return getText(string, new String[] { "{Player}", "{Money}" },
 				new Object[] { player.getName(), MyPlayer.getMoney(player.getName()) });
 	}
 
@@ -421,6 +497,55 @@ public class Message {
 					rgb += rgbString;
 			string = rgb;
 		}
+		for (String key : alts.keySet()) {
+			if (!string.contains(key))
+				continue;
+			string.replace(key, alts.get(key).getString(null, null));
+		}
+		return getEconomy(string);
+	}
+
+	/**
+	 * 将数据插入文本中
+	 *
+	 * @param text 要插入修改的文本
+	 * @return
+	 */
+	public String getText(Object text, FormBase form, Player player) {
+		if (text == null)
+			return null;
+		load();
+		String string = String.valueOf(text);
+		if (string == null || string.isEmpty())
+			return null;
+		for (int i = 0; i < Key.length; i++)
+			if (string.contains(Key[i]))
+				string = string.replace(Key[i], Data[i]);
+		if (string.contains("{RandColor}")) {
+			String[] strings = string.split("\\{RandColor\\}");
+			string = "";
+			for (String s : strings)
+				string += Tool.getRandColor() + s;
+		}
+		if (string.contains("{RGBTextStart}") && string.contains("{RGBTextEnd}")) {
+			String rgb = "", rString, gString;
+			String[] rgbStrings = string.split("\\{RGBTextEnd\\}");
+			for (String rgbString : rgbStrings)
+				if (rgbString.contains("{RGBTextStart}")) {
+					rString = rgbString + "{RGBTextEnd}";
+					gString = Tool.cutString(rString, "{RGBTextStart}", "{RGBTextEnd}");
+					if (gString == null || gString.isEmpty())
+						gString = "";
+					rgb += rString.replace("{RGBTextStart}" + gString + "{RGBTextEnd}", Tool.getColorFont(gString));
+				} else
+					rgb += rgbString;
+			string = rgb;
+		}
+		for (String key : alts.keySet()) {
+			if (!string.contains(key))
+				continue;
+			string.replace(key, alts.get(key).getString(form, player));
+		}
 		return getEconomy(string);
 	}
 
@@ -460,6 +585,11 @@ public class Message {
 					rgb += rgbString;
 			string = rgb;
 		}
+		for (String key : alts.keySet()) {
+			if (!string.contains(key))
+				continue;
+			string.replace(key, alts.get(key).getString(null, null));
+		}
 		return getEconomy(string);
 	}
 
@@ -471,8 +601,9 @@ public class Message {
 	 * @param d   对应的数据
 	 * @return
 	 */
-	public String getText(Object tex, String[] k, Object[] d) {
-		return k.length <= 1 || d.length <= 1 ? getText(tex) : getText(tex, Arrays.asList(k), Arrays.asList(d));
+	public String getText(Object tex, String[] k, Object[] d, FormBase form, Player player) {
+		return k.length <= 1 || d.length <= 1 ? getText(tex)
+				: getText(tex, Arrays.asList(k), Arrays.asList(d), form, player);
 	}
 
 	/**
@@ -483,7 +614,20 @@ public class Message {
 	 * @param d   对应的数据
 	 * @return
 	 */
-	public String getText(Object tex, List<String> k, List<Object> d) {
+	public String getText(Object tex, String[] k, Object[] d) {
+		return k.length <= 1 || d.length <= 1 ? getText(tex)
+				: getText(tex, Arrays.asList(k), Arrays.asList(d), null, null);
+	}
+
+	/**
+	 * 将数据插入文本中
+	 *
+	 * @param tex 要插入修改的文本
+	 * @param k   对应的变量
+	 * @param d   对应的数据
+	 * @return
+	 */
+	public String getText(Object tex, List<String> k, List<Object> d, FormBase form, Player player) {
 		if (tex == null)
 			return null;
 		load();
@@ -516,6 +660,11 @@ public class Message {
 					rgb += rgbString;
 			text = rgb;
 		}
+		for (String key : alts.keySet()) {
+			if (!text.contains(key))
+				continue;
+			text.replace(key, alts.get(key).getString(form, player));
+		}
 		return getEconomy(text);
 	}
 
@@ -545,5 +694,22 @@ public class Message {
 		list.add(player.getPlayer().getName());
 		list.add(player.getMoney());
 		return list;
+	}
+
+	/**
+	 * 之定义变量接口
+	 * 
+	 * @Createdate 2020/05/23 12:23:54
+	 * @author Winfxk
+	 */
+	public static interface Alternate {
+		/**
+		 * 自定义变量接口
+		 * 
+		 * @param form   调用时的界面对象<可能为空>
+		 * @param player 调用时的玩家对象<可能为空>
+		 * @return
+		 */
+		public abstract String getString(FormBase form, Player player);
 	}
 }

@@ -1,10 +1,10 @@
 package cn.winfxk.knickers.module.cmd;
 
-import java.io.File;
-
 import cn.nukkit.Player;
+import cn.nukkit.utils.Config;
 import cn.winfxk.knickers.Activate;
 import cn.winfxk.knickers.form.ButtonBase;
+import cn.winfxk.knickers.form.FormBase;
 import cn.winfxk.knickers.module.FunctionBase;
 
 /**
@@ -20,22 +20,12 @@ public class CommandButton extends FunctionBase {
 	}
 
 	@Override
-	public boolean makeButton(Player player, File file) {
-		return false;
-	}
-
-	@Override
-	public String getButtonString(ButtonBase form, String Key) {
-		return null;
-	}
-
-	@Override
 	public boolean ClickButton(ButtonBase form, String Key) {
 		return false;
 	}
 
 	@Override
-	public boolean delButton(ButtonBase form, String Key) {
-		return false;
+	protected FormBase getForm(Player player, Config config, FormBase base) {
+		return null;
 	}
 }

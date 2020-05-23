@@ -15,6 +15,8 @@ import cn.nukkit.plugin.Plugin;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.Utils;
+import cn.winfxk.knickers.cmd.MainCommand;
+import cn.winfxk.knickers.module.FunctionMag;
 import cn.winfxk.knickers.money.EconomyAPI;
 import cn.winfxk.knickers.money.EconomyManage;
 import cn.winfxk.knickers.money.MyEconomy;
@@ -22,6 +24,8 @@ import cn.winfxk.knickers.tool.ItemList;
 import cn.winfxk.knickers.tool.Update;
 
 /**
+ * 数据集合类
+ * 
  * @author Winfxk
  */
 public class Activate {
@@ -32,14 +36,17 @@ public class Activate {
 	public final static String MessageFileName = "Message.yml", ConfigFileName = "Config.yml",
 			CommandFileName = "Command.yml", EconomyListConfigName = "EconomyList.yml", FormIDFileName = "FormID.yml",
 			PlayerDataDirName = "Players", LanguageDirName = "language", SystemFileName = "System.xml",
-			ItemListName = "ItemList.yml", MenuDataDirName = "Menu", MainMenuFileName = "Main.yml";
-	private static Activate activate;
+			ItemListName = "ItemList.yml", MenuDataDirName = "Menu", MainMenuFileName = "Main.yml",
+			FunctionFileName = "Function.yml";
+	private ItemList items;
 	private MyEconomy economy;
 	private EconomyManage money;
+	private FunctionMag functionMag;
+	private static Activate activate;
 	private LinkedHashMap<String, MyPlayer> Players;
 	protected FormID FormID;
 	protected Message message;
-	protected Config config, CommandConfig, ShopConfig, ItemListConfig, EnchantListConfig, NBTConfig;
+	protected Config config, CommandConfig, ItemListConfig, FunctionConfig;
 	/**
 	 * 默认要加载的配置文件，这些文件将会被用于与插件自带数据匹配
 	 */
@@ -53,7 +60,6 @@ public class Activate {
 	 */
 	protected static final String[] ForOnce = { MainMenuFileName, ItemListName };
 	protected static final String[] Mkdir = { PlayerDataDirName, MenuDataDirName };
-	private ItemList items;
 
 	/**
 	 * 插件数据的集合类
@@ -76,18 +82,28 @@ public class Activate {
 		if (config.getBoolean("检查更新"))
 			(new Update(kis)).start();
 		items = new ItemList(this);
+		functionMag = new FunctionMag(this);
 		kis.getServer().getCommandMap().register(kis.getName(), new MainCommand(this));
 		kis.getLogger().info(message.getMessage("插件启动", "{loadTime}",
 				(float) Duration.between(mis.loadTime, Instant.now()).toMillis() + "ms") + "-Delte");
 	}
 
 	/**
-	 * 获取我的NBT列表的配置文件
+	 * 返回模块管理器
 	 * 
 	 * @return
 	 */
-	public Config getNBTConfig() {
-		return NBTConfig;
+	public FunctionMag getFunctionMag() {
+		return functionMag;
+	}
+
+	/**
+	 * 返回功能配置文件
+	 * 
+	 * @return
+	 */
+	public Config getFunctionConfig() {
+		return FunctionConfig;
 	}
 
 	/**
@@ -97,24 +113,6 @@ public class Activate {
 	 */
 	public ItemList getItems() {
 		return items;
-	}
-
-	/**
-	 * 获取商店的配置文件
-	 * 
-	 * @return
-	 */
-	public Config getShopConfig() {
-		return ShopConfig;
-	}
-
-	/**
-	 * 返回附魔列表的配置文件
-	 * 
-	 * @return
-	 */
-	public Config getEnchantListConfig() {
-		return EnchantListConfig;
 	}
 
 	/**

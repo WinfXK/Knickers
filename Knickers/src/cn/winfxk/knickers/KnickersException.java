@@ -1,7 +1,7 @@
 package cn.winfxk.knickers;
 
 /**
- * 异常类
+ * 异常基础类
  * 
  * @Createdate 2020/05/22 19:12:56
  * @author Winfxk

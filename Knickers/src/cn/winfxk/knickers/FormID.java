@@ -4,6 +4,8 @@ import cn.nukkit.utils.Config;
 import cn.winfxk.knickers.tool.Tool;
 
 /**
+ * 表单ID管理器
+ * 
  * @author Winfxk
  */
 public class FormID {

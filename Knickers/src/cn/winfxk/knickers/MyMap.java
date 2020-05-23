@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * 自定义Map
+ * 自定义Map<其实就只是增加了一些没卵用的功能>
  * 
  * @Createdate 2020/05/22 19:37:29
  * @author Winfxk
