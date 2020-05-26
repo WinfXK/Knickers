@@ -43,6 +43,12 @@ public class OpenMenu extends FormBase {
 	@Override
 	public boolean MakeMain() {
 		SimpleForm form = new SimpleForm(getID(), getTitle(), getContent());
+
+		return true;
+	}
+
+	@Override
+	public boolean disMain(FormResponse data) {
 		return true;
 	}
 
@@ -54,10 +60,5 @@ public class OpenMenu extends FormBase {
 	@Override
 	protected String getTitle() {
 		return msg.getText(config.get("Name"), this, player);
-	}
-
-	@Override
-	public boolean disMain(FormResponse data) {
-		return true;
 	}
 }

@@ -16,7 +16,7 @@ import cn.winfxk.knickers.tool.Tool;
  */
 public abstract class MakeBase extends FormBase {
 	protected Config config;
-	private static final String Whitelist = "Blank", Blacklist = "Black", Notfilter = "Not", Permission_OP = "OP",
+	public static final String Whitelist = "Blank", Blacklist = "Black", Notfilter = "Not", Permission_OP = "OP",
 			Permission_Player = "Player", Permission_All = "All", Permission_Admin = "Admin";
 
 	/**

@@ -58,6 +58,96 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	private static String randString = "-+abcdefghijklmnopqrstuvwxyz_";
 
 	/**
+	 * 从一个Map内按数据内容获取数据
+	 * 
+	 * @param <K>
+	 * @param <V>
+	 * @param map   要获取数据的Map对象
+	 * @param start 要开始截取时的数据
+	 * @param end   结束截取时的数据
+	 * @return
+	 */
+	public static <K, V> Map<K, V> getPlace(Map<K, V> map, K start, K end) {
+		Map<K, V> map2 = new LinkedHashMap<>();
+		boolean YouSB = false;
+		List<Map.Entry<K, V>> list = new ArrayList<>(map.entrySet());
+		for (Map.Entry<K, V> entry : list) {
+			if (!YouSB && entry.getKey().equals(start))
+				YouSB = true;
+			if (YouSB)
+				map2.put(entry.getKey(), entry.getValue());
+			if (YouSB && entry.getKey().equals(end))
+				break;
+		}
+		return map2;
+	}
+
+	/**
+	 * 从一个Map内按位置获取数据
+	 * 
+	 * @param <K>
+	 * @param <V>
+	 * @param map   要截取数据的Map数据对象
+	 * @param start 开始截数据的位置
+	 * @param end   结束截取数据的位置
+	 * @return
+	 */
+	public static <K, V> Map<K, V> getPlace(Map<K, V> map, int start, int end) {
+		Map<K, V> map2 = new LinkedHashMap<>();
+		List<Map.Entry<K, V>> list = new ArrayList<>(map.entrySet());
+		Map.Entry<K, V> entry;
+		for (int JJLength = start; JJLength < list.size(); JJLength++) {
+			if (JJLength >= end && end > 0)
+				break;
+			entry = list.get(JJLength);
+			map2.put(entry.getKey(), entry.getValue());
+		}
+		return map2;
+	}
+
+	/**
+	 * 从List内获取的一个特定值开始到另一个特定值结束的值
+	 * 
+	 * @param <T>
+	 * @param list  要获取数据的列表
+	 * @param start 开始获取的值
+	 * @param end   结束获取的值
+	 * @return
+	 */
+	public static <T> List<T> getPlace(List<T> list, T start, T end) {
+		List<T> list2 = new ArrayList<>();
+		boolean YouSB = false;
+		for (T t : list) {
+			if (t.equals(start) && !YouSB)
+				YouSB = true;
+			if (YouSB)
+				list2.add(t);
+			if (YouSB && t.equals(end))
+				break;
+		}
+		return list2;
+	}
+
+	/**
+	 * 从List内按位置截取数据
+	 * 
+	 * @param <T>
+	 * @param list  想要获取数据的列表
+	 * @param start 数据开始的位置
+	 * @param end   数据结束的位置
+	 * @return
+	 */
+	public static <T> List<T> getPlace(List<T> list, int start, int end) {
+		List<T> list2 = new ArrayList<>();
+		for (int JJLength = start; JJLength < list.size(); JJLength++) {
+			if (JJLength >= end && end > 0)
+				break;
+			list2.add(list.get(JJLength));
+		}
+		return list2;
+	}
+
+	/**
 	 * 计算两个日期之间相隔多少天
 	 * 
 	 * @param date1 第一个日期字符串

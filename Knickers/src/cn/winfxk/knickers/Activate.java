@@ -340,7 +340,7 @@ public class Activate {
 	 * @return
 	 */
 	public boolean isAdmin(Player player) {
-		return isAdmin(player.getName());
+		return isAdmin(player.getName(), false);
 	}
 
 	/**
@@ -350,7 +350,7 @@ public class Activate {
 	 * @return
 	 */
 	public boolean isAdmin(CommandSender player) {
-		return isAdmin(player.getName());
+		return isAdmin(player.getName(), false);
 	}
 
 	/**
@@ -359,8 +359,18 @@ public class Activate {
 	 * @param player
 	 * @return
 	 */
-	public boolean isAdmin(String player) {
-		if (config.getBoolean("OnlyAdmin"))
+	public boolean isAdmin(CommandSender player, boolean RemoveOP) {
+		return isAdmin(player.getName(), RemoveOP);
+	}
+
+	/**
+	 * 判断玩家是否是管理员
+	 * 
+	 * @param player
+	 * @return
+	 */
+	public boolean isAdmin(String player, boolean RemoveOP) {
+		if (config.getBoolean("OnlyAdmin") || RemoveOP)
 			return config.getStringList("Admin").contains(player);
 		return config.getStringList("Admin").contains(player) || Server.getInstance().isOp(player);
 	}

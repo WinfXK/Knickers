@@ -1,6 +1,7 @@
 package cn.winfxk.knickers.module.menu;
 
 import java.io.File;
+import java.util.Map;
 
 import cn.nukkit.Player;
 import cn.nukkit.utils.Config;
@@ -48,5 +49,10 @@ public class MenuButton extends FunctionBase {
 		MyPlayer myPlayer = ac.getPlayers(player);
 		myPlayer.form = new DeleteMenu(player, null, config, Key);
 		return myPlayer.form.MakeMain();
+	}
+
+	@Override
+	public MenuData getModuleData(Map<String, Object> map) {
+		return new MenuData(map);
 	}
 }

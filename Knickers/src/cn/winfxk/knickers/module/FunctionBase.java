@@ -41,6 +41,14 @@ public abstract class FunctionBase {
 	}
 
 	/**
+	 * 返回按钮的数据
+	 * 
+	 * @param map 按钮的Map数据
+	 * @return
+	 */
+	public abstract ModuleData getModuleData(Map<String, Object> map);
+
+	/**
 	 * 返回格式化文本
 	 * 
 	 * @param Key
