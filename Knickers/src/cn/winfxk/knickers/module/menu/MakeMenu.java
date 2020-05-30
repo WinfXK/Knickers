@@ -9,8 +9,7 @@ import java.util.Map;
 import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponse;
 import cn.nukkit.form.response.FormResponseCustom;
-import cn.nukkit.utils.Config;
-import cn.winfxk.knickers.Activate;
+import cn.winfxk.knickers.Config;
 import cn.winfxk.knickers.form.FormBase;
 import cn.winfxk.knickers.form.MakeBase;
 import cn.winfxk.knickers.module.FunctionBase;
@@ -25,14 +24,15 @@ import cn.winfxk.knickers.tool.Tool;
  * @author Winfxk
  */
 public class MakeMenu extends MakeBase {
-	private File file;
-	private List<File> list;
-	private int Count;
-	private List<String> allFileNames = new ArrayList<>();
+	protected File file;
+	protected List<File> list;
+	protected int Count;
+	protected List<String> allFileNames = new ArrayList<>();
+	protected String Key = null;
 
 	public MakeMenu(Player player, FormBase upForm, Config config, FunctionBase base) {
 		super(player, upForm, config, base);
-		file = new File(ac.getPluginBase().getDataFolder(), Activate.MenuDataDirName);
+		file = ac.getFunctionMag().getFile();
 		Config c;
 		String[] Ks = { "{Player}", "{Money}", "{FileName}", "{MenuName}" };
 		for (File f : file.listFiles((a, b) -> new File(a, b).isFile()))
@@ -121,9 +121,10 @@ public class MakeMenu extends MakeBase {
 		if (!file.exists()) {
 			sendMessage(getString("Createfailure"));
 			return MakeMain();
-		}
+		} else
+			sendMessage(getString(Key == null ? "CreateOK" : "AlterOK"));
 		boolean isOK = save(map, ButtonText, Command, PlayerBlacklistMode, PlayerBlacklist, WorldBlacklistMode,
-				WorldBlacklist, Money, economy, Permission);
+				WorldBlacklist, Money, economy, Permission, Key);
 		return isOK && isBack();
 	}
 
@@ -133,7 +134,7 @@ public class MakeMenu extends MakeBase {
 	 * @param JJLength
 	 * @return
 	 */
-	private String getMenuFileName(int JJLength) {
+	protected String getMenuFileName(int JJLength) {
 		String string = "";
 		for (int i = 0; i < JJLength; i++)
 			string += Tool.getRandString("0123456789abcdefghijklmnopqrstuvwxyz_");

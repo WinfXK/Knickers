@@ -13,7 +13,6 @@ import java.util.jar.JarFile;
 
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.plugin.PluginLogger;
-import cn.nukkit.utils.Config;
 import cn.nukkit.utils.ConfigSection;
 import cn.nukkit.utils.Utils;
 import cn.winfxk.knickers.tool.Tool;

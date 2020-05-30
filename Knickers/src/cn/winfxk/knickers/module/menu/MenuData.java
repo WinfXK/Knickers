@@ -3,7 +3,8 @@ package cn.winfxk.knickers.module.menu;
 import java.io.File;
 import java.util.Map;
 
-import cn.nukkit.utils.Config;
+import cn.winfxk.knickers.Config;
+import cn.winfxk.knickers.module.FunctionBase;
 import cn.winfxk.knickers.module.ModuleData;
 import cn.winfxk.knickers.tool.Tool;
 
@@ -14,15 +15,48 @@ import cn.winfxk.knickers.tool.Tool;
  * @author Winfxk
  */
 public class MenuData extends ModuleData {
-	private File file;
-	private Config config;
-	private String MenuFileName;
+	private File Menufile;
+	private Config Menuconfig;
+	private String MenuFileName, MenuContent, MenuTitle;
 
-	public MenuData(Map<String, Object> map) {
-		super(map);
+	public MenuData(Config config, String Key) {
+		this(config, FunctionBase.getButtonMap(config, Key));
+	}
+
+	public MenuData(File file, Map<String, Object> map) {
+		this(new Config(file, Config.YAML), map);
+	}
+
+	public MenuData(Config config, Map<String, Object> map) {
+		super(config, map);
 		MenuFileName = Tool.objToString(map.get("Menu"));
-		file = new File(functionMag.getFile(), getMenufilename());
-		config = new Config(MenuFileName, Config.YAML);
+		Menufile = new File(functionMag.getFile(), getMenufilename());
+		Menuconfig = new Config(MenuFileName, Config.YAML);
+		MenuContent = Menuconfig.getString("Content");
+		MenuTitle = Menuconfig.getString("Name");
+	}
+
+	public MenuData(File file, String Key) {
+		this(new Config(file, Config.YAML), Key);
+	}
+
+	/**
+	 * 尝试将ModuleData转换为MenuData
+	 * 
+	 * @param data ModuleData数据
+	 * @return
+	 */
+	public static MenuData getMenuData(ModuleData data) {
+		return new MenuData(data.getConfig(), data.getKey());
+	}
+
+	/**
+	 * 返回按钮会打开的菜单的标题
+	 * 
+	 * @return
+	 */
+	public String getMenuTitle() {
+		return MenuTitle;
 	}
 
 	/**
@@ -40,7 +74,7 @@ public class MenuData extends ModuleData {
 	 * @return
 	 */
 	public File getMenufile() {
-		return file;
+		return Menufile;
 	}
 
 	/**
@@ -49,6 +83,15 @@ public class MenuData extends ModuleData {
 	 * @return
 	 */
 	public Config getMenuconfig() {
-		return config;
+		return Menuconfig;
+	}
+
+	/**
+	 * 返回菜单的内容
+	 * 
+	 * @return
+	 */
+	public String getMenuContent() {
+		return MenuContent;
 	}
 }

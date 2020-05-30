@@ -1,11 +1,8 @@
 package cn.winfxk.knickers.module.cmd;
 
-import java.util.Map;
-
 import cn.nukkit.Player;
-import cn.nukkit.utils.Config;
 import cn.winfxk.knickers.Activate;
-import cn.winfxk.knickers.form.ButtonBase;
+import cn.winfxk.knickers.Config;
 import cn.winfxk.knickers.form.FormBase;
 import cn.winfxk.knickers.module.FunctionBase;
 import cn.winfxk.knickers.module.ModuleData;
@@ -23,17 +20,22 @@ public class CommandButton extends FunctionBase {
 	}
 
 	@Override
-	public boolean ClickButton(ButtonBase form, String Key) {
-		return false;
-	}
-
-	@Override
-	protected FormBase getForm(Player player, Config config, FormBase base) {
+	protected FormBase getMakeForm(Player player, Config config, FormBase base) {
 		return null;
 	}
 
 	@Override
-	public ModuleData getModuleData(Map<String, Object> map) {
+	public ModuleData getModuleData(Config config, String Key) {
+		return null;
+	}
+
+	@Override
+	public boolean ClickButton(FormBase form, ModuleData data) {
+		return false;
+	}
+
+	@Override
+	protected FormBase getAlterForm(FormBase form, ModuleData data) {
 		return null;
 	}
 }

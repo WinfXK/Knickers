@@ -19,15 +19,20 @@ lang: chs-中文
 插件关闭: '{RGBTextStart}{PluginName}已关闭！感谢使用！{RGBTextEnd}{RandColor}若经济允许，希望能赞助一下！支付宝：2508543202@qq.com'
 数据加载错误: §4无法读取游戏数据！请删除所有数据后尝试重新创建！
 无法获取已支持的语言列表: §4无法获取已支持的语言列表!
-Back: "§6返回"
+Back: §6返回
 Close: §4关闭
 Confirm: §a确定
 MainCommand:
    Description: §6{PluginName}主命令
 Function:
+   notMoney: §4您的{MoneyN}不足！
+   notPermission: §4您的权限不适用于这个按钮！需要权限：{Permission}
+   BlacklistByPlayer: §4您无法使用该按钮！因为您已被该按钮列为过滤名单！
+   BlacklistByWorld: §4您无法使用该按钮！因为该世界杯列为过滤名单！
    MakeButton: 创建{ButtonName}按钮
    ButtonText: §6请输入按钮显示的文本
    Content: ' '
+   Buttonoff: §4该按钮所属的功能已关闭！
    NotPlayer: §4无法获取玩家对象！
    ClickCommand: 点击按钮将会执行的命令<使用'{nn}'来分割多个命令>
    ClickMoney: 点击将会扣除的金钱
@@ -46,6 +51,10 @@ Function:
    Permission-Admin: 插件管理员
    NotInputButtonText: §4你可能还没有输入按钮文本内容！
    Moneyillegal: §4您输入的金钱数量不合法(仅支持大于等于零的纯数字！若小于等于零这默认不扣除费用)！
+   IncreaseButton:
+      Title: 创建新的按钮
+      Content: §6你正在创建一个新的按钮！请选择一个想要创建的按钮类型！
+      TypeItem: '{RandColor}{TypeName}'
    DeleteFunction:
       Title: 删除{ButtonText}
       Content: 您确定要删除这个按钮吗？{n}按钮数据如下：{n}{ButtonData}
@@ -53,12 +62,25 @@ Function:
       DeleteMenu: §4确定且包含菜单文件
    Command:
       Name: 命令按钮
+   SayButton:
+      Name: 广播条消息
+      InputSayString: §6请输入点击后想要说的话
+      CreateOK: §4创建点击说话按钮成功！
+      AlterOK: §4按钮修改成功！
    Menu:
       Name: 新建菜单
       MenuContent: 请输入菜单的内容<若选择已有菜单则本项无效>
       SelectMenu: §6请选择想要打开的菜单
       newMenu: §6新建菜单
       InputTitle: §6请输入菜单标题
+      CreateOK: §4创建菜单成功！
+      AlterOK: §4菜单修改成功！
+      AlterButton: §6修改按钮
+      CreateButton: §8创建按钮
+      DeleteButton: §4删除按钮
+      SettingButton: §6插件设置
+      DisablesString: §f|->§4 Disables
+      Buttonoff: §4该按钮所属的功能已关闭！
       Createfailure: §4创建菜单文件失败！
       NotInputMenuContent: §4你可能还没输入菜单内容
       MenuItem: §d{FileName}§d>§f>§6{MenuName}

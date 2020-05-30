@@ -4,10 +4,10 @@ import java.io.File;
 
 import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponse;
-import cn.nukkit.utils.Config;
-import cn.winfxk.knickers.form.ButtonBase;
+import cn.winfxk.knickers.Config;
 import cn.winfxk.knickers.form.FormBase;
 import cn.winfxk.knickers.module.DeleteFunction;
+import cn.winfxk.knickers.module.FunctionBase;
 import cn.winfxk.knickers.tool.SimpleForm;
 import cn.winfxk.knickers.tool.Tool;
 
@@ -41,7 +41,7 @@ public class DeleteMenu extends DeleteFunction {
 				if (file.exists())
 					file.delete();
 			}
-			ButtonBase.removeButton(config, Key);
+			FunctionBase.removeButton(config, Key);
 			sendMessage(getString("DeleteSucceed"));
 		}
 		return isBack();

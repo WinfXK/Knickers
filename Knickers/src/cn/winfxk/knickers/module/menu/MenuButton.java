@@ -1,16 +1,12 @@
 package cn.winfxk.knickers.module.menu;
 
-import java.io.File;
-import java.util.Map;
-
 import cn.nukkit.Player;
-import cn.nukkit.utils.Config;
 import cn.winfxk.knickers.Activate;
+import cn.winfxk.knickers.Config;
 import cn.winfxk.knickers.MyPlayer;
-import cn.winfxk.knickers.form.ButtonBase;
 import cn.winfxk.knickers.form.FormBase;
 import cn.winfxk.knickers.module.FunctionBase;
-import cn.winfxk.knickers.tool.Tool;
+import cn.winfxk.knickers.module.ModuleData;
 
 /**
  * 菜单功能，点击后打开一个新的菜单
@@ -19,28 +15,21 @@ import cn.winfxk.knickers.tool.Tool;
  * @author Winfxk
  */
 public class MenuButton extends FunctionBase {
+	public static final String MenuKey = "Menu";
 
 	public MenuButton(Activate ac) {
-		super(ac, "Menu");
+		super(ac, MenuKey);
 	}
 
 	@Override
-	public boolean ClickButton(ButtonBase form, String Key) {
-		MyPlayer myPlayer = ac.getPlayers(form.getPlayer());
-		myPlayer.form = new OpenMenu(form.getPlayer(), form,
-				new File(mag.getFile(), Tool.objToString(form.getMap().get("Menu"))));
-		return myPlayer.form.MakeMain();
-	}
-
-	@Override
-	protected FormBase getForm(Player player, Config config, FormBase base) {
+	protected FormBase getMakeForm(Player player, Config config, FormBase base) {
 		return new MakeMenu(player, base, config, this);
 	}
 
 	@Override
-	public boolean delButton(ButtonBase base, String Key) {
+	public boolean delButton(FormBase base, ModuleData data) {
 		MyPlayer myPlayer = ac.getPlayers(base.getPlayer());
-		myPlayer.form = new DeleteMenu(base.getPlayer(), base, base.getConfig(), Key);
+		myPlayer.form = new DeleteMenu(base.getPlayer(), base, data.getConfig(), data.getKey());
 		return myPlayer.form.MakeMain();
 	}
 
@@ -52,7 +41,19 @@ public class MenuButton extends FunctionBase {
 	}
 
 	@Override
-	public MenuData getModuleData(Map<String, Object> map) {
-		return new MenuData(map);
+	public MenuData getModuleData(Config config, String Key) {
+		return new MenuData(config, Key);
+	}
+
+	@Override
+	public FormBase getAlterForm(FormBase form, ModuleData data) {
+		return new AlterMenu(form.getPlayer(), form, MenuData.getMenuData(data));
+	}
+
+	@Override
+	public boolean ClickButton(FormBase form, ModuleData data) {
+		MyPlayer myPlayer = ac.getPlayers(form.getPlayer());
+		myPlayer.form = new OpenMenu(form.getPlayer(), form, MenuData.getMenuData(data).getMenuconfig());
+		return myPlayer.form.MakeMain();
 	}
 }

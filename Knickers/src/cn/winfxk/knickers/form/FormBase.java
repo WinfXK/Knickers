@@ -90,6 +90,15 @@ public abstract class FormBase implements Cloneable {
 	}
 
 	/**
+	 * 返回无权限时的文本
+	 * 
+	 * @return
+	 */
+	public String getNotPermission() {
+		return msg.getMessage("权限不足", getK(), getD());
+	}
+
+	/**
 	 * 返回按钮的内容
 	 * 
 	 * @return
@@ -367,5 +376,14 @@ public abstract class FormBase implements Cloneable {
 	public boolean sendMessage(String string, boolean ret) {
 		player.sendMessage(string);
 		return ret;
+	}
+
+	/**
+	 * 返回玩家数据对象
+	 * 
+	 * @return
+	 */
+	public MyPlayer getMyPlayer() {
+		return myPlayer;
 	}
 }

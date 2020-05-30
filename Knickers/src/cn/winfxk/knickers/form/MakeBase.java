@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.nukkit.Player;
-import cn.nukkit.utils.Config;
+import cn.winfxk.knickers.Config;
 import cn.winfxk.knickers.module.FunctionBase;
 import cn.winfxk.knickers.money.MyEconomy;
 import cn.winfxk.knickers.tool.Tool;
@@ -17,7 +17,8 @@ import cn.winfxk.knickers.tool.Tool;
 public abstract class MakeBase extends FormBase {
 	protected Config config;
 	public static final String Whitelist = "Blank", Blacklist = "Black", Notfilter = "Not", Permission_OP = "OP",
-			Permission_Player = "Player", Permission_All = "All", Permission_Admin = "Admin";
+			Permission_Player = "Player", Permission_All = "All", Permission_Admin = "Admin", ClickCommandSP = "{nn}",
+			FilterSP = ";";
 
 	/**
 	 * 创建按钮时创建的界面
@@ -29,7 +30,7 @@ public abstract class MakeBase extends FormBase {
 	public MakeBase(Player player, FormBase upForm, Config config, FunctionBase base) {
 		super(player, upForm);
 		this.config = config;
-		Son = base.getKey();
+		Son = base.getModuleKey();
 	}
 
 	/**
@@ -164,6 +165,24 @@ public abstract class MakeBase extends FormBase {
 	}
 
 	/**
+	 * 返回黑白无名单的过滤方式<br>
+	 * 无-白-黑
+	 * 
+	 * @return
+	 */
+	protected int getFiltertype(String i) {
+		switch (i) {
+		case Whitelist:
+			return 1;
+		case Blacklist:
+			return 2;
+		case Notfilter:
+		default:
+			return 0;
+		}
+	}
+
+	/**
 	 * 返回能使用按钮的权限的文本
 	 * 
 	 * @return
@@ -239,6 +258,26 @@ public abstract class MakeBase extends FormBase {
 	}
 
 	/**
+	 * 返回能使用按钮的权限的模式 <br>
+	 * 所有-OP-Player-Admin
+	 * 
+	 * @return
+	 */
+	protected int getPermissionsType(String Key) {
+		switch (Key) {
+		case Permission_Admin:
+			return 3;
+		case Permission_Player:
+			return 2;
+		case Permission_OP:
+			return 1;
+		case Permission_All:
+		default:
+			return 0;
+		}
+	}
+
+	/**
 	 * 点击将会扣除金币的文本
 	 * 
 	 * @return
@@ -257,7 +296,7 @@ public abstract class MakeBase extends FormBase {
 		List<String> list = new ArrayList<>();
 		if (string == null || string.isEmpty())
 			return list;
-		String[] strings = string.split(";");
+		String[] strings = string.split(FilterSP);
 		for (String s : strings)
 			if (s != null && !s.isEmpty())
 				list.add(s);
@@ -267,7 +306,16 @@ public abstract class MakeBase extends FormBase {
 	/**
 	 * 将设置好的按钮保存
 	 * 
-	 * @param map 按钮的其他数据
+	 * @param map                 按钮的其他数据
+	 * @param ButtonText          按钮会显示的文本
+	 * @param Command             点击按钮将会执行的命令
+	 * @param PlayerBlacklistMode 可使用按钮的玩家过滤方式
+	 * @param PlayerBlacklist     要过滤的玩家列表
+	 * @param WorldBlacklistMode  可以使用按钮的地图的过滤方式
+	 * @param WorldBlacklist      要过滤的地图列表
+	 * @param Money               点击将会扣除的金币
+	 * @param economy             点击扣除金币需要使用的货币
+	 * @param Permission          使用这个按钮需要的权限
 	 * @return
 	 */
 	protected boolean save(Map<String, Object> map, String ButtonText, List<String> Command, String PlayerBlacklistMode,
@@ -285,7 +333,41 @@ public abstract class MakeBase extends FormBase {
 		map.put("Economy", economy.getEconomyName());
 		map.put("Permission", Permission);
 		map.put("ButtonText", ButtonText);
-		return ButtonBase.addButtons(config, map);
+		return FunctionBase.addButtons(config, map);
+	}
+
+	/**
+	 * 将设置好的按钮保存
+	 * 
+	 * @param map                 按钮的其他数据
+	 * @param ButtonText          按钮会显示的文本
+	 * @param Command             点击按钮将会执行的命令
+	 * @param PlayerBlacklistMode 可使用按钮的玩家过滤方式
+	 * @param PlayerBlacklist     要过滤的玩家列表
+	 * @param WorldBlacklistMode  可以使用按钮的地图的过滤方式
+	 * @param WorldBlacklist      要过滤的地图列表
+	 * @param Money               点击将会扣除的金币
+	 * @param economy             点击扣除金币需要使用的货币
+	 * @param Permission          使用这个按钮需要的权限
+	 * @param Key                 这个按钮的Key
+	 * @return
+	 */
+	protected boolean save(Map<String, Object> map, String ButtonText, List<String> Command, String PlayerBlacklistMode,
+			List<String> PlayerBlacklist, String WorldBlacklistMode, List<String> WorldBlacklist, double Money,
+			MyEconomy economy, String Permission, String Key) {
+		map.put("Player", player.getName());
+		map.put("Date", Tool.getDate() + " " + Tool.getTime());
+		map.put("Type", Son);
+		map.put("Command", Command);
+		map.put("Playerfilter", PlayerBlacklistMode);
+		map.put("Playerfilterlist", PlayerBlacklist);
+		map.put("Worldfilter", WorldBlacklistMode);
+		map.put("Worldfilterlist", WorldBlacklist);
+		map.put("Money", Money);
+		map.put("Economy", economy.getEconomyName());
+		map.put("Permission", Permission);
+		map.put("ButtonText", ButtonText);
+		return FunctionBase.addButtons(config, map, Key);
 	}
 
 	/**

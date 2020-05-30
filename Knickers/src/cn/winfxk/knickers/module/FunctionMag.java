@@ -8,6 +8,8 @@ import cn.winfxk.knickers.Activate;
 import cn.winfxk.knickers.MyMap;
 import cn.winfxk.knickers.module.cmd.CommandButton;
 import cn.winfxk.knickers.module.menu.MenuButton;
+import cn.winfxk.knickers.module.say.SayButton;
+import cn.winfxk.knickers.module.tp.TransferButton;
 
 /**
  * 管理菜单拥有的功能的管理器
@@ -23,12 +25,13 @@ public class FunctionMag {
 
 	public FunctionMag(Activate activate) {
 		config = activate.getFunctionConfig();
-		FunctionBase[] bases = { new CommandButton(activate), new MenuButton(activate) };
-		for (FunctionBase base : bases)
-			Function.put(base.getKey(), base);
-		loadConfig();
 		file = new File(activate.getPluginBase().getDataFolder(), Activate.MenuDataDirName);
 		mag = this;
+		FunctionBase[] bases = { new MenuButton(activate), new CommandButton(activate), new SayButton(activate),
+				new TransferButton(activate) };
+		for (FunctionBase base : bases)
+			Function.put(base.getModuleKey(), base);
+		loadConfig();
 	}
 
 	/**
@@ -55,8 +58,8 @@ public class FunctionMag {
 	private void loadConfig() {
 		Map<String, Object> map = config.getAll();
 		for (FunctionBase base : Function.values())
-			if (!map.containsKey(base.getKey()))
-				config.set(base.getKey(), true);
+			if (!map.containsKey(base.getModuleKey()))
+				config.set(base.getModuleKey(), true);
 		config.save();
 	}
 
@@ -69,7 +72,7 @@ public class FunctionMag {
 	public boolean removeFunction(FunctionBase function) {
 		if (Function.containsValue(function))
 			Function.removeValues(function);
-		return !Function.containsKey(function.getKey()) && !Function.containsValue(function);
+		return !Function.containsKey(function.getModuleKey()) && !Function.containsValue(function);
 	}
 
 	/**
@@ -92,7 +95,7 @@ public class FunctionMag {
 	 * @param function
 	 */
 	public void addFunction(FunctionBase function) {
-		Function.put(function.getKey(), function);
+		Function.put(function.getModuleKey(), function);
 		loadConfig();
 	}
 

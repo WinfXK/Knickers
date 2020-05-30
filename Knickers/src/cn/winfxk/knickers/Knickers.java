@@ -23,6 +23,7 @@ import cn.nukkit.plugin.PluginBase;
 public class Knickers extends PluginBase implements Listener {
 	public Instant loadTime;
 	private static Activate ac;
+
 	@Override
 	public void onEnable() {
 		loadTime = Instant.now();

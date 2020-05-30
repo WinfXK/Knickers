@@ -5,8 +5,7 @@ import java.util.Map;
 
 import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponse;
-import cn.nukkit.utils.Config;
-import cn.winfxk.knickers.form.ButtonBase;
+import cn.winfxk.knickers.Config;
 import cn.winfxk.knickers.form.FormBase;
 import cn.winfxk.knickers.tool.Format;
 import cn.winfxk.knickers.tool.SimpleForm;
@@ -37,7 +36,7 @@ public class DeleteFunction extends FormBase {
 		t = "Function";
 		Son = "DeleteFunction";
 		setK("{Player}", "{Money}", "{ButtonText}", "{ButtonData}");
-		Buttons = ButtonBase.getButtons(config);
+		Buttons = FunctionBase.getButtons(config);
 	}
 
 	@Override
@@ -53,7 +52,7 @@ public class DeleteFunction extends FormBase {
 	@Override
 	public boolean disMain(FormResponse data) {
 		if (getSimple(data).getClickedButtonId() == 1) {
-			ButtonBase.removeButton(config, Key);
+			FunctionBase.removeButton(config, Key);
 			sendMessage(getString("DeleteSucceed"));
 		}
 		return isBack();
@@ -65,6 +64,6 @@ public class DeleteFunction extends FormBase {
 	 * @return
 	 */
 	protected String getButtonData() {
-		return new Format<>((LinkedHashMap<String, Object>) ButtonBase.getButtonMap(Buttons, Key)).getString();
+		return new Format<>((LinkedHashMap<String, Object>) FunctionBase.getButtonMap(Buttons, Key)).getString();
 	}
 }

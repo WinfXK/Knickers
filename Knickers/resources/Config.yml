@@ -4,3 +4,7 @@ EconomyName: 金币
 Economy: EconomyAPI
 OnlyAdmin: false
 Admin: []
+#这个选项设置一个按钮模块被禁用时是否给玩家显示
+DisablesDisplay: false
+#这个选项设置一个按钮模块被禁用时是否给管理员显示
+AdminDisablesDisplay: true

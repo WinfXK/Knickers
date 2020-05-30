@@ -1,5 +1,6 @@
 package cn.winfxk.knickers.module;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,6 +10,9 @@ import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.level.Level;
 import cn.winfxk.knickers.Activate;
+import cn.winfxk.knickers.Config;
+import cn.winfxk.knickers.Message;
+import cn.winfxk.knickers.form.FormBase;
 import cn.winfxk.knickers.form.MakeBase;
 import cn.winfxk.knickers.money.MyEconomy;
 import cn.winfxk.knickers.tool.Tool;
@@ -29,9 +33,40 @@ public class ModuleData implements Cloneable {
 	protected List<String> Players, Worlds, Command;
 	protected static Activate ac = Activate.getActivate();
 	protected static FunctionMag functionMag = Activate.getActivate().getFunctionMag();
-	protected String ButtonText, Type, Player, DateString, Worldfilter, Playerfilter, Permission;
+	protected String ButtonText, Type, Player, DateString, Worldfilter, Playerfilter, Permission, Key;
+	protected File file;
+	protected Config config;
+	protected static Message msg = ac.getMessage();
 
-	public ModuleData(Map<String, Object> map) {
+	/**
+	 * 新建一个按钮的数据对象
+	 * 
+	 * @param config 按钮所在的配置文件对象
+	 * @param Key    按钮的key
+	 */
+	public ModuleData(Config config, String Key) {
+		this(config, FunctionBase.getButtonMap(config, Key));
+	}
+
+	/**
+	 * 新建一个按钮的数据对象
+	 * 
+	 * @param file 按钮所在的配置文件的文件对象
+	 * @param map  按钮的Map数据对象
+	 */
+	public ModuleData(File file, Map<String, Object> map) {
+		this(new Config(file, Config.YAML), map);
+	}
+
+	/**
+	 * 新建一个按钮的数据对象
+	 * 
+	 * @param config 按钮所在的配置文件的文件对象
+	 * @param map    按钮的Map数据对象
+	 */
+	public ModuleData(Config config, Map<String, Object> map) {
+		this.file = config.file;
+		this.config = config;
 		this.map = map;
 		server = Server.getInstance();
 		DateString = Tool.objToString(map.get("Date"));
@@ -43,6 +78,7 @@ public class ModuleData implements Cloneable {
 		Worldfilter = Tool.objToString(map.get("Worldfilter"));
 		Permission = Tool.objToString(map.get("Permission"));
 		ButtonText = Tool.objToString(map.get("ButtonText"));
+		Key = Tool.objToString(map.get("Key"));
 		Economy = ac.getEconomyManage().getEconomy(Tool.objToString(map.get("Command")));
 		Object obj = map.get("Playerfilterlist");
 		Players = obj != null && obj instanceof List ? (ArrayList<String>) obj : new ArrayList<>();
@@ -51,6 +87,43 @@ public class ModuleData implements Cloneable {
 		Money = Tool.objToDouble(map.get("Money"));
 		obj = map.get("Command");
 		Command = obj != null && obj instanceof List ? (ArrayList<String>) obj : new ArrayList<>();
+	}
+
+	/**
+	 * 新建一个按钮的数据对象
+	 * 
+	 * @param file 按钮所在的配置文件的文件对象
+	 * @param Key  按钮的Key
+	 */
+	public ModuleData(File file, String Key) {
+		this(new Config(file, Config.YAML), Key);
+	}
+
+	/**
+	 * 返回按钮的Key
+	 * 
+	 * @return
+	 */
+	public String getKey() {
+		return Key;
+	}
+
+	/**
+	 * 返回配置文件所在的文件对象
+	 * 
+	 * @return
+	 */
+	public File getFile() {
+		return file;
+	}
+
+	/**
+	 * 返回按钮所在的配置文件的对象
+	 * 
+	 * @return
+	 */
+	public Config getConfig() {
+		return config;
 	}
 
 	/**
@@ -150,6 +223,42 @@ public class ModuleData implements Cloneable {
 	 */
 	public String getButtonText() {
 		return ButtonText;
+	}
+
+	/**
+	 * 返回按钮的文本内容
+	 * 
+	 * @return
+	 */
+	public String getButtonString(FormBase base) {
+		return functionBase != null && functionBase.isEnable() ? functionBase.getButtonString(base, this) : Key;
+	}
+
+	/**
+	 * 返回使用的权限
+	 * 
+	 * @return
+	 */
+	public String getPermission() {
+		return Permission;
+	}
+
+	/**
+	 * 返回玩家过滤规则
+	 * 
+	 * @return
+	 */
+	public String getPlayerfilter() {
+		return Playerfilter;
+	}
+
+	/**
+	 * 返回地图过滤规则
+	 * 
+	 * @return
+	 */
+	public String getWorldfilter() {
+		return Worldfilter;
 	}
 
 	/**

@@ -3,7 +3,8 @@ package cn.winfxk.knickers.form;
 import java.util.Map;
 
 import cn.nukkit.Player;
-import cn.nukkit.utils.Config;
+import cn.winfxk.knickers.Config;
+import cn.winfxk.knickers.module.FunctionBase;
 
 /**
  * 点击事件基础类
@@ -28,7 +29,7 @@ public abstract class ClickBase extends FormBase {
 		super(player, upForm);
 		this.config = config;
 		this.Key = Key;
-		Buttons = ButtonBase.getButtons(config);
-		map = ButtonBase.getButtonMap(Buttons, Key);
+		Buttons = FunctionBase.getButtons(config);
+		map = FunctionBase.getButtonMap(Buttons, Key);
 	}
 }

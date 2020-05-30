@@ -511,7 +511,7 @@ public class Message {
 	 * @param text 要插入修改的文本
 	 * @return
 	 */
-	public String getText(Object text, FormBase form, Player player) {
+	public String getText(Object text, FormBase form) {
 		if (text == null)
 			return null;
 		load();
@@ -544,7 +544,7 @@ public class Message {
 		for (String key : alts.keySet()) {
 			if (!string.contains(key))
 				continue;
-			string.replace(key, alts.get(key).getString(form, player));
+			string.replace(key, alts.get(key).getString(form, form.getPlayer()));
 		}
 		return getEconomy(string);
 	}

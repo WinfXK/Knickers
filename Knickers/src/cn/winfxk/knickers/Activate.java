@@ -13,7 +13,6 @@ import cn.nukkit.Server;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.plugin.Plugin;
 import cn.nukkit.plugin.PluginBase;
-import cn.nukkit.utils.Config;
 import cn.nukkit.utils.Utils;
 import cn.winfxk.knickers.cmd.MainCommand;
 import cn.winfxk.knickers.module.FunctionMag;
@@ -73,6 +72,7 @@ public class Activate {
 		Players = new LinkedHashMap<>();
 		if ((resCheck = new ResCheck(this).start()) == null)
 			return;
+		FunctionConfig = new Config(new File(kis.getDataFolder(), FunctionFileName), Config.YAML);
 		money = new EconomyManage();
 		ItemListConfig = new Config(new File(mis.getDataFolder(), ItemListName), Config.YAML);
 		Plugin plugin = Server.getInstance().getPluginManager().getPlugin(EconomyAPI.Name);

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.nukkit.Player;
-import cn.nukkit.utils.Config;
 import cn.winfxk.knickers.form.FormBase;
 
 /**
