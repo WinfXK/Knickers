@@ -1,29 +1,32 @@
-package cn.winfxk.knickers.module.say;
+package cn.winfxk.knickers.module.tp;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import cn.nukkit.Server;
+import cn.nukkit.level.Level;
 import cn.winfxk.knickers.form.FormBase;
 import cn.winfxk.knickers.form.MakeBase;
 import cn.winfxk.knickers.tool.CustomForm;
 
 /**
- * 修改Say按钮数据时会创建的界面F
+ * 修改传送按钮的数据时创建的界面
  * 
- * @Createdate 2020/05/30 21:46:49
+ * @Createdate 2020/05/31 18:46:26
  * @author Winfxk
  */
-public class AlterSay extends MakeSay {
-	private SayData data;
+public class AlterTransfer extends MakeTransfer {
+	private TransferData data;
 
 	/**
-	 * 修改Say按钮时调用
+	 * 修改传送按钮
 	 * 
-	 * @param player 修改界面的玩家对象
+	 * @param player 修改按钮的玩家对象
 	 * @param upForm 上个界面
-	 * @param data   按钮的数据对象
-	 * @param button 按钮所述的类型
+	 * @param data   按钮的数据
+	 * @param button 按钮的类型
 	 */
-	public AlterSay(FormBase upForm, SayData data) {
+	public AlterTransfer(FormBase upForm, TransferData data) {
 		super(upForm.getPlayer(), upForm, data.getConfig(), data.getFunctionBase());
 		this.Key = data.getKey();
 		this.data = data;
@@ -31,10 +34,16 @@ public class AlterSay extends MakeSay {
 
 	@Override
 	public boolean MakeMain() {
+		listKey = new ArrayList<>();
+		for (Level level : Server.getInstance().getLevels().values())
+			listKey.add(level.getFolderName());
 		CustomForm form = new CustomForm(getID(), getTitle());
 		form.addLabel(getContent());
 		form.addInput(getButtonText(), data.getButtonText(), getButtonText());
-		form.addInput(getString("InputSayString"), data.getSay(), getString("InputSayString"));
+		form.addInput(getString("InputX"), data.getX(), getString("InputX"));
+		form.addInput(getString("InputZ"), data.getZ(), getString("InputZ"));
+		form.addInput(getString("InputY"), data.getY(), getString("InputY"));
+		form.addDropdown(getString("InputLevel"), listKey, listKey.indexOf(data.getLevelName()));
 		form.addInput(getClickCommand(), getClickCommandString(), getClickCommand());
 		form.addDropdown(getPlayerBlacklistMode(), getModeList(), getFiltertype(data.getPlayerfilter()));
 		form.addInput(getInputBlacklistPlayer(), listtoString(data.getPlayers()), getInputBlacklistPlayer());

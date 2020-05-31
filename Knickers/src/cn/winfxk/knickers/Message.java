@@ -142,8 +142,17 @@ public class Message {
 	 * @return
 	 */
 	public String getSun(String t, String Son, String Sun, String[] k, Object[] d, FormBase base, Player player) {
-		return k == null || k.length <= 1 || d == null || d.length <= 1 ? getSon(t, Son)
-				: getSun(t, Son, Sun, k, d, base, player);
+		if (k == null || k.length <= 1 || d == null || d.length <= 1)
+			return getSon(t, Son);
+		if (this.map.containsKey(t) && this.map.get(t) instanceof Map) {
+			HashMap<String, Object> map = (HashMap<String, Object>) this.map.get(t);
+			if (map.containsKey(Son) && map.get(Son) instanceof Map) {
+				map = (HashMap<String, Object>) map.get(Son);
+				if (map.containsKey(Sun))
+					return getText(map.get(Sun).toString(), k, d, base, player);
+			}
+		}
+		return null;
 	}
 
 	/**

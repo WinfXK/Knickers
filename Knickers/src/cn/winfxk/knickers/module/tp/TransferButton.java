@@ -25,7 +25,7 @@ public class TransferButton extends FunctionBase {
 
 	@Override
 	protected FormBase getAlterForm(FormBase form, ModuleData data) {
-		return null;
+		return new AlterTransfer(form, TransferData.getTransferData(data));
 	}
 
 	@Override
@@ -34,7 +34,14 @@ public class TransferButton extends FunctionBase {
 	}
 
 	@Override
-	protected boolean ClickButton(FormBase form, ModuleData data) {
-		return false;
+	protected boolean ClickButton(FormBase form, ModuleData dd) {
+		TransferData data = TransferData.getTransferData(dd);
+		Player player = form.getPlayer();
+		if (data.getLevel() == null) {
+			player.sendMessage(getString("LevelError"));
+			ac.getPluginBase().getLogger().error(getString("LevelError"));
+			return form.MakeMain();
+		}
+		return player.teleport(data.getLocation());
 	}
 }

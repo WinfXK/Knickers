@@ -1,4 +1,4 @@
-package cn.winfxk.knickers.module.say;
+package cn.winfxk.knickers.module.ptp;
 
 import java.util.List;
 
@@ -7,25 +7,17 @@ import cn.winfxk.knickers.form.MakeBase;
 import cn.winfxk.knickers.tool.CustomForm;
 
 /**
- * 修改Say按钮数据时会创建的界面F
+ * 修改点击后传送到玩家附近按钮的数据时显示的界面
  * 
- * @Createdate 2020/05/30 21:46:49
+ * @Createdate 2020/05/31 20:30:55
  * @author Winfxk
  */
-public class AlterSay extends MakeSay {
-	private SayData data;
+public class AlterPtP extends MakePtP {
+	private PtPData data;
 
-	/**
-	 * 修改Say按钮时调用
-	 * 
-	 * @param player 修改界面的玩家对象
-	 * @param upForm 上个界面
-	 * @param data   按钮的数据对象
-	 * @param button 按钮所述的类型
-	 */
-	public AlterSay(FormBase upForm, SayData data) {
+	public AlterPtP(FormBase upForm, PtPData data) {
 		super(upForm.getPlayer(), upForm, data.getConfig(), data.getFunctionBase());
-		this.Key = data.getKey();
+		Key = data.getKey();
 		this.data = data;
 	}
 
@@ -34,7 +26,11 @@ public class AlterSay extends MakeSay {
 		CustomForm form = new CustomForm(getID(), getTitle());
 		form.addLabel(getContent());
 		form.addInput(getButtonText(), data.getButtonText(), getButtonText());
-		form.addInput(getString("InputSayString"), data.getSay(), getString("InputSayString"));
+		form.addInput(getString("SolicitedTitle"), data.getSolicitedTitle(), getString("SolicitedTitle"));
+		form.addInput(getString("SolicitedMessage"), data.getSolicitedMessage(), getString("SolicitedMessage"));
+		form.addInput(getString("Accept"), data.getAccept(), getString("Accept"));
+		form.addInput(getString("Refuse"), data.getRefuse(), getString("Refuse"));
+		form.addToggle(getString("ForceTransfer"), data.isForceTransfer());
 		form.addInput(getClickCommand(), getClickCommandString(), getClickCommand());
 		form.addDropdown(getPlayerBlacklistMode(), getModeList(), getFiltertype(data.getPlayerfilter()));
 		form.addInput(getInputBlacklistPlayer(), listtoString(data.getPlayers()), getInputBlacklistPlayer());
@@ -44,6 +40,9 @@ public class AlterSay extends MakeSay {
 		form.addDropdown(getMoneyEconomy(), ac.getEconomyManage().getEconomy(),
 				ac.getEconomyManage().getEconomy().indexOf(data.getEconomy().getEconomyName()));
 		form.addDropdown(getPermission(), getPermissions(), getPermissionsType(data.getPermission()));
+		form.addInput(getString("ListTitle"), data.getListTitle(), getString("ListTitle"));
+		form.addInput(getString("ListContent"), data.getListContent(), getString("ListContent"));
+		form.addInput(getString("InputPlayerItem"), data.getPlayerItem(), getString("InputPlayerItem"));
 		form.sendPlayer(player);
 		return true;
 	}

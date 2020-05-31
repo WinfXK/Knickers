@@ -22,7 +22,6 @@ import cn.winfxk.knickers.tool.Tool;
  * @author Winfxk
  */
 public class MakeSay extends MakeBase {
-	protected String Key;
 
 	public MakeSay(Player player, FormBase upForm, Config config, FunctionBase base) {
 		super(player, upForm, config, base);

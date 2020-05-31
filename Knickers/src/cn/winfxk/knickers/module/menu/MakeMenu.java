@@ -28,7 +28,6 @@ public class MakeMenu extends MakeBase {
 	protected List<File> list;
 	protected int Count;
 	protected List<String> allFileNames = new ArrayList<>();
-	protected String Key = null;
 
 	public MakeMenu(Player player, FormBase upForm, Config config, FunctionBase base) {
 		super(player, upForm, config, base);

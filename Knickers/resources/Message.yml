@@ -62,6 +62,39 @@ Function:
       DeleteMenu: §4确定且包含菜单文件
    Command:
       Name: 命令按钮
+   Tip:
+      Name: 提示按钮
+   PtPlayer:
+      Name: 传送到在线玩家处
+      ForceTransfer: 强制传送
+      SolicitedTitle: 请输入请求的标题
+      SolicitedMessage: 请输入请求的信息<若开启了强制传送请忽略本项>
+      SolicitedText: '{ByPlayer}请求传送到你这，是否接受'
+      Accept: 请输入接受按钮的文本
+      Refuse: 请输入拒绝按钮的文本
+      CreateOK: §6传送按钮创建成功！
+      AlterOK: §4按钮修改成功！
+      ListTitle: §6请输入选择传送目标的标题
+      ListContent: §6请输入选择传送目标的内容
+      ListContentText: §6请选择想要传送的目标
+      InputPlayerItem: §6请输入目标项目内容
+      PlayerItem: '{ByPlayer}'
+      notPlayer: §6当前服务器没有可传送的目标
+      wasClosed: §6{ByPlayer}关闭了请求窗口！请尝试重新请求。
+      towasClosed: §6你关闭了{ByPlayer}的传送请求窗口
+      PlayerOffline: §4该玩家已离线！
+      RefuseMessage: §4玩家{ByPlayer}拒绝了您的传授请求
+      AcceptMessage: §6玩家{ByPlayer}接受了您的传授请求
+   Transfer:
+      InputX: §4请输入X坐标
+      InputZ: §4请输入Z坐标
+      Name: 传送按钮
+      InputY: §4请输入Y坐标
+      CoordinateIllegality: §4坐标值非法！仅支持纯数字！
+      InputLevel: §6选择目标地图
+      CreateOK: §6传送按钮创建成功！
+      AlterOK: §4按钮修改成功！
+      LevelError: §4无法获取地图对象！
    SayButton:
       Name: 广播条消息
       InputSayString: §6请输入点击后想要说的话

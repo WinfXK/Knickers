@@ -32,7 +32,7 @@ public class SayButton extends FunctionBase {
 
 	@Override
 	public FormBase getAlterForm(FormBase form, ModuleData data) {
-		return new AlterSay(form.getPlayer(), form, SayData.getSayData(data), this);
+		return new AlterSay(form, SayData.getSayData(data));
 	}
 
 	@Override

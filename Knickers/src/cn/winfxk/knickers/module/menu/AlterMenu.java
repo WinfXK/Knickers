@@ -2,10 +2,8 @@ package cn.winfxk.knickers.module.menu;
 
 import java.util.List;
 
-import cn.nukkit.Player;
 import cn.winfxk.knickers.form.FormBase;
 import cn.winfxk.knickers.form.MakeBase;
-import cn.winfxk.knickers.module.FunctionMag;
 import cn.winfxk.knickers.tool.CustomForm;
 
 /**
@@ -17,8 +15,8 @@ import cn.winfxk.knickers.tool.CustomForm;
 public class AlterMenu extends MakeMenu {
 	private MenuData data;
 
-	public AlterMenu(Player player, FormBase upForm, MenuData data) {
-		super(player, upForm, data.getConfig(), FunctionMag.getMag().getFunction(MenuButton.MenuKey));
+	public AlterMenu(FormBase upForm, MenuData data) {
+		super(upForm.getPlayer(), upForm, data.getConfig(), data.getFunctionBase());
 		this.data = data;
 		Key = data.getKey();
 	}

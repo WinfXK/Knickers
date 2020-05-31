@@ -3,7 +3,6 @@ package cn.winfxk.knickers.module.menu;
 import cn.nukkit.Player;
 import cn.winfxk.knickers.Activate;
 import cn.winfxk.knickers.Config;
-import cn.winfxk.knickers.MyPlayer;
 import cn.winfxk.knickers.form.FormBase;
 import cn.winfxk.knickers.module.FunctionBase;
 import cn.winfxk.knickers.module.ModuleData;
@@ -28,16 +27,13 @@ public class MenuButton extends FunctionBase {
 
 	@Override
 	public boolean delButton(FormBase base, ModuleData data) {
-		MyPlayer myPlayer = ac.getPlayers(base.getPlayer());
-		myPlayer.form = new DeleteMenu(base.getPlayer(), base, data.getConfig(), data.getKey());
-		return myPlayer.form.MakeMain();
+		return (ac.getPlayers(base.getPlayer()).form = new DeleteMenu(base.getPlayer(), base, data.getConfig(),
+				data.getKey())).MakeMain();
 	}
 
 	@Override
 	public boolean delButton(Player player, Config config, String Key) {
-		MyPlayer myPlayer = ac.getPlayers(player);
-		myPlayer.form = new DeleteMenu(player, null, config, Key);
-		return myPlayer.form.MakeMain();
+		return (ac.getPlayers(player).form = new DeleteMenu(player, null, config, Key)).MakeMain();
 	}
 
 	@Override
@@ -47,13 +43,12 @@ public class MenuButton extends FunctionBase {
 
 	@Override
 	public FormBase getAlterForm(FormBase form, ModuleData data) {
-		return new AlterMenu(form.getPlayer(), form, MenuData.getMenuData(data));
+		return new AlterMenu(form, MenuData.getMenuData(data));
 	}
 
 	@Override
 	public boolean ClickButton(FormBase form, ModuleData data) {
-		MyPlayer myPlayer = ac.getPlayers(form.getPlayer());
-		myPlayer.form = new OpenMenu(form.getPlayer(), form, MenuData.getMenuData(data).getMenuconfig());
-		return myPlayer.form.MakeMain();
+		return (ac.getPlayers(form.getPlayer()).form = new OpenMenu(form.getPlayer(), form,
+				MenuData.getMenuData(data).getMenuconfig())).MakeMain();
 	}
 }

@@ -8,7 +8,9 @@ import cn.winfxk.knickers.Activate;
 import cn.winfxk.knickers.MyMap;
 import cn.winfxk.knickers.module.cmd.CommandButton;
 import cn.winfxk.knickers.module.menu.MenuButton;
+import cn.winfxk.knickers.module.ptp.PtPlayerButton;
 import cn.winfxk.knickers.module.say.SayButton;
+import cn.winfxk.knickers.module.tip.TipButton;
 import cn.winfxk.knickers.module.tp.TransferButton;
 
 /**
@@ -28,7 +30,7 @@ public class FunctionMag {
 		file = new File(activate.getPluginBase().getDataFolder(), Activate.MenuDataDirName);
 		mag = this;
 		FunctionBase[] bases = { new MenuButton(activate), new CommandButton(activate), new SayButton(activate),
-				new TransferButton(activate) };
+				new TransferButton(activate), new PtPlayerButton(activate), new TipButton(activate) };
 		for (FunctionBase base : bases)
 			Function.put(base.getModuleKey(), base);
 		loadConfig();
