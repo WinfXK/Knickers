@@ -7,6 +7,8 @@ import cn.winfxk.knickers.form.FormBase;
 import cn.winfxk.knickers.tool.SimpleForm;
 
 /**
+ * PtP请求界面
+ * 
  * @Createdate 2020/05/31 22:42:31
  * @author Winfxk
  */

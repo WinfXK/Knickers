@@ -8,6 +8,8 @@ import cn.winfxk.knickers.module.FunctionBase;
 import cn.winfxk.knickers.module.ModuleData;
 
 /**
+ * 传送按钮-点击传送到一个指定地点的按钮
+ * 
  * @Createdate 2020/05/30 22:04:21
  * @author Winfxk
  */

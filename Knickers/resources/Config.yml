@@ -8,3 +8,15 @@ Admin: []
 DisablesDisplay: false
 #这个选项设置一个按钮模块被禁用时是否给管理员显示
 AdminDisablesDisplay: true
+#是否使用快捷工具
+EnableTool: true
+#是否强制拥有快捷工具
+ForceTool: true
+#监听快捷工具点击地面右击等
+MonitorClick: true
+#监听物品栏双击
+Monitordblclick: false
+#检查玩家背包是否拥有快捷工具的间隔，单位秒
+MonitorTime: 30
+#是否允许丢弃快捷工具
+KickToolItem: false

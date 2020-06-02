@@ -10,20 +10,68 @@
 #注：当前已有全局变量包括：n：换行、ServerName：服务器名称、PluginName：插件名称、RandColor：随机颜色、服务器货币名称：{MoneyName}
 # 进服若是检测没有快捷菜单将提示的内容，可用变量：Player：玩家名
 lang: chs-中文
+ToolName: §f§l§n快§e§l§n捷§9§l§n工§4§l§n具
+ToolLore: '{RGBTextStart}据说长得帅的人用这个点击地面都能打开一个菜单.....{n}你丑吗？{RGBTextEnd}'
+GiveTool: 突然发现你的命根子不见了，给你一个别再丢了！
 权限不足: §4你无权限执行此操作！
 金币不足: §4您的{MoneyName}不足！
 插件启动: '{RGBTextStart}{PluginName}启动(耗时: {loadTime})...{RGBTextEnd}        §6欢迎{RGBTextStart}使用{PluginName}{RGBTextEnd}§f(*￣︶￣)'
 无法初始化配置: §4无法初始化配置文件：{FileName}，请检查!
 无法效验语言文件: §4无法效验语言文件！请检查！
 请在游戏内自行命令: §4请在游戏内执行此命令！
+MonitorThreadShutdown: §4监听线程已关闭！
 插件关闭: '{RGBTextStart}{PluginName}已关闭！感谢使用！{RGBTextEnd}{RandColor}若经济允许，希望能赞助一下！支付宝：2508543202@qq.com'
 数据加载错误: §4无法读取游戏数据！请删除所有数据后尝试重新创建！
 无法获取已支持的语言列表: §4无法获取已支持的语言列表!
+请在控制台执行命令: §4请在控制台执行此命令
 Back: §6返回
 Close: §4关闭
 Confirm: §a确定
+AllModule:
+   Title: '{RGBTextStart}{PluginName}{RGBTextEnd}'
+   Content: ' '
+   DetailsContent: §e{ModuleKey}§f-§6{ModuleName}§f>§b>§d>§8{Enable}
+   ModuleItem: §e{ModuleKey}§f-§6{ModuleName}§f>§b>§d>§8{Enable}
+   Open: §6打开模块
+   Close: §4关闭模块
+   OpenModule: §6你启用了这个功能
+   CloseModule: §4你关闭了这个功能
+AdminCommand:
+   Description: §6{PluginName}管理员命令
+   Help: 获取命令帮助
+   Admin: 增加或减少管理员
+   Module: 查看菜单功能
+   Setting: 打开插件设置页面
+   Admin-PlayerName: 要设置/取消管理员权限的玩家名称
+   NotInputAdmin-PlayerName: §6你还没有输入要设置/取消管理员权限的玩家名称
+   addAdmin: §6已添加{ByPlayer}的管理员
+   removeAdmin: §4已删除{ByPlayer}的管理员
+   OnlyAdmin: 切换私有管理员模式
+   OpenOnlyAdmin: §6已打开私有管理员模式
+   CloseOnlyAdmin: §4已关闭私有管理员模式
+   ModuleItem: §e{ModuleKey}§f-§6{ModuleName}§f>§b>§d>§8{Enable}
 MainCommand:
    Description: §6{PluginName}主命令
+   Help: 获取命令帮助
+   Tool: 获取快捷工具
+   Main: 打开主页
+   PossessTool: §4你已经有一个快捷工具了！
+Setting:
+   Title: '{RGBTextStart}Setting{RGBTextEnd}'
+   Tool: 请输入快捷工具ID
+   Content: ' '
+   EconomyName: 请输入货币单位名称
+   Economy: 请选择想要默认使用的货币
+   DisablesDisplay: 按钮模块被禁用时是否给玩家显示
+   EnableTool: 是否使用快捷工具
+   ForceTool: 是否强制拥有快捷工具
+   MonitorClick: 监听快捷工具点击地面右击等
+   Monitordblclick: 监听物品栏双击
+   MonitorTime: 检查玩家背包是否拥有快捷工具的间隔，单位秒
+   KickToolItem: 是否允许丢弃快捷工具
+   NotInputEconomyName: §4请输入货币单位名称！
+   MonitorTimeIllegality: §4您输入的间隔时间非法(仅支持大于零的纯整数)！
+   SettingSucceed: §6设置成功！
 Function:
    notMoney: §4您的{MoneyN}不足！
    notPermission: §4您的权限不适用于这个按钮！需要权限：{Permission}
@@ -39,6 +87,12 @@ Function:
    ClickMoneyEconomy: §6点击扣除金钱将会使用的货币
    SelectPlayerBlacklistMode: 请选择玩家黑名单过滤模式
    SelectWorldBlacklistMode: 请选择过滤的世界的模式
+   InputPaht: 请输入按钮图标<支持ID、名称或Path路径，若不使用请留空>
+   SelectPathType: 请选择图标类型
+   PathType1: 无
+   PathType2: 自带图标
+   PathType3: 网络图标
+   NotInputPath: §4你已经选择了图标模式单位输入图标路径！
    BlacklistMode1: 黑名单
    BlacklistMode2: 白名单
    BlacklistMode3: 无
@@ -62,8 +116,28 @@ Function:
       DeleteMenu: §4确定且包含菜单文件
    Command:
       Name: 命令按钮
+      Variable: 变量{Index}
+      notInputCommand: §4你还没有输入想要执行的命令
+      VariableTitle: 请输入变量页标题<若未使用{msg}变量请忽略本项>
+      VariableContent: 请输入变量页标题<若未使用{msg}变量请忽略本项>
+      ClickCommand: 点击按钮将会执行的命令{n}<使用"{msg}"来添加自定义变量，在调用时会自动将"{msg}"替换为玩家输入的内容>
+      InputTip: 请输入Msg变量标题<若未使用{msg}变量请忽略本项>{n}<多个使用';'分割>
+      InputHint: 请输入Msg变量提示<若未使用{msg}变量请忽略本项>{n}<多个使用';'分割>
+      AllowBlank: 允许变量留空
+      notInputVariable: §4变量{Variable}不允许为空！
    Tip:
       Name: 提示按钮
+      InputTitle: 请输入弹出窗口的标题
+      InputContent: 请输入弹出窗口的内容
+      InputButton1: 请输入弹出窗口中按钮1的文本内容
+      InputButton2: 请输入弹出窗口中按钮2的文本内容
+      Button1Command: 点击按钮1时会执行的命令
+      Button2Command: 点击按钮2时会执行的命令
+      SelectTip: 请选择弹出模式
+      TipType1: Simple
+      TipType2: Modal
+      CreateOK: §6Tip按钮创建成功！
+      AlterOK: §4按钮修改成功！
    PtPlayer:
       Name: 传送到在线玩家处
       ForceTransfer: 强制传送
@@ -95,7 +169,7 @@ Function:
       CreateOK: §6传送按钮创建成功！
       AlterOK: §4按钮修改成功！
       LevelError: §4无法获取地图对象！
-   SayButton:
+   Say:
       Name: 广播条消息
       InputSayString: §6请输入点击后想要说的话
       CreateOK: §4创建点击说话按钮成功！

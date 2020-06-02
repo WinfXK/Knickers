@@ -11,6 +11,8 @@ import cn.winfxk.knickers.money.MyEconomy;
 import cn.winfxk.knickers.tool.Tool;
 
 /**
+ * 创建按钮时会显示的界面基础类
+ * 
  * @Createdate 2020/05/23 12:52:00
  * @author Winfxk
  */
@@ -19,7 +21,7 @@ public abstract class MakeBase extends FormBase {
 	protected String Key = null;
 	public static final String Whitelist = "Blank", Blacklist = "Black", Notfilter = "Not", Permission_OP = "OP",
 			Permission_Player = "Player", Permission_All = "All", Permission_Admin = "Admin", ClickCommandSP = "{nn}",
-			FilterSP = ";";
+			FilterSP = ";", LocalPath = "Local", CloudPath = "Cloud", NotPath = "Not";
 
 	/**
 	 * 创建按钮时创建的界面
@@ -32,6 +34,103 @@ public abstract class MakeBase extends FormBase {
 		super(player, upForm);
 		this.config = config;
 		Son = base.getModuleKey();
+	}
+
+	/**
+	 * 获取请输入图标路径的文本
+	 * 
+	 * @return
+	 */
+	public String getInputPath() {
+		return msg.getSon(t, "InputPaht", this);
+	}
+
+	/**
+	 * 获取选择图标类型的文本
+	 * 
+	 * @return
+	 */
+	public String getSelectPathType() {
+		return msg.getSon(t, "SelectPathType", this);
+	}
+
+	/**
+	 * 返回没有输入图标路径的文本
+	 * 
+	 * @return
+	 */
+	public String getNotInputPath() {
+		return msg.getSon(t, "NotInputPath", this);
+	}
+
+	/**
+	 * 返回图标的方式
+	 * 
+	 * @return
+	 */
+	public String[] getPathType() {
+		return new String[] { getPathType1(), getPathType2(), getPathType3() };
+	}
+
+	/**
+	 * 根据Form类选择的图标类型获取图标类型
+	 * 
+	 * @param i
+	 * @return
+	 */
+	public String getPathType(int i) {
+		switch (i) {
+		case 1:
+			return LocalPath;
+		case 2:
+			return CloudPath;
+		default:
+			return NotPath;
+		}
+	}
+
+	/**
+	 * 根据图标类型返回位置
+	 * 
+	 * @param Key
+	 * @return
+	 */
+	public int getPathType(String Key) {
+		switch (Key) {
+		case LocalPath:
+			return 1;
+		case CloudPath:
+			return 2;
+		default:
+			return 0;
+		}
+	}
+
+	/**
+	 * 获取选择图标类型1的文本<无>
+	 * 
+	 * @return
+	 */
+	public String getPathType1() {
+		return msg.getSon(t, "PathType1", this);
+	}
+
+	/**
+	 * 获取选择图标类型2的文本<自带>
+	 * 
+	 * @return
+	 */
+	public String getPathType2() {
+		return msg.getSon(t, "PathType2", this);
+	}
+
+	/**
+	 * 获取选择图标类型3的文本<云端>
+	 * 
+	 * @return
+	 */
+	public String getPathType3() {
+		return msg.getSon(t, "PathType3", this);
 	}
 
 	/**
@@ -321,7 +420,7 @@ public abstract class MakeBase extends FormBase {
 	 */
 	protected boolean save(Map<String, Object> map, String ButtonText, List<String> Command, String PlayerBlacklistMode,
 			List<String> PlayerBlacklist, String WorldBlacklistMode, List<String> WorldBlacklist, double Money,
-			MyEconomy economy, String Permission) {
+			MyEconomy economy, String Permission, String Path, String PathType) {
 		map.put("Player", player.getName());
 		map.put("Date", Tool.getDate() + " " + Tool.getTime());
 		map.put("Type", Son);
@@ -334,6 +433,8 @@ public abstract class MakeBase extends FormBase {
 		map.put("Economy", economy.getEconomyName());
 		map.put("Permission", Permission);
 		map.put("ButtonText", ButtonText);
+		map.put("Path", Path);
+		map.put("PathType", PathType);
 		return FunctionBase.addButtons(config, map);
 	}
 
@@ -355,7 +456,7 @@ public abstract class MakeBase extends FormBase {
 	 */
 	protected boolean save(Map<String, Object> map, String ButtonText, List<String> Command, String PlayerBlacklistMode,
 			List<String> PlayerBlacklist, String WorldBlacklistMode, List<String> WorldBlacklist, double Money,
-			MyEconomy economy, String Permission, String Key) {
+			MyEconomy economy, String Permission, String Key, String Path, String PathType) {
 		map.put("Player", player.getName());
 		map.put("Date", Tool.getDate() + " " + Tool.getTime());
 		map.put("Type", Son);
@@ -368,6 +469,8 @@ public abstract class MakeBase extends FormBase {
 		map.put("Economy", economy.getEconomyName());
 		map.put("Permission", Permission);
 		map.put("ButtonText", ButtonText);
+		map.put("Path", Path);
+		map.put("PathType", PathType);
 		return FunctionBase.addButtons(config, map, Key);
 	}
 

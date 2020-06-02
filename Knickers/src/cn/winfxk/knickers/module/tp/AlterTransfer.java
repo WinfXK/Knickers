@@ -53,6 +53,8 @@ public class AlterTransfer extends MakeTransfer {
 		form.addDropdown(getMoneyEconomy(), ac.getEconomyManage().getEconomy(),
 				ac.getEconomyManage().getEconomy().indexOf(data.getEconomy().getEconomyName()));
 		form.addDropdown(getPermission(), getPermissions(), getPermissionsType(data.getPermission()));
+		form.addInput(getInputPath(), data.getPath() == null ? "" : data.getPath(), getInputPath());
+		form.addDropdown(getSelectPathType(), getPathType(), getPathType(data.getPathType()));
 		form.sendPlayer(player);
 		return true;
 	}

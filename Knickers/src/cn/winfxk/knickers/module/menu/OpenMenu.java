@@ -10,6 +10,7 @@ import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponse;
 import cn.winfxk.knickers.Config;
 import cn.winfxk.knickers.form.FormBase;
+import cn.winfxk.knickers.form.MakeBase;
 import cn.winfxk.knickers.form.Setting;
 import cn.winfxk.knickers.module.AlterButton;
 import cn.winfxk.knickers.module.DelButton;
@@ -69,10 +70,14 @@ public class OpenMenu extends FormBase {
 					&& ((!myPlayer.isAdmin() && ac.getConfig().getBoolean("DisablesDisplay"))
 							|| (myPlayer.isAdmin() && ac.getConfig().getBoolean("AdminDisablesDisplay"))))
 				continue;
-			form.addButton(data.getFunctionBase() != null
-					? data.getFunctionBase().isEnable() ? data.getFunctionBase().getButtonString(this, data)
-							: data.getKey() + getString("DisablesString")
-					: data.getKey() + getString("DisablesString"));
+			form.addButton(
+					data.getFunctionBase() != null
+							? data.getFunctionBase().isEnable() ? data.getFunctionBase().getButtonString(this, data)
+									: data.getKey() + getString("DisablesString")
+							: data.getKey() + getString("DisablesString"),
+					data.getPathType().equals(MakeBase.CloudPath) ? false : true,
+					data.getPathType().equals(MakeBase.NotPath) ? null
+							: data.getPath() == null || data.getPath().isEmpty() ? null : data.getPath());
 			datas.add(data);
 		}
 		if (myPlayer.isAdmin()) {

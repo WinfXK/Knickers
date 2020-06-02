@@ -33,6 +33,16 @@ public class MyPlayer {
 	}
 
 	/**
+	 * 显示一个界面
+	 * 
+	 * @param form
+	 * @return
+	 */
+	public boolean showForm(FormBase form) {
+		return (this.form = form).MakeMain();
+	}
+
+	/**
 	 * 判断玩家是否是管理员
 	 * 
 	 * @return

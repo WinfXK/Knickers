@@ -8,6 +8,8 @@ import cn.winfxk.knickers.Config;
 import cn.winfxk.knickers.form.FormBase;
 
 /**
+ * 删除按钮时会显示按钮列表的界面
+ * 
  * @Createdate 2020/05/30 19:50:16
  * @author Winfxk
  */

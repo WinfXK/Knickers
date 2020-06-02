@@ -43,6 +43,8 @@ public class AlterPtP extends MakePtP {
 		form.addInput(getString("ListTitle"), data.getListTitle(), getString("ListTitle"));
 		form.addInput(getString("ListContent"), data.getListContent(), getString("ListContent"));
 		form.addInput(getString("InputPlayerItem"), data.getPlayerItem(), getString("InputPlayerItem"));
+		form.addInput(getInputPath(), data.getPath() == null ? "" : data.getPath(), getInputPath());
+		form.addDropdown(getSelectPathType(), getPathType(), getPathType(data.getPathType()));
 		form.sendPlayer(player);
 		return true;
 	}

@@ -313,6 +313,24 @@ public class Message {
 	 * @param d   要插入的数据
 	 * @return
 	 */
+	public String getSon(String t, String Son, String[] k, Object[] d, FormBase form, Player player) {
+		if (this.map.containsKey(t) && this.map.get(t) instanceof Map) {
+			HashMap<String, Object> map = (HashMap<String, Object>) this.map.get(t);
+			if (map.containsKey(Son))
+				return getText(map.get(Son).toString(), k, d, form, player);
+		}
+		return null;
+	}
+
+	/**
+	 * 从配置文件中获取二级默认文本并插入数据
+	 *
+	 * @param t   一级Key
+	 * @param Son 二级Key
+	 * @param k   要插入的对应变量
+	 * @param d   要插入的数据
+	 * @return
+	 */
 	public String getSon(String t, String Son, String[] k, Object[] d) {
 		return k == null || k.length <= 1 || d == null || d.length <= 1 ? getSon(t, Son)
 				: getSon(t, Son, Arrays.asList(k), Arrays.asList(d));

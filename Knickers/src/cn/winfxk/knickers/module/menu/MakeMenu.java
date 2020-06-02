@@ -66,6 +66,8 @@ public class MakeMenu extends MakeBase {
 		form.addDropdown(getMoneyEconomy(), ac.getEconomyManage().getEconomy());
 		form.addDropdown(getPermission(), getPermissions());
 		form.addInput(getString("InputTitle"), "", getString("InputTitle"));
+		form.addInput(getInputPath(), "", getInputPath());
+		form.addDropdown(getSelectPathType(), getPathType());
 		form.sendPlayer(player);
 		return true;
 	}
@@ -100,6 +102,12 @@ public class MakeMenu extends MakeBase {
 		MyEconomy economy = ac.getEconomyManage().getEconomy(d.getDropdownResponse(10).getElementContent());
 		String Permission = getPermissionsType(d.getDropdownResponse(11).getElementID());
 		String MenuTitle = d.getInputResponse(12);
+		String Path = d.getInputResponse(13);
+		String PathType = getPathType(d.getDropdownResponse(14).getElementID());
+		if (!PathType.equals(MakeBase.NotPath)) {
+			player.sendMessage(getNotInputPath());
+			return MakeMain();
+		}
 		Map<String, Object> map = new HashMap<>();
 		map.put("Menu", Menu);
 		File file = new File(this.file, Menu);
@@ -123,7 +131,7 @@ public class MakeMenu extends MakeBase {
 		} else
 			sendMessage(getString(Key == null ? "CreateOK" : "AlterOK"));
 		boolean isOK = save(map, ButtonText, Command, PlayerBlacklistMode, PlayerBlacklist, WorldBlacklistMode,
-				WorldBlacklist, Money, economy, Permission, Key);
+				WorldBlacklist, Money, economy, Permission, Key, Path, PathType);
 		return isOK && isBack();
 	}
 

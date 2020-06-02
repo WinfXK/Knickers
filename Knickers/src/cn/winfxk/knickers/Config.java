@@ -5,13 +5,17 @@ import java.io.File;
 import cn.nukkit.utils.ConfigSection;
 
 /**
+ * 自定义Config//其实就是修改了原版的File可视性
+ * 
+ * @amend Winfxk
  * @Createdate 2020/05/30 15:54:15
- * @author Winfxk
+ * @author MagicDroidX
  */
 public class Config extends cn.nukkit.utils.Config {
 	public File file;
 
 	public Config() {
+		this(Config.YAML);
 	}
 
 	public Config(int type) {

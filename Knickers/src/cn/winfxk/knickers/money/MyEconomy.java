@@ -239,6 +239,15 @@ public abstract class MyEconomy {
 		return em.supportEconomy(getEconomyName()) && isEnabled;
 	}
 
+	/**
+	 * 设置货币名称
+	 * 
+	 * @param economyName
+	 */
+	public void setEconomyName(String economyName) {
+		EconomyName = economyName;
+	}
+
 	@Override
 	public String toString() {
 		return getClass().getSimpleName() + ">>{EconomyName: " + EconomyName + ", MoneyName: " + MoneyName + "}";

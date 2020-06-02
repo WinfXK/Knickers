@@ -48,6 +48,8 @@ public class MakePtP extends MakeBase {
 		form.addInput(getString("ListTitle"), PtPlayerButton.PtPlayerKey, getString("ListTitle"));
 		form.addInput(getString("ListContent"), getString("ListContentText"), getString("ListContent"));
 		form.addInput(getString("InputPlayerItem"), getString("PlayerItem"), getString("InputPlayerItem"));
+		form.addInput(getInputPath(), "", getInputPath());
+		form.addDropdown(getSelectPathType(), getPathType());
 		form.sendPlayer(player);
 		return true;
 	}
@@ -82,6 +84,12 @@ public class MakePtP extends MakeBase {
 		String ListTitle = data.getInputResponse(15);
 		String ListContent = data.getInputResponse(16);
 		String PlayerItem = data.getInputResponse(17);
+		String Path = data.getInputResponse(18);
+		String PathType = getPathType(data.getDropdownResponse(19).getElementID());
+		if (!PathType.equals(MakeBase.NotPath)) {
+			player.sendMessage(getNotInputPath());
+			return MakeMain();
+		}
 		Map<String, Object> map = new HashMap<>();
 		map.put("SolicitedTitle", SolicitedTitle);
 		map.put("SolicitedMessage", SolicitedMessage);
@@ -93,7 +101,7 @@ public class MakePtP extends MakeBase {
 		map.put("PlayerItem", PlayerItem);
 		player.sendMessage(getString(Key == null ? "CreateOK" : "AlterOK"));
 		boolean isOK = save(map, ButtonText, Command, PlayerBlacklistMode, PlayerBlacklist, WorldBlacklistMode,
-				WorldBlacklist, Money, economy, Permission, Key);
+				WorldBlacklist, Money, economy, Permission, Key, Path, PathType);
 		return isOK && isBack();
 	}
 }

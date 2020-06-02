@@ -150,8 +150,7 @@ public abstract class FunctionBase {
 			player.sendMessage(msg.getMessage("权限不足", player));
 			return false;
 		}
-		myPlayer.form = getMakeForm(player, config, form);
-		return myPlayer.form.MakeMain();
+		return myPlayer.showForm(getMakeForm(player, config, form));
 	}
 
 	/**
@@ -199,8 +198,7 @@ public abstract class FunctionBase {
 			player.sendMessage(msg.getMessage("权限不足", player));
 			return false;
 		}
-		myPlayer.form = getAlterForm(form, data);
-		return myPlayer.form.MakeMain();
+		return myPlayer.showForm(getAlterForm(form, data));
 	}
 
 	/**
@@ -291,8 +289,7 @@ public abstract class FunctionBase {
 			player.sendMessage(msg.getMessage("权限不足", player));
 			return false;
 		}
-		myPlayer.form = new DeleteFunction(player, null, config, Key);
-		return myPlayer.form.MakeMain();
+		return myPlayer.showForm(new DeleteFunction(player, null, config, Key));
 	}
 
 	/**
@@ -309,8 +306,7 @@ public abstract class FunctionBase {
 			player.sendMessage(msg.getMessage("权限不足", player));
 			return false;
 		}
-		myPlayer.form = new DeleteFunction(player, form, data.getConfig(), data.getKey());
-		return myPlayer.form.MakeMain();
+		return myPlayer.showForm(new DeleteFunction(player, form, data.getConfig(), data.getKey()));
 	}
 
 	/**

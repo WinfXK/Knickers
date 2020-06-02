@@ -27,6 +27,38 @@ public class ItemList {
 	 * @param Default 匹配失败将会返回的内容
 	 * @return
 	 */
+	public String objToFullID(Object obj, boolean match, String Default) {
+		String string = Tool.objToString(obj);
+		if (obj == null || string == null || string.isEmpty())
+			return Default;
+		if (obj instanceof Item) {
+			Item item = (Item) obj;
+			return item.getId() + ":" + item.getDamage();
+		}
+		if (obj instanceof ItemList)
+			return ((ItemList) obj).getFullID();
+		if (!Tool.isInteger(string)) {
+			if (string.contains(":")) {
+				String[] strings = string.split(":");
+				if (Tool.isInteger(strings[0]))
+					return Tool.ObjToInt(strings[0]) + ":" + (strings.length >= 2 ? strings[1] : "0");
+			}
+			for (ItemList list : this.list)
+				if (string.equals(list.Name) || (match && string.toLowerCase().equals(list.Name.toLowerCase())))
+					return list.ID + ":" + list.Damage;
+		} else
+			return string + ":0";
+		return Default;
+	}
+
+	/**
+	 * 根据一串位置数据返回一个物品ID
+	 * 
+	 * @param obj     未知数据<包含的可能性为：ID、名称、ID:Damage>
+	 * @param match   是否粗略匹配
+	 * @param Default 匹配失败将会返回的内容
+	 * @return
+	 */
 	public int objToID(Object obj, boolean match, Object Default) {
 		String string = Tool.objToString(obj);
 		if (obj == null || string == null || string.isEmpty())
@@ -384,6 +416,20 @@ public class ItemList {
 	 */
 	public int getID() {
 		return ID;
+	}
+
+	/**
+	 * 返回完整的ID
+	 * 
+	 * @return
+	 */
+	public String getFullID() {
+		return ID + ":" + Damage;
+	}
+
+	@Override
+	public String toString() {
+		return "Name: " + getName() + "\nID: " + getID() + "\nDamage: " + getDamage() + "\nPath: " + getPath();
 	}
 
 	/**

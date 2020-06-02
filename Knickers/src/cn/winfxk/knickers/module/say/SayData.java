@@ -10,6 +10,8 @@ import cn.winfxk.knickers.module.ModuleData;
 import cn.winfxk.knickers.tool.Tool;
 
 /**
+ * 点击说话按钮时数据
+ * 
  * @Createdate 2020/05/30 19:10:24
  * @author Winfxk
  */

@@ -49,6 +49,8 @@ public class MakeTransfer extends MakeBase {
 		form.addInput(getMoney(), "", getMoney());
 		form.addDropdown(getMoneyEconomy(), ac.getEconomyManage().getEconomy());
 		form.addDropdown(getPermission(), getPermissions());
+		form.addInput(getInputPath(), "", getInputPath());
+		form.addDropdown(getSelectPathType(), getPathType());
 		form.sendPlayer(player);
 		return true;
 	}
@@ -94,6 +96,12 @@ public class MakeTransfer extends MakeBase {
 		Money = Money <= 0 ? 0 : Money;
 		MyEconomy economy = ac.getEconomyManage().getEconomy(data.getDropdownResponse(12).getElementContent());
 		String Permission = getPermissionsType(data.getDropdownResponse(13).getElementID());
+		String Path = data.getInputResponse(14);
+		String PathType = getPathType(data.getDropdownResponse(15).getElementID());
+		if (!PathType.equals(MakeBase.NotPath)) {
+			player.sendMessage(getNotInputPath());
+			return MakeMain();
+		}
 		Map<String, Object> map = new HashMap<>();
 		map.put("X", InputX);
 		map.put("Y", InputY);
@@ -101,7 +109,7 @@ public class MakeTransfer extends MakeBase {
 		map.put("Level", LevelName);
 		player.sendMessage(getString(Key == null ? "CreateOK" : "AlterOK"));
 		boolean isOK = save(map, ButtonText, Command, PlayerBlacklistMode, PlayerBlacklist, WorldBlacklistMode,
-				WorldBlacklist, Money, economy, Permission, Key);
+				WorldBlacklist, Money, economy, Permission, Key, Path, PathType);
 		return isOK && isBack();
 	}
 }

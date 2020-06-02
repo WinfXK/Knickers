@@ -11,15 +11,19 @@ import java.util.Map;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.CommandSender;
+import cn.nukkit.item.Item;
+import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.plugin.Plugin;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Utils;
+import cn.winfxk.knickers.cmd.AdminCommand;
 import cn.winfxk.knickers.cmd.MainCommand;
 import cn.winfxk.knickers.module.FunctionMag;
 import cn.winfxk.knickers.money.EconomyAPI;
 import cn.winfxk.knickers.money.EconomyManage;
 import cn.winfxk.knickers.money.MyEconomy;
 import cn.winfxk.knickers.tool.ItemList;
+import cn.winfxk.knickers.tool.Tool;
 import cn.winfxk.knickers.tool.Update;
 
 /**
@@ -37,7 +41,9 @@ public class Activate {
 			PlayerDataDirName = "Players", LanguageDirName = "language", SystemFileName = "System.xml",
 			ItemListName = "ItemList.yml", MenuDataDirName = "Menu", MainMenuFileName = "Main.yml",
 			FunctionFileName = "Function.yml";
+	private Item item;
 	private ItemList items;
+	private MyThread thread;
 	private MyEconomy economy;
 	private EconomyManage money;
 	private FunctionMag functionMag;
@@ -45,7 +51,7 @@ public class Activate {
 	private LinkedHashMap<String, MyPlayer> Players;
 	protected FormID FormID;
 	protected Message message;
-	protected Config config, CommandConfig, ItemListConfig, FunctionConfig;
+	protected Config config, CommandConfig, ItemListConfig, FunctionConfig, MainMenu;
 	/**
 	 * 默认要加载的配置文件，这些文件将会被用于与插件自带数据匹配
 	 */
@@ -83,9 +89,41 @@ public class Activate {
 			(new Update(kis)).start();
 		items = new ItemList(this);
 		functionMag = new FunctionMag(this);
+		MainMenu = new Config(new File(kis.getDataFolder(), MainMenuFileName), Config.YAML);
+		if (config.getBoolean("ForceTool") && config.getInt("MonitorTime") > 0 && config.getString("Tool") != null
+				&& !config.getString("Tool").isEmpty())
+			thread = new MyThread(this);
 		kis.getServer().getCommandMap().register(kis.getName(), new MainCommand(this));
+		kis.getServer().getCommandMap().register(kis.getName(), new AdminCommand(this));
 		kis.getLogger().info(message.getMessage("插件启动", "{loadTime}",
 				(float) Duration.between(mis.loadTime, Instant.now()).toMillis() + "ms") + "-Delte");
+	}
+
+	/**
+	 * 返回监听线程
+	 * 
+	 * @return
+	 */
+	public MyThread getThread() {
+		return thread;
+	}
+
+	/**
+	 * 设置监听线程
+	 * 
+	 * @param thread
+	 */
+	public void setThread(MyThread thread) {
+		this.thread = thread;
+	}
+
+	/**
+	 * 返回主页的配置文件对象
+	 * 
+	 * @return
+	 */
+	public Config getMainMenu() {
+		return MainMenu;
 	}
 
 	/**
@@ -361,6 +399,69 @@ public class Activate {
 	 */
 	public boolean isAdmin(CommandSender player, boolean RemoveOP) {
 		return isAdmin(player.getName(), RemoveOP);
+	}
+
+	/**
+	 * 判断玩家是否有快捷工具
+	 * 
+	 * @param player
+	 * @return
+	 */
+	public boolean isToolItem(Player player) {
+		Map<Integer, Item> map = player.getInventory().getContents();
+		CompoundTag nbt;
+		for (Item item : map.values()) {
+			nbt = item.getNamedTag();
+			if (nbt == null)
+				continue;
+			if (nbt.getString(mis.getName()) != null && nbt.getString(mis.getName()).equals("FFFSB"))
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * 判断一个物品是不是快捷工具
+	 * 
+	 * @param item
+	 * @return
+	 */
+	public boolean isToolItem(Item item) {
+		CompoundTag nbt = item.getNamedTag();
+		if (nbt == null)
+			return false;
+		if (nbt.getString(mis.getName()) != null && nbt.getString(mis.getName()).equals("FFFSB"))
+			return true;
+		return false;
+	}
+
+	/**
+	 * 返回快捷工具的物品
+	 * 
+	 * @return
+	 */
+	public Item getToolItem() {
+		if (config.getString("Tool") == null)
+			return null;
+		if (item == null) {
+			String[] string = config.getString("Tool").split(":");
+			item = new Item(Tool.ObjToInt(string[0]), Tool.ObjToInt(string[1]));
+			CompoundTag nbt = new CompoundTag();
+			nbt.putString(mis.getName(), "FFFSB");
+			item.setCompoundTag(nbt);
+			item.setCustomName(message.getMessage("ToolName"));
+			item.setLore(message.getMessage("ToolLore"));
+		}
+		return item;
+	}
+
+	/**
+	 * 设置Tool物品
+	 * 
+	 * @param item
+	 */
+	public void setItem(Item item) {
+		this.item = item;
 	}
 
 	/**

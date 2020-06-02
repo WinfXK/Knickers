@@ -44,6 +44,7 @@ import cn.nukkit.block.Block;
 import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntitySign;
 import cn.nukkit.command.Command;
+import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.item.Item;
 import cn.nukkit.level.Level;
@@ -56,6 +57,23 @@ import cn.nukkit.math.Vector3;
 public class Tool implements X509TrustManager, HostnameVerifier {
 	private static String colorKeyString = "123456789abcdef";
 	private static String randString = "-+abcdefghijklmnopqrstuvwxyz_";
+
+	/**
+	 * 返回一个字符串包含多少个另一个字符串
+	 * 
+	 * @param str 字符串
+	 * @param key 要判断数量的字符串
+	 * @return
+	 */
+	public static int getSubCount_2(String str, String key) {
+		int count = 0;
+		int index = 0;
+		while ((index = str.indexOf(key, index)) != -1) {
+			index = index + key.length();
+			count++;
+		}
+		return count;
+	}
 
 	/**
 	 * 从一个Map内按数据内容获取数据
@@ -252,10 +270,14 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 			string += "§f/" + cmd + " §b";
 			for (int i = 0; i < cp.length; i++) {
 				cs = cp[i];
-				zy = cs.enumData.getValues().get(0);
-				for (String s : cs.enumData.getValues())
-					if (String_length(s) < String_length(zy))
-						zy = s;
+				if (cs.type.equals(CommandParamType.RAWTEXT))
+					zy = cs.enumData.getValues().get(0);
+				else
+					zy = cs.name;
+				if (cs.enumData != null)
+					for (String s : cs.enumData.getValues())
+						if (String_length(s) < String_length(zy))
+							zy = s;
 				string += i == 0 ? zy : "§6 " + cp[i].name;
 			}
 			string += "§f： §9" + cp[0].name;

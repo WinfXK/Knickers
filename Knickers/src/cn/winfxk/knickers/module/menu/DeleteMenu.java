@@ -12,6 +12,8 @@ import cn.winfxk.knickers.tool.SimpleForm;
 import cn.winfxk.knickers.tool.Tool;
 
 /**
+ * 删除菜单按钮时调用
+ * 
  * @Createdate 2020/05/23 20:02:30
  * @author Winfxk
  */

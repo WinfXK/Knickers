@@ -33,7 +33,7 @@ public class ModuleData implements Cloneable {
 	protected List<String> Players, Worlds, Command;
 	protected static Activate ac = Activate.getActivate();
 	protected static FunctionMag functionMag = Activate.getActivate().getFunctionMag();
-	protected String ButtonText, Type, Player, DateString, Worldfilter, Playerfilter, Permission, Key;
+	protected String ButtonText, Type, Player, DateString, Worldfilter, Playerfilter, Permission, Key, Path, PathType;
 	protected File file;
 	protected Config config;
 	protected static Message msg = ac.getMessage();
@@ -84,9 +84,29 @@ public class ModuleData implements Cloneable {
 		Players = obj != null && obj instanceof List ? (ArrayList<String>) obj : new ArrayList<>();
 		obj = map.get("Worldfilterlist");
 		Worlds = obj != null && obj instanceof List ? (ArrayList<String>) obj : new ArrayList<>();
-		Money = Tool.objToDouble(map.get("Money"));
+		Money = Tool.objToDouble(map.get("Money"), 0d);
 		obj = map.get("Command");
 		Command = obj != null && obj instanceof List ? (ArrayList<String>) obj : new ArrayList<>();
+		Path = Tool.objToString(map.get("Path"), null);
+		PathType = Tool.objToString(map.get("PathType"), null);
+	}
+
+	/**
+	 * 返回图标路径
+	 * 
+	 * @return
+	 */
+	public String getPath() {
+		return Path;
+	}
+
+	/**
+	 * 返回图标类型
+	 * 
+	 * @return
+	 */
+	public String getPathType() {
+		return PathType;
 	}
 
 	/**

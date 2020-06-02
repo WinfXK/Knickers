@@ -1,6 +1,8 @@
 package cn.winfxk.knickers.module.tip;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import cn.winfxk.knickers.Config;
@@ -15,7 +17,8 @@ import cn.winfxk.knickers.tool.Tool;
  * @author Winfxk
  */
 public class TipData extends ModuleData {
-	private String TipTitle, TipContent, TipButton1, TipButton2;
+	private String TipTitle, TipContent, TipButton1, TipButton2, TipType;
+	private List<String> Command1, Command2;
 
 	public TipData(Config config, String Key) {
 		this(config, FunctionBase.getButtonMap(config, Key));
@@ -27,15 +30,46 @@ public class TipData extends ModuleData {
 
 	public TipData(Config config, Map<String, Object> map) {
 		super(config, map);
-		TipTitle = Tool.objToString(map.get("TipTitle"));
-		TipContent = Tool.objToString(map.get("TipContent"));
-		TipButton2 = Tool.objToString(map.get("TipButton2"));
-		TipButton1 = Tool.objToString(map.get("TipButton1"));
-
+		TipTitle = Tool.objToString(map.get("Title"));
+		TipContent = Tool.objToString(map.get("Content"));
+		TipButton2 = Tool.objToString(map.get("Button1"));
+		TipButton1 = Tool.objToString(map.get("Button2"));
+		TipType = Tool.objToString(map.get("TipType"));
+		Object obj = map.get("Command1");
+		Command1 = obj == null || !(obj instanceof List) ? new ArrayList<>() : (ArrayList<String>) obj;
+		obj = map.get("Command2");
+		Command2 = obj == null || !(obj instanceof List) ? new ArrayList<>() : (ArrayList<String>) obj;
 	}
 
 	public TipData(File file, String Key) {
 		this(new Config(file, Config.YAML), Key);
+	}
+
+	/**
+	 * 返回按钮1的文本
+	 * 
+	 * @return
+	 */
+	public List<String> getCommand1() {
+		return Command1;
+	}
+
+	/**
+	 * 返回按钮2的文本
+	 * 
+	 * @return
+	 */
+	public List<String> getCommand2() {
+		return Command2;
+	}
+
+	/**
+	 * 返回窗口类型
+	 * 
+	 * @return
+	 */
+	public String getTipType() {
+		return TipType;
 	}
 
 	/**

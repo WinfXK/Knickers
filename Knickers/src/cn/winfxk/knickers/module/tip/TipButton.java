@@ -1,5 +1,8 @@
 package cn.winfxk.knickers.module.tip;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.nukkit.Player;
 import cn.winfxk.knickers.Activate;
 import cn.winfxk.knickers.Config;
@@ -15,9 +18,16 @@ import cn.winfxk.knickers.module.ModuleData;
  */
 public class TipButton extends FunctionBase {
 	public static final String TipKey = "Tip";
+	public static final List<String> TipType = new ArrayList<>(), TypeKey = new ArrayList<>();
+	static {
+		TypeKey.add("Simple");
+		TypeKey.add("Modal");
+	}
 
 	public TipButton(Activate ac) {
 		super(ac, TipKey);
+		TipType.add(getString("TipType1"));
+		TipType.add(getString("TipType2"));
 	}
 
 	@Override
@@ -32,11 +42,11 @@ public class TipButton extends FunctionBase {
 
 	@Override
 	protected FormBase getAlterForm(FormBase form, ModuleData data) {
-		return null;
+		return new AlterTip(form, TipData.geTipData(data));
 	}
 
 	@Override
-	protected boolean ClickButton(FormBase form, ModuleData data) {
-		return false;
+	protected boolean ClickButton(FormBase form, ModuleData xx) {
+		return ((form.getMyPlayer()).form = new ClickTip(form, TipData.geTipData(xx))).MakeMain();
 	}
 }
