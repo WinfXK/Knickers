@@ -59,11 +59,10 @@ public class Activate {
 	/**
 	 * 插件基础配置文件
 	 */
-	protected static final String[] defaultFile = { CommandFileName, MessageFileName };
+	protected static final String[] defaultFile = { CommandFileName, MessageFileName, MainMenuFileName, ItemListName };
 	/**
 	 * 只加载一次的数据
 	 */
-	protected static final String[] ForOnce = { MainMenuFileName, ItemListName };
 	protected static final String[] Mkdir = { PlayerDataDirName, MenuDataDirName };
 
 	/**
@@ -84,7 +83,7 @@ public class Activate {
 		Plugin plugin = Server.getInstance().getPluginManager().getPlugin(EconomyAPI.Name);
 		if (plugin != null)
 			money.addEconomyAPI(new EconomyAPI(this));
-		economy = money.getEconomy(config.getString("默认货币"));
+		economy = money.getEconomy(config.getString("Economy"));
 		if (config.getBoolean("检查更新"))
 			(new Update(kis)).start();
 		items = new ItemList(this);
@@ -92,11 +91,11 @@ public class Activate {
 		MainMenu = new Config(new File(kis.getDataFolder(), MainMenuFileName), Config.YAML);
 		if (config.getBoolean("ForceTool") && config.getInt("MonitorTime") > 0 && config.getString("Tool") != null
 				&& !config.getString("Tool").isEmpty())
-			thread = new MyThread(this);
+			(thread = new MyThread(this)).start();
 		kis.getServer().getCommandMap().register(kis.getName(), new MainCommand(this));
 		kis.getServer().getCommandMap().register(kis.getName(), new AdminCommand(this));
 		kis.getLogger().info(message.getMessage("插件启动", "{loadTime}",
-				(float) Duration.between(mis.loadTime, Instant.now()).toMillis() + "ms") + "-Delte");
+				(float) Duration.between(mis.loadTime, Instant.now()).toMillis() + "ms") + "-Alpha");
 	}
 
 	/**
@@ -113,8 +112,8 @@ public class Activate {
 	 * 
 	 * @param thread
 	 */
-	public void setThread(MyThread thread) {
-		this.thread = thread;
+	public MyThread setThread(MyThread thread) {
+		return this.thread = thread;
 	}
 
 	/**

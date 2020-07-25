@@ -6,6 +6,7 @@ import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponse;
 import cn.nukkit.form.response.FormResponseCustom;
 import cn.winfxk.knickers.Config;
+import cn.winfxk.knickers.MyThread;
 import cn.winfxk.knickers.money.MyEconomy;
 import cn.winfxk.knickers.tool.CustomForm;
 import cn.winfxk.knickers.tool.Tool;
@@ -85,6 +86,8 @@ public class Setting extends FormBase {
 		if (EnableTool) {
 			ac.setItem(null);
 			if (ForceTool) {
+				if (ac.getThread() == null)
+					ac.setThread(new MyThread(ac)).start();
 				ac.getThread().setMonitorTime(MonitorTime);
 			} else
 				ac.getThread().setWhile(false);
@@ -110,6 +113,6 @@ public class Setting extends FormBase {
 
 	@Override
 	protected String getString(String string, String[] K, Object[] D) {
-		return msg.getSon(Son, string, K, D, this, player);
+		return msg.getSon(Son, string, Tool.Arrays(this.K, K), Tool.Arrays(this.D, D), player);
 	}
 }

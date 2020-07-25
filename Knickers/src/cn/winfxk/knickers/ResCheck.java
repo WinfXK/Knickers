@@ -1,13 +1,10 @@
 package cn.winfxk.knickers;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Properties;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -55,7 +52,7 @@ public class ResCheck {
 					Utils.readFile(getClass().getResourceAsStream("/resources/player.yml")), LinkedHashMap.class)));
 		} catch (IOException e) {
 			e.printStackTrace();
-			player.getPlayer().kick(ac.message.getMessage("无法加载资源", player));
+			player.getPlayer().kick(ac.message.getMessage("无法加载资源", player.getPlayer()));
 		}
 		return player.config;
 	}
@@ -195,23 +192,14 @@ public class ResCheck {
 			if (!file.exists())
 				file.mkdirs();
 		}
-		Properties properties = new Properties();
-		file = new File(ac.getPluginBase().getDataFolder(), Activate.SystemFileName);
-		try {
-			if (!file.exists())
-				properties.storeToXML(new FileOutputStream(file), null);
-			properties.loadFromXML(new FileInputStream(file));
-			if (properties.getProperty("Vip") == null || !properties.getProperty("Vip").equals("OK")) {
-				for (String string : Activate.ForOnce)
-					Utils.writeFile(new File(ac.getPluginBase().getDataFolder(), string),
-							Utils.readFile(getClass().getResourceAsStream("/resources/" + string)));
-				properties.put("Vip", "OK");
-				properties.storeToXML(new FileOutputStream(file), null);
+		file = new File(kis.getDataFolder(), Activate.MenuDataDirName);
+		for (File file2 : file.listFiles((a, b) -> new File(a, b).isFile()))
+			try {
+				yaml.loadAs(Utils.readFile(file2), LinkedHashMap.class);
+			} catch (Exception e) {
+				e.printStackTrace();
+				log.error(ac.message.getMessage("数据加载错误"));
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-			log.error(ac.message.getMessage("无法加载系统数据"));
-		}
 		ac.config = new Config(new File(kis.getDataFolder(), Activate.ConfigFileName), Config.YAML);
 		ac.message = new Message(ac);
 		ac.CommandConfig = new Config(new File(kis.getDataFolder(), Activate.CommandFileName), Config.YAML);

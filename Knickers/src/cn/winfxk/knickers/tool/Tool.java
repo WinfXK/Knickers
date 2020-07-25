@@ -76,93 +76,25 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	}
 
 	/**
-	 * 从一个Map内按数据内容获取数据
+	 * 返回文件拓展名
 	 * 
-	 * @param <K>
-	 * @param <V>
-	 * @param map   要获取数据的Map对象
-	 * @param start 要开始截取时的数据
-	 * @param end   结束截取时的数据
+	 * @param file
 	 * @return
 	 */
-	public static <K, V> Map<K, V> getPlace(Map<K, V> map, K start, K end) {
-		Map<K, V> map2 = new LinkedHashMap<>();
-		boolean YouSB = false;
-		List<Map.Entry<K, V>> list = new ArrayList<>(map.entrySet());
-		for (Map.Entry<K, V> entry : list) {
-			if (!YouSB && entry.getKey().equals(start))
-				YouSB = true;
-			if (YouSB)
-				map2.put(entry.getKey(), entry.getValue());
-			if (YouSB && entry.getKey().equals(end))
-				break;
-		}
-		return map2;
+	public static String getExtension(File file) {
+		return getExtension(file.getName());
 	}
 
 	/**
-	 * 从一个Map内按位置获取数据
+	 * 返回文件拓展名
 	 * 
-	 * @param <K>
-	 * @param <V>
-	 * @param map   要截取数据的Map数据对象
-	 * @param start 开始截数据的位置
-	 * @param end   结束截取数据的位置
+	 * @param fileName
 	 * @return
 	 */
-	public static <K, V> Map<K, V> getPlace(Map<K, V> map, int start, int end) {
-		Map<K, V> map2 = new LinkedHashMap<>();
-		List<Map.Entry<K, V>> list = new ArrayList<>(map.entrySet());
-		Map.Entry<K, V> entry;
-		for (int JJLength = start; JJLength < list.size(); JJLength++) {
-			if (JJLength >= end && end > 0)
-				break;
-			entry = list.get(JJLength);
-			map2.put(entry.getKey(), entry.getValue());
-		}
-		return map2;
-	}
-
-	/**
-	 * 从List内获取的一个特定值开始到另一个特定值结束的值
-	 * 
-	 * @param <T>
-	 * @param list  要获取数据的列表
-	 * @param start 开始获取的值
-	 * @param end   结束获取的值
-	 * @return
-	 */
-	public static <T> List<T> getPlace(List<T> list, T start, T end) {
-		List<T> list2 = new ArrayList<>();
-		boolean YouSB = false;
-		for (T t : list) {
-			if (t.equals(start) && !YouSB)
-				YouSB = true;
-			if (YouSB)
-				list2.add(t);
-			if (YouSB && t.equals(end))
-				break;
-		}
-		return list2;
-	}
-
-	/**
-	 * 从List内按位置截取数据
-	 * 
-	 * @param <T>
-	 * @param list  想要获取数据的列表
-	 * @param start 数据开始的位置
-	 * @param end   数据结束的位置
-	 * @return
-	 */
-	public static <T> List<T> getPlace(List<T> list, int start, int end) {
-		List<T> list2 = new ArrayList<>();
-		for (int JJLength = start; JJLength < list.size(); JJLength++) {
-			if (JJLength >= end && end > 0)
-				break;
-			list2.add(list.get(JJLength));
-		}
-		return list2;
+	public static String getExtension(String fileName) {
+		if (fileName == null || fileName.isEmpty() || !fileName.contains("."))
+			return "";
+		return fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
 	}
 
 	/**
@@ -174,6 +106,80 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	 */
 	public static long getDay(String date1, String date2) {
 		return getDay(date1, "yyyy-MM-dd", date2, "yyyy-MM-dd");
+	}
+
+	/**
+	 * 制作进度条
+	 * 
+	 * @param length 进度条已经使用的长度
+	 * @return
+	 */
+	public static String getLoad(int length) {
+		return getLoad(length, 20, "§9", "§4", "|");
+	}
+
+	/**
+	 * 制作进度条
+	 * 
+	 * @param length    进度条已经使用的长度
+	 * @param maxlength 进度条总长度
+	 * @return
+	 */
+	public static String getLoad(int length, int maxlength) {
+		return getLoad(length, maxlength, "§9", "§4", "|");
+	}
+
+	/**
+	 * 制作进度条
+	 * 
+	 * @param length     进度条已经使用的长度
+	 * @param maxlength  进度条总长度
+	 * @param StartColor 进度条已经使用了的颜色
+	 * @param EndColor   进度条未使用的颜色
+	 * @param Content    进图条使用的内容
+	 * @return
+	 */
+	public static String getLoad(int length, int maxlength, String StartColor, String EndColor, String Content) {
+		String string = "";
+		for (int i = 0; i < length; i++)
+			string += Content;
+		String end = "";
+		while (string.length() + end.length() < maxlength)
+			end += Content;
+		return StartColor + string + EndColor + end;
+	}
+
+	/**
+	 * 返回文件大小
+	 * 
+	 * @param files 文件
+	 * @return
+	 */
+	public static String getFileSize(File... files) {
+		long l = 0;
+		for (File file : files)
+			l += file.length();
+		return getFileSize(l);
+	}
+
+	/**
+	 * 返回文件大小
+	 * 
+	 * @param l 文件大小
+	 * @return
+	 */
+	public static String getFileSize(long l) {
+		if (l < 1024)
+			return l + "B";
+		if (l > 1024 && l < 1048576)
+			return Tool.Double2(l / 1024) + "KB";
+		if (l > 1048576 && l < 1073741824)
+			return Tool.Double2(l / 1048576) + "MB";
+		if (l > 1073741824 && l < 1024 * 1024 * 1024 * 1024)
+			return Tool.Double2(l / (1024 * 1024 * 1024 * 1024)) + "GB";
+		if (l > 1024 * 1024 * 1024 * 1024 && l < 1024 * 1024 * 1024 * 1024 * 1024)
+			return Tool.Double2(l / (1024 * 1024 * 1024 * 1024 * 1024)) + "TB";
+		return Tool.Double2(l / (1024 * 1024 * 1024 * 1024 * 1024 * 1024)) + "PB";
 	}
 
 	/**
@@ -234,10 +240,16 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	 */
 	public static <T> T[] Arrays(T[]... arrays) {
 		List<T> list = new ArrayList<>();
-		for (T[] t : arrays)
+		T[] tt = null;
+		for (T[] t : arrays) {
+			if (t == null)
+				continue;
+			if (tt == null)
+				tt = t;
 			for (T t1 : t)
 				list.add(t1);
-		return (T[]) list.toArray();
+		}
+		return tt == null ? (T[]) list.toArray() : list.toArray(tt);
 	}
 
 	/**
@@ -248,8 +260,8 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	 */
 	public static String getCommandHelp(Command command) {
 		String string = "";
-		for (CommandParameter[] cp : command.getCommandParameters().values())
-			string += getCommandHelp(command, cp) + "\n";
+		for (Map.Entry<String, CommandParameter[]> entry : command.getCommandParameters().entrySet())
+			string += getCommandHelp(command, entry.getValue(), entry.getKey()) + "\n";
 		return string;
 	}
 
@@ -259,7 +271,7 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	 * @param command
 	 * @return
 	 */
-	public static String getCommandHelp(Command command, CommandParameter[] cp) {
+	public static String getCommandHelp(Command command, CommandParameter[] cp, String Key) {
 		String string = "", cmd, zy;
 		CommandParameter cs;
 		if (cp.length > 0) {
@@ -272,15 +284,18 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 				cs = cp[i];
 				if (cs.type.equals(CommandParamType.RAWTEXT))
 					zy = cs.enumData.getValues().get(0);
-				else
+				else {
 					zy = cs.name;
+				}
 				if (cs.enumData != null)
 					for (String s : cs.enumData.getValues())
 						if (String_length(s) < String_length(zy))
 							zy = s;
-				string += i == 0 ? zy : "§6 " + cp[i].name;
+				string += i == 0 ? zy
+						: "§6 " + (cp[i].type.equals(CommandParamType.RAWTEXT) ? cp[i].enumData.getValues().get(0)
+								: cp[i].name);
 			}
-			string += "§f： §9" + cp[0].name;
+			string += "§f： §9" + Key;
 		}
 		return string;
 	}
@@ -366,6 +381,8 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	 * @return
 	 */
 	public static Item loadItem(Map<String, Object> map) {
+		if (map == null)
+			return null;
 		Item item = new Item((int) map.get("ID"), (int) map.get("Damage"), (int) map.get("Count"));
 		String name = (String) map.get("Name");
 		if (name != null && !name.isEmpty())
@@ -882,7 +899,8 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	public static String StringToUnicode(String string) {
 		StringBuffer unicode = new StringBuffer();
 		for (int i = 0; i < string.length(); i++)
-			unicode.append("\\u" + Integer.toHexString(string.charAt(i)));
+			unicode.append(Integer.toHexString(string.charAt(i)));
+		// unicode.append("\\u" + Integer.toHexString(string.charAt(i)));
 		return unicode.toString();
 	}
 
@@ -1010,7 +1028,7 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	 */
 	public static String cutString(String Context, String strStart, String strEnd) {
 		int strStartIndex = Context.indexOf(strStart);
-		int strEndIndex = Context.lastIndexOf(strEnd);
+		int strEndIndex = Context.indexOf(strEnd, strStartIndex + 1);
 		if (strStartIndex < 0 || strEndIndex < 0)
 			return null;
 		return Context.substring(strStartIndex, strEndIndex).substring(strStart.length());
@@ -1302,7 +1320,7 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	 */
 	public static <K, V extends Comparable<? super V>> Map<K, V> sortByValueAscending(Map<K, V> map) {
 		List<Map.Entry<K, V>> list = new LinkedList<>(map.entrySet());
-		Collections.sort(list, (o1, o2) -> o1.getValue().compareTo(o2.getValue()));
+		Collections.sort(list, (a, b) -> a.getValue().compareTo(b.getValue()));
 		Map<K, V> result = new LinkedHashMap<>();
 		for (Map.Entry<K, V> entry : list)
 			result.put(entry.getKey(), entry.getValue());
@@ -1319,7 +1337,7 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	 */
 	public static <K, V extends Comparable<? super V>> Map<K, V> sortByValueDescending(Map<K, V> map) {
 		List<Map.Entry<K, V>> list = new LinkedList<>(map.entrySet());
-		Collections.sort(list, (o1, o2) -> -o1.getValue().compareTo(o2.getValue()));
+		Collections.sort(list, (a, b) -> -(a.getValue().compareTo(b.getValue())));
 		Map<K, V> result = new LinkedHashMap<>();
 		for (Map.Entry<K, V> entry : list)
 			result.put(entry.getKey(), entry.getValue());

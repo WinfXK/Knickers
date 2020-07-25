@@ -86,7 +86,7 @@ public class MakeMenu extends MakeBase {
 			return MakeMain();
 		}
 		int i = d.getDropdownResponse(3).getElementID();
-		String Menu = i > Count ? getMenuFileName(1) : list.get(i).getName();
+		String Menu = i >= Count ? getMenuFileName(1) : list.get(i).getName();
 		List<String> Command = getCommand(d.getInputResponse(4));
 		String PlayerBlacklistMode = getFiltertype(d.getDropdownResponse(5).getElementID());
 		List<String> PlayerBlacklist = getList(d.getInputResponse(6));

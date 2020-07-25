@@ -5,6 +5,7 @@ import cn.nukkit.form.response.FormResponse;
 import cn.winfxk.knickers.MyPlayer;
 import cn.winfxk.knickers.form.FormBase;
 import cn.winfxk.knickers.tool.SimpleForm;
+import cn.winfxk.knickers.tool.Tool;
 
 /**
  * PtP请求界面
@@ -66,7 +67,7 @@ public class PtPbeg extends FormBase {
 	}
 
 	private String getText(String Text) {
-		return msg.getText(Text, KK, new Object[] { toPlayer.getName(), MyPlayer.getMoney(toPlayer.getName()) }, this,
-				player);
+		return msg.getText(Text, Tool.Arrays(K, KK),
+				Tool.Arrays(D, new Object[] { toPlayer.getName(), MyPlayer.getMoney(toPlayer.getName()) }), player);
 	}
 }

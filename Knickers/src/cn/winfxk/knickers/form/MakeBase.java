@@ -22,6 +22,7 @@ public abstract class MakeBase extends FormBase {
 	public static final String Whitelist = "Blank", Blacklist = "Black", Notfilter = "Not", Permission_OP = "OP",
 			Permission_Player = "Player", Permission_All = "All", Permission_Admin = "Admin", ClickCommandSP = "{nn}",
 			FilterSP = ";", LocalPath = "Local", CloudPath = "Cloud", NotPath = "Not";
+	public static final String[] BaseKeys = { "{ButtonName}" };
 
 	/**
 	 * 创建按钮时创建的界面
@@ -34,6 +35,9 @@ public abstract class MakeBase extends FormBase {
 		super(player, upForm);
 		this.config = config;
 		Son = base.getModuleKey();
+		t = "Function";
+		setK(BaseKeys);
+		setD(Son);
 	}
 
 	/**

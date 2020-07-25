@@ -31,7 +31,7 @@ public class MenuData extends ModuleData {
 		super(config, map);
 		MenuFileName = Tool.objToString(map.get("Menu"));
 		Menufile = new File(functionMag.getFile(), getMenufilename());
-		Menuconfig = new Config(MenuFileName, Config.YAML);
+		Menuconfig = new Config(Menufile, Config.YAML);
 		MenuContent = Menuconfig.getString("Content");
 		MenuTitle = Menuconfig.getString("Name");
 	}

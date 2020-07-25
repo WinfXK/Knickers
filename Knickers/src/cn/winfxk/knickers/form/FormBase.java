@@ -13,6 +13,7 @@ import cn.winfxk.knickers.FormID;
 import cn.winfxk.knickers.Message;
 import cn.winfxk.knickers.MyPlayer;
 import cn.winfxk.knickers.tool.ItemList;
+import cn.winfxk.knickers.tool.Tool;
 
 /**
  * 基础UI操作类
@@ -321,7 +322,7 @@ public abstract class FormBase implements Cloneable {
 	 * @return
 	 */
 	protected String getString(String string, String[] K, Object[] D) {
-		return msg.getSun(t, Son, string, K, D, this, player);
+		return msg.getSun(t, Son, string, Tool.Arrays(this.K, K), Tool.Arrays(this.D, D), player);
 	}
 
 	/**
@@ -331,7 +332,7 @@ public abstract class FormBase implements Cloneable {
 	 * @return
 	 */
 	protected String getString(String string) {
-		return msg.getSun(t, Son, string, this, player);
+		return msg.getSun(t, Son, string, this);
 	}
 
 	/**

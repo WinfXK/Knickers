@@ -11,6 +11,7 @@ import cn.nukkit.form.response.FormResponse;
 import cn.winfxk.knickers.MyPlayer;
 import cn.winfxk.knickers.form.FormBase;
 import cn.winfxk.knickers.tool.SimpleForm;
+import cn.winfxk.knickers.tool.Tool;
 
 /**
  * 玩家点击了PtP按钮的处理类
@@ -72,8 +73,8 @@ public class ClickPtP extends FormBase {
 	 * @return
 	 */
 	private String getPlayerItem(Player player) {
-		return msg.getText(data.getPlayerItem(), KK,
-				new Object[] { player.getName(), MyPlayer.getMoney(player.getName()) }, this, player);
+		return msg.getText(data.getPlayerItem(), Tool.Arrays(K, KK),
+				Tool.Arrays(D, new Object[] { player.getName(), MyPlayer.getMoney(player.getName()) }), player);
 	}
 
 	@Override

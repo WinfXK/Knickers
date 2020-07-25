@@ -83,7 +83,7 @@ public abstract class FunctionBase {
 	 * @return
 	 */
 	public String getString(String Key, FormBase form) {
-		return msg.getSun(t, this.ModuleKey, Key, form, form.getPlayer());
+		return msg.getSun(t, this.ModuleKey, Key, form);
 	}
 
 	/**
@@ -172,7 +172,7 @@ public abstract class FunctionBase {
 	 * @return
 	 */
 	public String getButtonString(FormBase form, ModuleData data) {
-		return msg.getText(data.getButtonText(), form.getK(), form.getD(), form, form.getPlayer());
+		return msg.getText(data.getButtonText(), form.getK(), form.getD(), form.getPlayer());
 	}
 
 	/**

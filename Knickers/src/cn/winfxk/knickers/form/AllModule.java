@@ -5,6 +5,7 @@ import cn.nukkit.form.response.FormResponse;
 import cn.winfxk.knickers.form.am.ModuleDetails;
 import cn.winfxk.knickers.module.FunctionBase;
 import cn.winfxk.knickers.tool.SimpleForm;
+import cn.winfxk.knickers.tool.Tool;
 
 /**
  * 显示功能列表
@@ -48,7 +49,7 @@ public class AllModule extends FormBase {
 
 	@Override
 	protected String getString(String string, String[] K, Object[] D) {
-		return msg.getSon(Son, string, K, D, this, player);
+		return msg.getSon(Son, string, Tool.Arrays(this.K, K), Tool.Arrays(this.D, D), player);
 	}
 
 	@Override
