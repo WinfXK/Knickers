@@ -1,6 +1,6 @@
 package cn.winfxk.knickers.money;
 
-import cn.winfxk.knickers.Activate;
+import cn.winfxk.knickers.Knickers;
 
 /**
  * @author Winfxk
@@ -15,9 +15,14 @@ public class EconomyAPI extends MyEconomy {
 	 *
 	 * @param ac
 	 */
-	public EconomyAPI(Activate ac) {
-		super(Name, ac.getConfig().getString("EconomyAPI货币名称"));
+	public EconomyAPI(Knickers ac) {
+		super(Name, getMoneyEconomyAPIName());
 		eApi = me.onebone.economyapi.EconomyAPI.getInstance();
+	}
+
+	public static String getMoneyEconomyAPIName() {
+		String string = kis.config.getString("EconomyAPI-MoneyName");
+		return string != null && !string.isEmpty() ? string : kis.config.getString("MoneyName");
 	}
 
 	@Override

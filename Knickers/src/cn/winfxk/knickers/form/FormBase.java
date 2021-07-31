@@ -8,10 +8,9 @@ import cn.nukkit.form.response.FormResponse;
 import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.form.response.FormResponseModal;
 import cn.nukkit.form.response.FormResponseSimple;
-import cn.winfxk.knickers.Activate;
-import cn.winfxk.knickers.FormID;
-import cn.winfxk.knickers.Message;
-import cn.winfxk.knickers.MyPlayer;
+import cn.winfxk.knickers.Knickers;
+import cn.winfxk.knickers.rec.Message;
+import cn.winfxk.knickers.rec.MyPlayer;
 import cn.winfxk.knickers.tool.ItemList;
 import cn.winfxk.knickers.tool.Tool;
 
@@ -22,17 +21,21 @@ import cn.winfxk.knickers.tool.Tool;
  */
 public abstract class FormBase implements Cloneable {
 	protected Player player;
-	protected Message msg;
-	protected Activate ac;
+	protected Message msg = Knickers.kis.message;
 	private FormBase make;
-	protected FormID formID;
+	protected static Knickers kis = Knickers.kis;
 	protected String Son, Name, t = "Form";
 	protected FormBase upForm;
 	protected Object[] D = {};
 	protected String[] K = {};
 	protected MyPlayer myPlayer;
 	protected List<String> listKey = new ArrayList<>();
-	protected ItemList itemList;
+	protected ItemList itemList = Knickers.kis.itemlist;
+	public static final int[] IDs = new int[2];
+	static {
+		IDs[0] = Knickers.kis.config.getInt("ID1");
+		IDs[2] = Knickers.kis.config.getInt("ID2");
+	}
 
 	/**
 	 * 界面交互基础类
@@ -42,12 +45,9 @@ public abstract class FormBase implements Cloneable {
 	 */
 	public FormBase(Player player, FormBase upForm) {
 		this.player = player;
-		ac = Activate.getActivate();
-		msg = ac.getMessage();
 		if (player != null)
-			myPlayer = ac.getPlayers(player.getName());
+			myPlayer = kis.MyPlayers.get(player.getName());
 		reload();
-		formID = ac.getFormID();
 		Son = getClass().getSimpleName();
 		Name = getClass().getSimpleName();
 		if (upForm != null)
@@ -57,7 +57,6 @@ public abstract class FormBase implements Cloneable {
 				e.printStackTrace();
 				this.upForm = null;
 			}
-		itemList = ac.getItems();
 	}
 
 	/**
@@ -180,14 +179,12 @@ public abstract class FormBase implements Cloneable {
 			i = 1;
 			break;
 		case 1:
+		default:
 			i = 2;
-			break;
-		case 2:
-			i = 0;
 			break;
 		}
 		myPlayer.ID = i;
-		return formID.getID(myPlayer.ID);
+		return IDs[i];
 	}
 
 	/**

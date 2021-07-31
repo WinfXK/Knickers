@@ -1,0 +1,11 @@
+MoneyName: 金币
+MoneyAPI: EconomyAPI
+#当这个值为false时无法丢弃快捷工具
+DiscardTool: false
+#每个玩家进服的时候都会给一个，当拿着这个玩意右键的时候打开菜单主页，特殊值可以不限定，当特殊值为x时默认匹配所有，特殊值默认为0,当这个值为空(null{在Yml文件内用~表示})时不适用快捷工具！
+Tool: '347:0'
+#这个值为屏蔽双击检测时间，防止刷屏
+PalmRejection: 500
+#当这个值为真时定时检查玩家是否有快捷工具，如果没有则给一个
+EternalTool: true
+EternalToolTime: 60

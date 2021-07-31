@@ -2,14 +2,14 @@ package cn.winfxk.knickers.money;
 
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
+import cn.winfxk.knickers.Knickers;
 
 /**
  * @author Winfxk
  */
 public abstract class MyEconomy {
 	private String EconomyName, MoneyName;
-	protected EconomyManage em;
-	private boolean isEnabled = false;
+	protected static Knickers kis = Knickers.kis;
 
 	/**
 	 * 经济支持管理 </br>
@@ -24,17 +24,6 @@ public abstract class MyEconomy {
 	public MyEconomy(String EconomyName, String MoneyName) {
 		this.EconomyName = EconomyName;
 		this.MoneyName = MoneyName;
-		em = EconomyManage.em;
-	}
-
-	/**
-	 * 设置插件启用状态
-	 * 
-	 * @param isEnabled
-	 */
-	protected MyEconomy setEnabled(boolean isEnabled) {
-		this.isEnabled = isEnabled;
-		return this;
 	}
 
 	/**
@@ -229,15 +218,6 @@ public abstract class MyEconomy {
 	 * @return
 	 */
 	public abstract boolean allowArrears();
-
-	/**
-	 * 判断一个经济支持是否启用
-	 * 
-	 * @return
-	 */
-	public boolean isEnabled() {
-		return em.supportEconomy(getEconomyName()) && isEnabled;
-	}
 
 	/**
 	 * 设置货币名称

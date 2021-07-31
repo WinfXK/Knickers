@@ -3,6 +3,8 @@ package cn.winfxk.knickers.tool;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,12 +23,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -50,206 +54,41 @@ import cn.nukkit.item.Item;
 import cn.nukkit.level.Level;
 import cn.nukkit.level.Location;
 import cn.nukkit.math.Vector3;
+import cn.nukkit.utils.Utils;
 
 /**
  * @author Winfxk
  */
 public class Tool implements X509TrustManager, HostnameVerifier {
-	private static String colorKeyString = "123456789abcdef";
-	private static String randString = "-+abcdefghijklmnopqrstuvwxyz_";
+	private static final String colorKeyString = "123456789abcdef";
+	private static final String randString = "-+abcdefghijklmnopqrstuvwxyz_";
+	private static final SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss");
+	private static final SimpleDateFormat data = new SimpleDateFormat("yyyy-MM-dd");
+	private final static char[] digits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', 'z', 'A', 'B', 'C', 'D', 'E',
+			'F', 'G', 'H', 'I', 'J', 'K', 'L', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+			'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
+			'V', 'W', 'X', 'Y', 'Z', '+', '/' };
 
 	/**
-	 * 返回一个字符串包含多少个另一个字符串
+	 * 读取包内文件
 	 * 
-	 * @param str 字符串
-	 * @param key 要判断数量的字符串
+	 * @param FileName
 	 * @return
+	 * @throws IOException
 	 */
-	public static int getSubCount_2(String str, String key) {
-		int count = 0;
-		int index = 0;
-		while ((index = str.indexOf(key, index)) != -1) {
-			index = index + key.length();
-			count++;
-		}
-		return count;
+	public static InputStream getResourceStream(String FileName) throws IOException {
+		return Tool.class.getResourceAsStream("/resource/" + FileName);
 	}
 
 	/**
-	 * 返回文件拓展名
+	 * 读取包内文本
 	 * 
-	 * @param file
+	 * @param FileName
 	 * @return
+	 * @throws IOException
 	 */
-	public static String getExtension(File file) {
-		return getExtension(file.getName());
-	}
-
-	/**
-	 * 返回文件拓展名
-	 * 
-	 * @param fileName
-	 * @return
-	 */
-	public static String getExtension(String fileName) {
-		if (fileName == null || fileName.isEmpty() || !fileName.contains("."))
-			return "";
-		return fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
-	}
-
-	/**
-	 * 计算两个日期之间相隔多少天
-	 * 
-	 * @param date1 第一个日期字符串
-	 * @param date2 第二个日期字符串
-	 * @return
-	 */
-	public static long getDay(String date1, String date2) {
-		return getDay(date1, "yyyy-MM-dd", date2, "yyyy-MM-dd");
-	}
-
-	/**
-	 * 制作进度条
-	 * 
-	 * @param length 进度条已经使用的长度
-	 * @return
-	 */
-	public static String getLoad(int length) {
-		return getLoad(length, 20, "§9", "§4", "|");
-	}
-
-	/**
-	 * 制作进度条
-	 * 
-	 * @param length    进度条已经使用的长度
-	 * @param maxlength 进度条总长度
-	 * @return
-	 */
-	public static String getLoad(int length, int maxlength) {
-		return getLoad(length, maxlength, "§9", "§4", "|");
-	}
-
-	/**
-	 * 制作进度条
-	 * 
-	 * @param length     进度条已经使用的长度
-	 * @param maxlength  进度条总长度
-	 * @param StartColor 进度条已经使用了的颜色
-	 * @param EndColor   进度条未使用的颜色
-	 * @param Content    进图条使用的内容
-	 * @return
-	 */
-	public static String getLoad(int length, int maxlength, String StartColor, String EndColor, String Content) {
-		String string = "";
-		for (int i = 0; i < length; i++)
-			string += Content;
-		String end = "";
-		while (string.length() + end.length() < maxlength)
-			end += Content;
-		return StartColor + string + EndColor + end;
-	}
-
-	/**
-	 * 返回文件大小
-	 * 
-	 * @param files 文件
-	 * @return
-	 */
-	public static String getFileSize(File... files) {
-		long l = 0;
-		for (File file : files)
-			l += file.length();
-		return getFileSize(l);
-	}
-
-	/**
-	 * 返回文件大小
-	 * 
-	 * @param l 文件大小
-	 * @return
-	 */
-	public static String getFileSize(long l) {
-		if (l < 1024)
-			return l + "B";
-		if (l > 1024 && l < 1048576)
-			return Tool.Double2(l / 1024) + "KB";
-		if (l > 1048576 && l < 1073741824)
-			return Tool.Double2(l / 1048576) + "MB";
-		if (l > 1073741824 && l < 1024 * 1024 * 1024 * 1024)
-			return Tool.Double2(l / (1024 * 1024 * 1024 * 1024)) + "GB";
-		if (l > 1024 * 1024 * 1024 * 1024 && l < 1024 * 1024 * 1024 * 1024 * 1024)
-			return Tool.Double2(l / (1024 * 1024 * 1024 * 1024 * 1024)) + "TB";
-		return Tool.Double2(l / (1024 * 1024 * 1024 * 1024 * 1024 * 1024)) + "PB";
-	}
-
-	/**
-	 * 计算两个日期之间相隔多少天
-	 * 
-	 * @param date1       第一个日期字符串
-	 * @param date1format 第一个日期字符串的格式<yyyy-MM-dd>
-	 * @param date2       第二个日期字符串
-	 * @param date2format 第二个日期字符串<yyyy-MM-dd>
-	 */
-	public static long getDay(String date1sStr, String date1format, String date2Str, String date2format) {
-		Date date1 = parseDate(date1sStr, date1format);
-		Date date2 = parseDate(date2Str, date2format);
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date1);
-		long timeInMillis1 = calendar.getTimeInMillis();
-		calendar.setTime(date2);
-		long timeInMillis2 = calendar.getTimeInMillis();
-		long betweenDays = (timeInMillis2 - timeInMillis1) / (1000L * 3600L * 24L);
-		return betweenDays;
-	}
-
-	/**
-	 * 将指定的日期字符串转换成日期
-	 * 
-	 * @param dateStr 日期字符串
-	 * @param pattern 格式
-	 * @return 日期对象
-	 */
-	public static Date parseDate(String dateStr) {
-		return parseDate(dateStr, "yyyy-MM-dd HH:mm:ss");
-	}
-
-	/**
-	 * 将指定的日期字符串转换成日期
-	 * 
-	 * @param dateStr 日期字符串
-	 * @param pattern 格式
-	 * @return 日期对象
-	 */
-	public static Date parseDate(String dateStr, String pattern) {
-		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-		Date date;
-		try {
-			date = sdf.parse(dateStr);
-		} catch (ParseException e) {
-			throw new RuntimeException("日期转化错误");
-		}
-		return date;
-	}
-
-	/**
-	 * 数组相加
-	 * 
-	 * @param <T>    数组的类型
-	 * @param arrays 要先加的数组内容
-	 * @return
-	 */
-	public static <T> T[] Arrays(T[]... arrays) {
-		List<T> list = new ArrayList<>();
-		T[] tt = null;
-		for (T[] t : arrays) {
-			if (t == null)
-				continue;
-			if (tt == null)
-				tt = t;
-			for (T t1 : t)
-				list.add(t1);
-		}
-		return tt == null ? (T[]) list.toArray() : list.toArray(tt);
+	public static String getResource(String FileName) throws IOException {
+		return Utils.readFile(Tool.class.getResourceAsStream("/resource/" + FileName));
 	}
 
 	/**
@@ -484,6 +323,118 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 		Languages.put("Turkish", "tur");
 		Languages.put("Suomi", "fin");
 		return Languages;
+	}
+
+	/**
+	 * 把10进制的数字转换成64进制
+	 * 
+	 * @param number
+	 * @param shift
+	 * @return
+	 */
+	public static String CompressNumber(long number) {
+		char[] buf = new char[64];
+		int charPos = 64;
+		int radix = 1 << 6;
+		long mask = radix - 1;
+		do {
+			buf[--charPos] = digits[(int) (number & mask)];
+			number >>>= 6;
+		} while (number != 0);
+		return new String(buf, charPos, (64 - charPos));
+	}
+
+	/**
+	 * 把64进制的字符串转换成10进制
+	 * 
+	 * @param decompStr
+	 * @return
+	 */
+	public static long UnCompressNumber(String decompStr) {
+		long result = 0;
+		for (int i = decompStr.length() - 1; i >= 0; i--) {
+			for (int j = 0; j < digits.length; j++) {
+				if (decompStr.charAt(i) == digits[j]) {
+					result += ((long) j) << 6 * (decompStr.length() - 1 - i);
+				}
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * 计算两个日期之间相隔多少天
+	 * 
+	 * @param date1 第一个日期字符串
+	 * @param date2 第二个日期字符串
+	 * @return
+	 */
+	public static long getDay(String date1, String date2) {
+		return getDay(date1, "yyyy-MM-dd", date2, "yyyy-MM-dd");
+	}
+
+	/**
+	 * 计算两个日期之间相隔多少天
+	 * 
+	 * @param date1       第一个日期字符串
+	 * @param date1format 第一个日期字符串的格式<yyyy-MM-dd>
+	 * @param date2       第二个日期字符串
+	 * @param date2format 第二个日期字符串<yyyy-MM-dd>
+	 */
+	public static long getDay(String date1sStr, String date1format, String date2Str, String date2format) {
+		Date date1 = parseDate(date1sStr, date1format);
+		Date date2 = parseDate(date2Str, date2format);
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date1);
+		long timeInMillis1 = calendar.getTimeInMillis();
+		calendar.setTime(date2);
+		long timeInMillis2 = calendar.getTimeInMillis();
+		long betweenDays = (timeInMillis2 - timeInMillis1) / (1000L * 3600L * 24L);
+		return betweenDays;
+	}
+
+	/**
+	 * 将指定的日期字符串转换成日期
+	 * 
+	 * @param dateStr 日期字符串
+	 * @param pattern 格式
+	 * @return 日期对象
+	 */
+	public static Date parseDate(String dateStr) {
+		return parseDate(dateStr, "yyyy-MM-dd HH:mm:ss");
+	}
+
+	/**
+	 * 将指定的日期字符串转换成日期
+	 * 
+	 * @param dateStr 日期字符串
+	 * @param pattern 格式
+	 * @return 日期对象
+	 */
+	public static Date parseDate(String dateStr, String pattern) {
+		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+		Date date;
+		try {
+			date = sdf.parse(dateStr);
+		} catch (ParseException e) {
+			throw new RuntimeException("日期转化错误");
+		}
+		return date;
+	}
+
+	/**
+	 * 数组相加
+	 * 
+	 * @param <T>    数组的类型
+	 * @param arrays 要先加的数组内容
+	 * @return
+	 */
+	public static <T> T[] Arrays(T[]... arrays) {
+		List<T> list = new ArrayList<>();
+		for (T[] t : arrays)
+			for (T t1 : t)
+				list.add(t1);
+		return (T[]) list.toArray();
 	}
 
 	/**
@@ -726,8 +677,63 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	 * @return
 	 */
 	public static String getTime() {
-		SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss");
 		return time.format(new Date());
+	}
+
+	/**
+	 * 文件复制
+	 * 
+	 * @param file1 源文件
+	 * @param file2 目标文件
+	 * @return
+	 */
+	public static boolean Copy(String file1, String file2) {
+		return Copy(new File(file1), new File(file2));
+	}
+
+	/**
+	 * 文件复制
+	 * 
+	 * @param file1 源文件
+	 * @param file2 目标文件
+	 * @return
+	 */
+	public static boolean Copy(File file1, File file2) {
+		if (!file1.exists())
+			return false;
+		InputStream fileInputStream = null;
+		try {
+			fileInputStream = new FileInputStream(file1);
+			OutputStream fileOutputStream = null;
+			try {
+				fileOutputStream = new FileOutputStream(file2, true);
+				int temp = 0;
+				try {
+					while ((temp = fileInputStream.read()) != -1)
+						fileOutputStream.write(temp);
+				} catch (IOException e) {
+					e.printStackTrace();
+				} finally {
+					try {
+						fileInputStream.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					try {
+						fileOutputStream.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+				return false;
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return false;
 	}
 
 	/**
@@ -736,7 +742,6 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	 * @return
 	 */
 	public static String getDate() {
-		SimpleDateFormat data = new SimpleDateFormat("yyyy-MM-dd");
 		return data.format(new Date());
 	}
 
@@ -899,8 +904,7 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	public static String StringToUnicode(String string) {
 		StringBuffer unicode = new StringBuffer();
 		for (int i = 0; i < string.length(); i++)
-			unicode.append(Integer.toHexString(string.charAt(i)));
-		// unicode.append("\\u" + Integer.toHexString(string.charAt(i)));
+			unicode.append("\\u" + Integer.toHexString(string.charAt(i)));
 		return unicode.toString();
 	}
 
@@ -1320,7 +1324,12 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	 */
 	public static <K, V extends Comparable<? super V>> Map<K, V> sortByValueAscending(Map<K, V> map) {
 		List<Map.Entry<K, V>> list = new LinkedList<>(map.entrySet());
-		Collections.sort(list, (a, b) -> a.getValue().compareTo(b.getValue()));
+		Collections.sort(list, new Comparator<Entry<K, V>>() {
+			@Override
+			public int compare(Entry<K, V> a, Entry<K, V> b) {
+				return a.getValue().compareTo(b.getValue());
+			}
+		});
 		Map<K, V> result = new LinkedHashMap<>();
 		for (Map.Entry<K, V> entry : list)
 			result.put(entry.getKey(), entry.getValue());
@@ -1337,7 +1346,12 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	 */
 	public static <K, V extends Comparable<? super V>> Map<K, V> sortByValueDescending(Map<K, V> map) {
 		List<Map.Entry<K, V>> list = new LinkedList<>(map.entrySet());
-		Collections.sort(list, (a, b) -> -(a.getValue().compareTo(b.getValue())));
+		Collections.sort(list, new Comparator<Entry<K, V>>() {
+			@Override
+			public int compare(Entry<K, V> a, Entry<K, V> b) {
+				return -(a.getValue().compareTo(b.getValue()));
+			}
+		});
 		Map<K, V> result = new LinkedHashMap<>();
 		for (Map.Entry<K, V> entry : list)
 			result.put(entry.getKey(), entry.getValue());

@@ -2,14 +2,16 @@ name: Knickers
 main: cn.winfxk.knickers.Knickers
 api:
 - 1.0.0
-version: 3.0
-load: POSTWORLD
+version: 2.2-Alpha
 website: http://Winfxk.cn
-description: 全能菜单插件，支持自定义功能、自定义变量、自定义货币等
+description: Interesting menu
 author: Winfxk
 loadbefore:
 - EconomyAPI
 permissions:
-   Knickers.Command.main:
-      description: Knickers主命令
+   Knickers.Command.Admin:
+      description: Admin Command
+      default: op
+   Knickers.Command.Player:
+      description: Player Command
       default: true

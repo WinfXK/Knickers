@@ -1,26 +1,53 @@
 package cn.winfxk.knickers.tool;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import cn.nukkit.item.Item;
-import cn.winfxk.knickers.Activate;
+import cn.winfxk.knickers.Knickers;
+import cn.winfxk.knickers.form.FormException;
 
 /**
  * @Createdate 2020/05/11 16:51:47
  * @author Winfxk
  */
 public class ItemList {
-	private Activate ac;
-	private int ID, Damage;
 	private String Name, Path;
-	private List<ItemList> list = new ArrayList<>();
 	public static ItemList item;
+	private int ID, Damage;
+	private List<ItemList> list = new ArrayList<>();
+	private static final Config config = new Config(new File(Knickers.kis.getDataFolder(), Knickers.ItemList));
 
 	/**
-	 * 根据一串位置数据返回一个物品ID
+	 * 通过Item对象获取数据对象
+	 * 
+	 * @param item Item对象
+	 * @return
+	 */
+	public ItemList getItemList(Item item) {
+		return getItemList(item, false, null);
+	}
+
+	/**
+	 * 通过Item对象获取数据对象
+	 * 
+	 * @param item    Item对象
+	 * @param match   是否模糊搜索匹配
+	 * @param Default 默认返回的内容
+	 * @return
+	 */
+	public ItemList getItemList(Item item, boolean match, ItemList Default) {
+		for (ItemList itemList : list)
+			if (itemList.getID() == item.getId() && (match || item.getDamage() == itemList.getDamage()))
+				return itemList;
+		return Default;
+	}
+
+	/**
+	 * 根据一串未知数据返回一个物品ID
 	 * 
 	 * @param obj     未知数据<包含的可能性为：ID、名称、ID:Damage>
 	 * @param match   是否粗略匹配
@@ -48,6 +75,46 @@ public class ItemList {
 					return list.ID + ":" + list.Damage;
 		} else
 			return string + ":0";
+		return Default;
+	}
+
+	/**
+	 * 将一个未知数据转换为Item
+	 * 
+	 * @param obj 未知数据
+	 * @return
+	 */
+	public Item getItem(Object obj) {
+		return objToItem(obj, true, null);
+	}
+
+	/**
+	 * 将一个未知数据转换为Item
+	 * 
+	 * @param obj     未知数据
+	 * @param match   是否粗略匹配
+	 * @param Default 若全部匹配失败将会返回的内容
+	 * @return
+	 */
+	public Item objToItem(Object obj, boolean match, Item Default) {
+		String string = Tool.objToString(obj);
+		if (obj == null || string == null || string.isEmpty())
+			return Default;
+		if (obj instanceof Item)
+			return (Item) obj;
+		if (obj instanceof ItemList)
+			return ((ItemList) obj).getItem();
+		if (Tool.isInteger(string))
+			return new Item(Tool.ObjToInt(obj));
+		if (string.contains(":")) {
+			String[] strings = string.split(":");
+			if (Tool.isInteger(strings[0]))
+				return new Item(Tool.ObjToInt(strings[0]),
+						strings.length >= 2 && Tool.isInteger(strings[1]) ? Tool.ObjToInt(strings[0]) : 0);
+		}
+		for (ItemList list : this.list)
+			if (string.equals(list.Name) || (match && string.toLowerCase().equals(list.Name.toLowerCase())))
+				return getItem();
 		return Default;
 	}
 
@@ -365,7 +432,7 @@ public class ItemList {
 	 */
 	public int reload() {
 		list = new ArrayList<>();
-		Map<String, Object> map = ac.getItemListConfig().getAll();
+		Map<String, Object> map = config.getMap();
 		Map<String, Object> item;
 		for (Object obj : map.values()) {
 			item = obj != null && obj instanceof Map ? (HashMap<String, Object>) obj : new HashMap<>();
@@ -391,9 +458,9 @@ public class ItemList {
 	 */
 	private ItemList(Object ID, Object Damage, Object Name, Object Path) throws Exception {
 		if (ID == null || Damage == null || Name == null || Path == null)
-			throw new Exception("The item data passed is null");
+			throw new FormException("The item data passed is null");
 		if (!Tool.isInteger(Damage) || !Tool.isInteger(ID))
-			throw new Exception("Item ID or Damage does not match (need to be a pure integer greater than zero)!");
+			throw new FormException("Item ID or Damage does not match (need to be a pure integer greater than zero)!");
 		this.ID = Tool.ObjToInt(ID);
 		this.Name = Tool.objToString(Name);
 		this.Path = Tool.objToString(Path);
@@ -460,12 +527,20 @@ public class ItemList {
 	}
 
 	/**
+	 * 返回对应的物品
+	 * 
+	 * @return
+	 */
+	public Item getItem() {
+		return new Item(ID, Damage);
+	}
+
+	/**
 	 * 外部构造
 	 * 
 	 * @param activate
 	 */
-	public ItemList(Activate activate) {
-		ac = activate;
+	public ItemList() {
 		reload();
 		item = this;
 	}
