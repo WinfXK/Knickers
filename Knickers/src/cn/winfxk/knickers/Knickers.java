@@ -10,20 +10,25 @@ import java.util.Map;
 import cn.nukkit.Player;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
+import cn.nukkit.event.block.BlockBreakEvent;
+import cn.nukkit.event.player.PlayerDropItemEvent;
 import cn.nukkit.event.player.PlayerFormRespondedEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
-import cn.nukkit.event.player.PlayerJoinEvent;
+import cn.nukkit.event.player.PlayerItemConsumeEvent;
 import cn.nukkit.event.player.PlayerQuitEvent;
+import cn.nukkit.event.player.PlayerRespawnEvent;
 import cn.nukkit.form.response.FormResponse;
 import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.form.response.FormResponseModal;
 import cn.nukkit.form.response.FormResponseSimple;
 import cn.nukkit.inventory.Inventory;
 import cn.nukkit.item.Item;
+import cn.nukkit.item.enchantment.Enchantment;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Utils;
 import cn.winfxk.knickers.form.FormBase;
+import cn.winfxk.knickers.money.EconomyAPI;
 import cn.winfxk.knickers.money.MyEconomy;
 import cn.winfxk.knickers.rec.Message;
 import cn.winfxk.knickers.rec.MyPlayer;
@@ -42,8 +47,7 @@ public class Knickers extends PluginBase implements Listener {
 	/**
 	 * 各名称
 	 */
-	public static final String ConfigName = "Config.yml", MsgConfigName = "Message.yml",
-			MainMenuConfigName = "Main.yml", Menus = "Menus", Language = "Language", ItemList = "ItemList.yml";
+	public static final String ConfigName = "Config.yml", MsgConfigName = "Message.yml", MainMenuConfigName = "Main.yml", Menus = "Menus", Language = "Language", ItemList = "ItemList.yml";
 	/**
 	 * 需要检查本地文件是否存在的文件，不存在及生成默认文件
 	 */
@@ -70,15 +74,19 @@ public class Knickers extends PluginBase implements Listener {
 	/**
 	 * 快捷工具的ID
 	 */
-	public String FastTool = config.getString("Tool");
+	public String FastTool;;
 	/**
 	 * 防误触检测间隔
 	 */
-	public int ClickInterval = config.getInt("EternalToolTime");
+	public int ClickInterval;
 	/**
 	 * 主页配置文件的File对象
 	 */
-	private File Main;
+	public File Main;
+	/**
+	 * 是否撤回快捷工具产生的事件
+	 */
+	private boolean EventCancelled;
 
 	private void Exist() {
 		File file;
@@ -113,11 +121,23 @@ public class Knickers extends PluginBase implements Listener {
 		Exist();
 		check.start();
 		config = new Config(new File(getDataFolder(), ConfigName));
+		Object obj = config.get("ID1");
+		if (obj == null || !Tool.isInteger(obj))
+			config.set("ID1", Tool.getRand(0, 147483647));
+		obj = config.get("ID2");
+		if (obj == null || !Tool.isInteger(obj))
+			config.set("ID2", Tool.getRand(0, 147483647));
+		config.save();
+		FastTool = config.getString("Tool");
+		ClickInterval = config.getInt("EternalToolTime");
+		EventCancelled = config.getBoolean("EventCancelled");
+		addEcnonmy(new EconomyAPI(this));
+		economy = getEconomy(config.getString("MoneyAPI", "EconomyAPI"));
 		message = new Message(this);
 		itemlist = new ItemList();
+		Main = new File(getDataFolder(), MainMenuConfigName);
 		getServer().getPluginManager().registerEvents(this, this);
-		getLogger().info(message.getMessage("插件启动", "{loadTime}",
-				(float) Duration.between(loadTime, Instant.now()).toMillis() + "ms"));
+		getLogger().info(message.getMessage("插件启动", "{loadTime}", (float) Duration.between(loadTime, Instant.now()).toMillis() + "ms"));
 	}
 
 	@Override
@@ -169,14 +189,95 @@ public class Knickers extends PluginBase implements Listener {
 		return true;
 	}
 
+	/**
+	 * 使用物品事件
+	 * 
+	 * @param e
+	 */
+	@EventHandler
+	public void onConsume(PlayerItemConsumeEvent e) {
+		if (isFastTool(e.getItem())) {
+			Player player = e.getPlayer();
+			MyPlayer myPlayer = MyPlayers.get(player.getName());
+			if (myPlayer.instant != null && Duration.between(myPlayer.instant, Instant.now()).toMillis() < ClickInterval)
+				return;
+			myPlayer.instant = Instant.now();
+			(myPlayer.form = new MakeMenu(player, null, Main)).MakeMain();
+			e.setCancelled(EventCancelled);
+		}
+	}
+
+	/**
+	 * 玩家复活事件
+	 * 
+	 * @param e
+	 */
+	@EventHandler
+	public void onRespawn(PlayerRespawnEvent e) {
+		Player player = e.getPlayer();
+		if (!MyPlayers.containsKey(player.getName()) || MyPlayers.get(player.getName()) == null)
+			MyPlayers.put(player.getName(), new MyPlayer(player));
+		else {
+			MyPlayer myPlayer = MyPlayers.get(player.getName());
+			myPlayer.setPlayer(player);
+		}
+		if (config.getBoolean("EternalTool"))
+			if (!isFastTool(player)) {
+				player.getInventory().addItem(getFastTool());
+				player.sendMessage(message.getMessage("给工具", player));
+			}
+	}
+
+	/**
+	 * 玩家丢弃快捷工具事件
+	 * 
+	 * @param e
+	 */
+	@EventHandler
+	public void onDrop(PlayerDropItemEvent e) {
+		if (config.getBoolean("DiscardTool"))
+			return;
+		if (isFastTool(e.getItem())) {
+			Player player = e.getPlayer();
+			e.setCancelled();
+			player.sendMessage(message.getMessage("拒绝丢弃Tool", player));
+		}
+	}
+
+	/**
+	 * 破坏方块事件
+	 * 
+	 * @param e
+	 */
+	@EventHandler
+	public void onBreak(BlockBreakEvent e) {
+		if (isFastTool(e.getItem())) {
+			Player player = e.getPlayer();
+			MyPlayer myPlayer = MyPlayers.get(player.getName());
+			if (myPlayer.instant != null && Duration.between(myPlayer.instant, Instant.now()).toMillis() < ClickInterval)
+				return;
+			myPlayer.instant = Instant.now();
+			(myPlayer.form = new MakeMenu(player, null, Main)).MakeMain();
+			e.setCancelled(EventCancelled);
+		}
+	}
+
+	/**
+	 * 玩家交互事件
+	 * 
+	 * @param e
+	 */
 	@EventHandler
 	public void onClick(PlayerInteractEvent e) {
-		Player player = e.getPlayer();
-		MyPlayer myPlayer = MyPlayers.get(player.getName());
-		if (myPlayer.instant != null && Duration.between(myPlayer.instant, Instant.now()).toMillis() < ClickInterval)
-			return;
-		myPlayer.instant = Instant.now();
-		(myPlayer.form = new MakeMenu(player, null, Main)).MakeMain();
+		if (isFastTool(e.getItem())) {
+			Player player = e.getPlayer();
+			MyPlayer myPlayer = MyPlayers.get(player.getName());
+			if (myPlayer.instant != null && Duration.between(myPlayer.instant, Instant.now()).toMillis() < ClickInterval)
+				return;
+			myPlayer.instant = Instant.now();
+			(myPlayer.form = new MakeMenu(player, null, Main)).MakeMain();
+			e.setCancelled(EventCancelled);
+		}
 	}
 
 	/**
@@ -192,22 +293,6 @@ public class Knickers extends PluginBase implements Listener {
 	}
 
 	/**
-	 * 玩家进服事件
-	 * 
-	 * @param e
-	 */
-	@EventHandler
-	public void onJoin(PlayerJoinEvent e) {
-		Player player = e.getPlayer();
-		if (!MyPlayers.containsKey(player.getName()) || MyPlayers.get(player.getName()) == null)
-			MyPlayers.put(player.getName(), new MyPlayer(player));
-		else {
-			MyPlayer myPlayer = MyPlayers.get(player.getName());
-			myPlayer.setPlayer(player);
-		}
-	}
-
-	/**
 	 * 返回一个快捷工具的Item对象
 	 * 
 	 * @return
@@ -218,6 +303,7 @@ public class Knickers extends PluginBase implements Listener {
 		CompoundTag tag = item.getNamedTag() == null ? new CompoundTag() : item.getNamedTag();
 		tag.putString(getName(), getClass().getName());
 		item.setNamedTag(tag);
+		item.addEnchantment(Enchantment.getEnchantment(0));
 		item.setCustomName(message.getMessage("快捷工具名称"));
 		item.setLore(message.getMessage("快捷工具Lore"));
 		return item;
@@ -230,12 +316,13 @@ public class Knickers extends PluginBase implements Listener {
 	 * @return
 	 */
 	public boolean isFastTool(Item item) {
-		String string = FastTool == null || FastTool.isEmpty() ? "347:0" : FastTool;
-		if ((item.getId() + ":" + item.getDamage()).equals(string)) {
+		if (FastTool == null || FastTool.isEmpty())
+			return false;
+		if ((item.getId() + ":" + item.getDamage()).equals(FastTool)) {
 			CompoundTag tag = item.getNamedTag();
 			if (tag == null)
 				return false;
-			string = tag.getString(getName());
+			String string = tag.getString(getName());
 			if (string == null)
 				return false;
 			return string.equals(getClass().getName());
@@ -280,8 +367,7 @@ public class Knickers extends PluginBase implements Listener {
 					myPlayer.form.wasClosed();
 					return;
 				}
-				if (data == null || !(data instanceof FormResponseCustom) && !(data instanceof FormResponseSimple)
-						&& !(data instanceof FormResponseModal)) {
+				if (data == null || !(data instanceof FormResponseCustom) && !(data instanceof FormResponseSimple) && !(data instanceof FormResponseModal)) {
 					myPlayer.form = null;
 					return;
 				}
@@ -291,8 +377,8 @@ public class Knickers extends PluginBase implements Listener {
 			e2.printStackTrace();
 			if (myPlayer.form != null)
 				myPlayer.form.onError(e2);
-			player.sendMessage(message.getMessage("数据处理错误", new String[] { "{Player}", "{Money}", "{Error}" },
-					new Object[] { player.getName(), MyPlayer.getMoney(player.getName()), e2.getMessage() }));
+			player.sendMessage(
+					message.getMessage("数据处理错误", new String[] { "{Player}", "{Money}", "{Error}" }, new Object[] { player.getName(), MyPlayer.getMoney(player.getName()), e2.getMessage() }));
 		}
 	}
 }

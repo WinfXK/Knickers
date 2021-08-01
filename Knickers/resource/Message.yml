@@ -2,4 +2,38 @@ lang: chs
 #玩家会收到的快捷工具的名称
 快捷工具名称: §e§l§n快§b§l§n捷§9§l§n菜§4§l§n单
 #这个是快捷工具的Lore，我也不知道改怎么翻译
-快捷工具Lore: §e据说长得帅的人用这个点击都可以打开一个菜单哦~{n}§9赶快试试吧!
+快捷工具Lore: '{RGBTextStart}据说长得帅的人用这个点击地面都能打开一个菜单.....{n}你丑吗？{RGBTextEnd}'
+拒绝丢弃Tool: §4你不能丢弃你的大宝贝！
+插件启动: '{RGBTextStart}{PluginName}启动(耗时: {loadTime})...{RGBTextEnd}        §6欢迎{RGBTextStart}使用{PluginName}{RGBTextEnd}§f(*￣︶￣)'
+给工具: §9先给了你一个快捷工具！快去使用吧~
+Close: §4关闭
+Back: §6返回
+notPermission: §4你没有权限执行这个操作！
+FilteredModel: §4您无法使用这个功能！因为您已被列为§6{FilteredModel}§4过滤列表！
+Whitelist: §6白名单
+Blacklist: §4黑名单
+Nonuselist: §f无
+notMoney: §4您的{MoneyName}不足！
+ButtonError: '§4按钮数据错误！请检查！Key: {Key}，Error：{Error}'
+Form:
+   notPermission: §6你没有使用这个功能的权限！该菜单使用权限为：§4{Permission}
+   WorldFiltered: §4你不能在这个世界使用这个功能！
+   LevelError: §4无法加载目标世界！
+   OP: §e管理员
+   Player: §7玩家
+   All: §6所有用户
+   FoldingSet: '{RandColor}更多选项'
+   AddButton: '{RandColor}添加按钮'
+   DelButton: '{RandColor}删除按钮'
+   AlterButton: '{RandColor}修改按钮'
+   Settings: '{RandColor}系统设置'
+   AlterMenu: '{RandColor}修改界面'
+   Command:
+      Error: §4命令执行错误！请联系服务器管理员！
+      SecurityPermission: §4安全进程执行中！请稍后重试.
+   Menu:
+      菜单不存在: §4菜单文件不存在！
+   TPA:
+      Offline: §4玩家{ToPlayer}不在线！
+   Tip:
+      Exit: §4退出

@@ -1,6 +1,8 @@
 package cn.winfxk.knickers.rec;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.nukkit.Player;
 import cn.winfxk.knickers.Knickers;
@@ -16,6 +18,14 @@ public class MyPlayer {
 	private static Knickers kis = Knickers.kis;
 	public int ID;
 	public Instant instant;
+	private static boolean Whitelist;
+	private static List<String> Whitelists;
+	public transient boolean SecurityPermissions;
+	static {
+		Whitelist = Knickers.kis.config.getBoolean("Whitelist");
+		Object obj = Knickers.kis.config.get("Whitelists");
+		Whitelists = obj != null && obj instanceof List ? (ArrayList<String>) obj : new ArrayList<>();
+	}
 
 	public MyPlayer(Player player) {
 		this.player = player;
@@ -43,5 +53,31 @@ public class MyPlayer {
 	 */
 	public static double getMoney(String name) {
 		return kis.getEconomy().getMoney(name);
+	}
+
+	/**
+	 * 判断玩家是否是管理员
+	 * 
+	 * @return
+	 */
+	public boolean isAdmin() {
+		if (Whitelist)
+			return Whitelists.contains(player.getName());
+		return player.isOp();
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	/**
+	 * 判断玩家是否是管理员
+	 * 
+	 * @return
+	 */
+	public static boolean isAdmin(Player player) {
+		if (Whitelist)
+			return Whitelists.contains(player.getName());
+		return player.isOp();
 	}
 }

@@ -8,6 +8,7 @@ import cn.nukkit.form.response.FormResponse;
 import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.form.response.FormResponseModal;
 import cn.nukkit.form.response.FormResponseSimple;
+import cn.nukkit.plugin.PluginLogger;
 import cn.winfxk.knickers.Knickers;
 import cn.winfxk.knickers.rec.Message;
 import cn.winfxk.knickers.rec.MyPlayer;
@@ -20,6 +21,7 @@ import cn.winfxk.knickers.tool.Tool;
  * @author Winfxk
  */
 public abstract class FormBase implements Cloneable {
+	protected PluginLogger log = Knickers.kis.getLogger();
 	protected Player player;
 	protected Message msg = Knickers.kis.message;
 	private FormBase make;
@@ -34,7 +36,7 @@ public abstract class FormBase implements Cloneable {
 	public static final int[] IDs = new int[2];
 	static {
 		IDs[0] = Knickers.kis.config.getInt("ID1");
-		IDs[2] = Knickers.kis.config.getInt("ID2");
+		IDs[1] = Knickers.kis.config.getInt("ID2");
 	}
 
 	/**
@@ -180,7 +182,7 @@ public abstract class FormBase implements Cloneable {
 			break;
 		case 1:
 		default:
-			i = 2;
+			i = 0;
 			break;
 		}
 		myPlayer.ID = i;
@@ -338,7 +340,7 @@ public abstract class FormBase implements Cloneable {
 	 * @return
 	 */
 	protected boolean isBack() {
-		return upForm == null ? true : setForm(upForm).make();
+		return upForm == null ? (myPlayer.form = null) == null : setForm(upForm).make();
 	}
 
 	@Override

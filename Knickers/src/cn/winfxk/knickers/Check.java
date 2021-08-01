@@ -41,14 +41,12 @@ public class Check {
 			if (lang != null && getClass().getResource("/language/" + lang + ".yml") != null)
 				try {
 					log.info("Writing to the default language:" + lang);
-					Utils.writeFile(Message.file,
-							Utils.readFile(getClass().getResourceAsStream("/language/" + lang + ".yml")));
+					Utils.writeFile(Message.file, Utils.readFile(getClass().getResourceAsStream("/language/" + lang + ".yml")));
 				} catch (IOException e) {
 					e.printStackTrace();
 					log.error("§4The default language could not be initialized！");
 					try {
-						Utils.writeFile(Message.file,
-								Utils.readFile(getClass().getResourceAsStream("/resources/Message.yml")));
+						Utils.writeFile(Message.file, Utils.readFile(getClass().getResourceAsStream("/resource/Message.yml")));
 					} catch (IOException e1) {
 						e1.printStackTrace();
 						log.error("§4The default language could not be initialized！");
@@ -58,8 +56,7 @@ public class Check {
 				}
 			else
 				try {
-					Utils.writeFile(Message.file,
-							Utils.readFile(getClass().getResourceAsStream("/resources/Message.yml")));
+					Utils.writeFile(Message.file, Utils.readFile(getClass().getResourceAsStream("/resource/Message.yml")));
 				} catch (IOException e1) {
 					e1.printStackTrace();
 					log.error("§4The default language could not be initialized！");
@@ -70,8 +67,7 @@ public class Check {
 		if (!file.exists())
 			file.mkdirs();
 		try {
-			JarFile localJarFile = new JarFile(
-					new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile()));
+			JarFile localJarFile = new JarFile(new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile()));
 			Enumeration<JarEntry> entries = localJarFile.entries();
 			File Jf, JFB;
 			String JN, JP, JE;
@@ -161,8 +157,7 @@ public class Check {
 					index++;
 					continue;
 				}
-				data.put(Key, Matc((Map<String, Object>) obj,
-						obj2 instanceof Map ? (HashMap<String, Object>) obj2 : new HashMap<>()));
+				data.put(Key, Matc((Map<String, Object>) obj, obj2 instanceof Map ? (HashMap<String, Object>) obj2 : new HashMap<>()));
 				continue;
 			}
 		}

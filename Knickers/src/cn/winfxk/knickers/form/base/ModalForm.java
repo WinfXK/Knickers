@@ -1,4 +1,4 @@
-package cn.winfxk.knickers.form;
+package cn.winfxk.knickers.form.base;
 
 import cn.nukkit.form.window.FormWindow;
 import cn.nukkit.form.window.FormWindowModal;
@@ -85,6 +85,15 @@ public class ModalForm extends RootForm {
 	public ModalForm(int ID, String Title, String Content) {
 		super(ID, Title);
 		this.Content = Content;
+	}
+
+	/**
+	 * 设置窗口内容
+	 * 
+	 * @param content
+	 */
+	public void setContent(String content) {
+		Content = content;
 	}
 
 	@Override

@@ -9,3 +9,12 @@ PalmRejection: 500
 #当这个值为真时定时检查玩家是否有快捷工具，如果没有则给一个
 EternalTool: true
 EternalToolTime: 60
+#是否撤回使用快捷工具产生的事件
+EventCancelled: true
+#开启后只能白名单内的玩家进行设置操作
+Whitelist: false
+Whitelists: []
+#当这个设置启用时在菜单页面内更多按钮将会折叠显示
+FoldingSet: true
+#这个时间用于在玩家点击OP按钮后取消OP权限，不建议设置过长
+SecurityPermission: 1000

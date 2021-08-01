@@ -110,7 +110,7 @@ public class ItemList {
 			String[] strings = string.split(":");
 			if (Tool.isInteger(strings[0]))
 				return new Item(Tool.ObjToInt(strings[0]),
-						strings.length >= 2 && Tool.isInteger(strings[1]) ? Tool.ObjToInt(strings[0]) : 0);
+						strings.length >= 2 && Tool.isInteger(strings[1]) ? Tool.ObjToInt(strings[1]) : 0);
 		}
 		for (ItemList list : this.list)
 			if (string.equals(list.Name) || (match && string.toLowerCase().equals(list.Name.toLowerCase())))

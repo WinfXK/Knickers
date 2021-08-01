@@ -1,4 +1,4 @@
-package cn.winfxk.knickers.form;
+package cn.winfxk.knickers.form.base;
 
 import java.util.ArrayList;
 import java.util.List;
