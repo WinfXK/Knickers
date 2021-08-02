@@ -18,6 +18,30 @@ public class MakeForm extends FormBase {
 	private String Title, Content, Back, Close;
 	private boolean isBack, isModal;
 
+	/**
+	 * 显示一个弹窗
+	 * 
+	 * @param player  弹窗对象
+	 * @param upForm  上个界面
+	 * @param Title   弹窗标题
+	 * @param Content 弹窗内容
+	 * @param isBack  是否允许返回
+	 * @param isModal 洁面类型
+	 */
+	public MakeForm(Player player, FormBase upForm, String Title, String Content, boolean isBack, boolean isModal) {
+		super(player, upForm);
+		this.Title = Title;
+		this.Content = Content;
+		this.isBack = isBack;
+		Back = isBack ? msg.getMessage("Back", this) : msg.getSun(t, "Tip", "Exit", this);
+		Close = msg.getMessage("Close", this);
+		this.isModal = isModal;
+	}
+
+	public MakeForm(Player player, Map<String, Object> map) {
+		this(player, null, map);
+	}
+
 	public MakeForm(Player player, FormBase upForm, Map<String, Object> map) {
 		super(player, upForm);
 		isBack = Tool.ObjToBool(map.get("isBack"));
@@ -26,6 +50,18 @@ public class MakeForm extends FormBase {
 		Back = isBack ? msg.getMessage("Back", this) : msg.getSun(t, "Tip", "Exit", this);
 		Close = msg.getMessage("Close", this);
 		isModal = !Tool.objToString(map.get("TipType")).toLowerCase().equals("simple");
+	}
+
+	/**
+	 * 显示一个弹窗
+	 * 
+	 * @param player  弹窗对象
+	 * @param upForm  上个界面
+	 * @param Title   弹窗标题
+	 * @param Content 弹窗内容
+	 */
+	public MakeForm(Player player, FormBase upForm, String Title, String Content) {
+		this(player, upForm, Title, Content, true, true);
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.form.response.FormResponse;
 import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.form.response.FormResponseModal;
@@ -31,6 +32,7 @@ public abstract class FormBase implements Cloneable {
 	protected Object[] D = {};
 	protected String[] K = {};
 	protected MyPlayer myPlayer;
+	protected static Server server = Server.getInstance();
 	protected List<String> listKey = new ArrayList<>();
 	protected ItemList itemList = Knickers.kis.itemlist;
 	public static final int[] IDs = new int[2];

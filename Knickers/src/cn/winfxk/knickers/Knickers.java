@@ -28,6 +28,7 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Utils;
 import cn.winfxk.knickers.form.FormBase;
+import cn.winfxk.knickers.module.BaseButton;
 import cn.winfxk.knickers.money.EconomyAPI;
 import cn.winfxk.knickers.money.MyEconomy;
 import cn.winfxk.knickers.rec.Message;
@@ -44,6 +45,7 @@ public class Knickers extends PluginBase implements Listener {
 	public ItemList itemlist;
 	public Instant loadTime;
 	public Message message;
+	private Map<String, BaseButton> Buttons = new HashMap<>();
 	/**
 	 * 各名称
 	 */
@@ -377,8 +379,57 @@ public class Knickers extends PluginBase implements Listener {
 			e2.printStackTrace();
 			if (myPlayer.form != null)
 				myPlayer.form.onError(e2);
-			player.sendMessage(
-					message.getMessage("数据处理错误", new String[] { "{Player}", "{Money}", "{Error}" }, new Object[] { player.getName(), MyPlayer.getMoney(player.getName()), e2.getMessage() }));
+			player.sendMessage(message.getMessage("数据处理错误", new String[] { "{Player}", "{Money}", "{Error}" }, new Object[] { player.getName(), MyPlayer.getMoney(player.getName()), e2.getMessage() }));
 		}
+	}
+
+	/**
+	 * 添加一个按钮
+	 * 
+	 * @param button
+	 * @return
+	 */
+	public boolean addButton(BaseButton button) {
+		if (Buttons.containsKey(button.getTGA()))
+			return false;
+		Buttons.put(button.getTGA(), button);
+		return true;
+	}
+
+	/**
+	 * 添加一个按钮
+	 * 
+	 * @param button
+	 * @return 添加是否完全成功
+	 */
+	public boolean addButton(BaseButton... buttons) {
+		boolean isReturn = true;
+		for (BaseButton button : buttons) {
+			if (Buttons.containsKey(button.getTGA()))
+				isReturn = false;
+			Buttons.put(button.getTGA(), button);
+		}
+		return isReturn;
+	}
+
+	/**
+	 * 返回已经添加了的按钮列表
+	 * 
+	 * @return
+	 */
+	public Map<String, String> getButtonName() {
+		Map<String, String> map = new HashMap<>();
+		for (Map.Entry<String, BaseButton> entry : Buttons.entrySet())
+			map.put(entry.getKey(), entry.getValue().getName());
+		return map;
+	}
+
+	/**
+	 * 返回已经支持了的按钮列表
+	 * 
+	 * @return
+	 */
+	protected Map<String, BaseButton> getButtons() {
+		return Buttons;
 	}
 }

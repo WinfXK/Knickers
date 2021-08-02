@@ -18,3 +18,7 @@ Whitelists: []
 FoldingSet: true
 #这个时间用于在玩家点击OP按钮后取消OP权限，不建议设置过长
 SecurityPermission: 1000
+#当被请求传送万家同意传送后倒计时多久传送
+AcceptTPAWait: 3
+#如果你使用插件添加了按钮，请关闭这个选项！否则可能会占用部分不必要的性能
+MoreButton: false

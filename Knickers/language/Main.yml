@@ -90,3 +90,22 @@ Buttons:
     Content: ''
     LevelFilteredModel: 0
     Key: v
+  r:
+    Msg:
+    - 阿斯达
+    IconPath: null
+    Player: Winfxk
+    Hint:
+    - 阿斯达四大是大
+    Commander: Player
+    FilteredPlayer: []
+    Text: §6点击变丑
+    creaTime: '2021-08-02 20:25:21'
+    IconType: 0
+    Money: 0.0
+    Type: Command
+    LevelList: []
+    Command: '{msg}'
+    FilteredModel: 0
+    LevelFilteredModel: 0
+    Key: r

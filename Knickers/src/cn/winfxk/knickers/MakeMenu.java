@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import cn.nukkit.Player;
-import cn.nukkit.Server;
 import cn.nukkit.command.ConsoleCommandSender;
 import cn.nukkit.form.response.FormResponse;
 import cn.nukkit.form.response.FormResponseSimple;
@@ -26,6 +25,7 @@ import cn.winfxk.knickers.form.base.SimpleForm;
 import cn.winfxk.knickers.form.more.Command;
 import cn.winfxk.knickers.form.more.tpa.TPA;
 import cn.winfxk.knickers.form.more.tpa.ToPlayerTPA;
+import cn.winfxk.knickers.module.BaseButton;
 import cn.winfxk.knickers.rec.SecurityPermissions;
 import cn.winfxk.knickers.tool.Config;
 import cn.winfxk.knickers.tool.Tool;
@@ -37,21 +37,22 @@ import cn.winfxk.knickers.tool.Tool;
  * @author Winfxk
  */
 public class MakeMenu extends FormBase {
-	private File file;
-	private Config config;
+	public Player player;
+	public File file;
+	public Config config;
 	/**
 	 * 过滤模式
 	 */
-	private int FilteredModel, LevelFilteredModel,
+	public int FilteredModel, LevelFilteredModel,
 			/**
 			 * 使用该菜单的权限
 			 */
 			Permission;
-	private List<String> FilteredPlayer, AdminKeys = new ArrayList<>(), LevelList;
-	private String Whitelist, Blacklist, Nonuselist, OP, Player, All;
-	private boolean FoldingSet;
-	private Map<String, Object> Buttons;
-	private static final File MenuFile;
+	public List<String> FilteredPlayer, AdminKeys = new ArrayList<>(), LevelList;
+	public String Whitelist, Blacklist, Nonuselist, OP, Player, All;
+	public boolean FoldingSet;
+	public Map<String, Object> Buttons;
+	public static final File MenuFile;
 	static {
 		MenuFile = new File(Knickers.kis.getDataFolder(), Knickers.Menus);
 	}
@@ -186,7 +187,8 @@ public class MakeMenu extends FormBase {
 				kis.getEconomy().reduceMoney(player, Money);
 			}
 			command = msg.getText(Tool.objToString(map.get("Command")), this);
-			switch (Tool.objToString(map.get("Type"), "Tip").toLowerCase()) {
+			String Key = Tool.objToString(map.get("Type"), "Tip").toLowerCase();
+			switch (Key) {
 			case "tip":
 			case "提示":
 			case "弹窗":
@@ -198,7 +200,7 @@ public class MakeMenu extends FormBase {
 				z = Tool.objToDouble(map.get("Z"));
 				y = Tool.objToDouble(map.get("Y"));
 				string = Tool.objToString(map.get("World"));
-				level = Server.getInstance().getLevelByName(string);
+				level = server.getLevelByName(string);
 				if (level == null)
 					return sendMessage(msg.getSon(t, "LevelError", this));
 				player.teleport(new Location(x, y, z, level));
@@ -223,14 +225,16 @@ public class MakeMenu extends FormBase {
 				boolean isAffirm = Tool.ObjToBool(map.get("isAffirm"));
 				if (string == null)
 					return onCommand(command) && setForm(new TPA(player, this, isAffirm)).make();
-				Player toPlayer = Server.getInstance().getPlayer(string);
+				Player toPlayer = server.getPlayer(string);
 				if (toPlayer == null || !toPlayer.isOnline())
 					return sendMessage(msg.getSun(t, "TPA", "Offline", Tool.Arrays(new String[] { "{ToPlayer}" }, getK()), Tool.Arrays(new Object[] { string }, getD())));
 				if (isAffirm)
 					return player.teleport(toPlayer) && onCommand(command);
 				onCommand(command);
 				return setForm(new ToPlayerTPA(toPlayer, this, player)).make();
-			default:
+			case "command":
+			case "cnd":
+			case "命令":
 				if (myPlayer.SecurityPermissions)
 					return sendMessage(msg.getSun(t, "Command", "SecurityPermission", this));
 				if (command == null || command.isEmpty())
@@ -242,16 +246,16 @@ public class MakeMenu extends FormBase {
 				case "console":
 				case "c":
 				case "控制台":
-					return Server.getInstance().dispatchCommand(new ConsoleCommandSender(), command);
+					return server.dispatchCommand(new ConsoleCommandSender(), command);
 				case "op":
 				case "admin":
 				case "管理员":
 					if (player.isOp())
-						return Server.getInstance().dispatchCommand(player, command);
+						return server.dispatchCommand(player, command);
 					myPlayer.SecurityPermissions = true;
 					player.setOp(true);
 					try {
-						Server.getInstance().dispatchCommand(player, command);
+						server.dispatchCommand(player, command);
 					} catch (Exception e) {
 						return sendMessage(msg.getSun(t, "Command", "Error", this));
 					} finally {
@@ -259,9 +263,17 @@ public class MakeMenu extends FormBase {
 					}
 					return true;
 				default:
-					Server.getInstance().dispatchCommand(player, command);
+					server.dispatchCommand(player, command);
 					return true;
 				}
+			default:
+				if (!kis.config.getBoolean("MoreButton:") || kis.getButtons().size() <= 0)
+					return setForm(new MakeForm(player, this, getString("Tip"), getString("Offline"), true, true)).make();
+				Map<String, BaseButton> buttons = kis.getButtons();
+				for (BaseButton button : buttons.values())
+					if (button.getKeys().contains(Key))
+						return button.onClick(this, map);
+				return setForm(new MakeForm(player, this, getString("Tip"), getString("Offline"), true, true)).make();
 			}
 		}
 	}
@@ -279,6 +291,6 @@ public class MakeMenu extends FormBase {
 	private boolean onCommand(String Command) {
 		if (Command == null || Command.isEmpty())
 			return false;
-		return Server.getInstance().dispatchCommand(player, Command);
+		return server.dispatchCommand(player, Command);
 	}
 }

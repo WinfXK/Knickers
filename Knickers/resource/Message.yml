@@ -28,12 +28,30 @@ Form:
    AlterButton: '{RandColor}修改按钮'
    Settings: '{RandColor}系统设置'
    AlterMenu: '{RandColor}修改界面'
+   ButtonClone: §4不支持的按钮或管理员已关闭更多按钮支持。
    Command:
       Error: §4命令执行错误！请联系服务器管理员！
       SecurityPermission: §4安全进程执行中！请稍后重试.
+      Tip: '{RandColor}提示'
+      CommandNull: §4需要执行的命令不能为空！
+      MsgNull: §4所有Msg相关变量数据均不能为空或数据不匹配!
+      InputNull: §4所有输入数据均不允许为空！
    Menu:
       菜单不存在: §4菜单文件不存在！
    TPA:
       Offline: §4玩家{ToPlayer}不在线！
+      Title: '{RandColor}传送到玩家'
+      NullPlayer: §4未知玩家
+      Tip: '{RandColor}提示'
+      Content: '{RandColor}请选择想要传送到的玩家！'
+      OfflinePlayer: §4当前没有玩家在线！
+      ItemStyle: "{RandColor}{ByPlayer}"
+      ToMe: §4传送目的地不能是自己!
+      Accept: §6同意
+      Repulse: §4拒绝
+      AcceptMsg: §6{Player}同意了您的传送请求！传送将在{Countdown}后执行。
+      RepulseMsg: §4{Player}拒绝了您的传送请求！
+      TPA请求内容: §6{ByPlayer}§8请求传送到您所在的地方！是否同意该请求？
+      TPAToPlayer: §6已向{ByPlayer}申请传送！请等待确认。
    Tip:
       Exit: §4退出
