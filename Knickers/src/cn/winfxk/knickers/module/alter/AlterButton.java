@@ -1,4 +1,4 @@
-package cn.winfxk.knickers.form.admin.del;
+package cn.winfxk.knickers.module.alter;
 
 import java.io.File;
 
@@ -7,16 +7,15 @@ import cn.nukkit.form.response.FormResponse;
 import cn.winfxk.knickers.form.FormBase;
 
 /**
- * 删除按钮前显示按钮列表的界面
+ * 用于在修改按钮时显示当前界面的按钮列表
  * 
- * @Createdate 2021/08/01 14:51:02
+ * @Createdate 2021/08/01 14:52:38
  * @author Winfxk
  */
-public class DelButton extends FormBase {
+public class AlterButton extends FormBase {
 	private File file;
-	private Object object;
 
-	public DelButton(Player player, FormBase upForm, File file) {
+	public AlterButton(Player player, FormBase upForm, File file) {
 		super(player, upForm);
 		this.file = file;
 	}

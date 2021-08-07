@@ -3,7 +3,6 @@ package cn.winfxk.knickers.form.more.tpa;
 import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponse;
 import cn.winfxk.knickers.form.FormBase;
-import cn.winfxk.knickers.form.MakeForm;
 import cn.winfxk.knickers.form.base.ModalForm;
 import cn.winfxk.knickers.rec.MyPlayer;
 
@@ -35,7 +34,7 @@ public class ToPlayerTPA extends FormBase {
 	@Override
 	public boolean disMain(FormResponse data) {
 		if (getModal(data).getClickedButtonId() != 0)
-			return setForm(new MakeForm(byPlayer, this, getString("Tip"), getString("Offline"), true, true)).make();
+			return Tip(getString("Offline"));
 		if (Countdown <= 0) {
 			byPlayer.teleport(player);
 			return sendMessage(getString("AcceptMsg"));

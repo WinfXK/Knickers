@@ -1,4 +1,4 @@
-package cn.winfxk.knickers.form.admin.add;
+package cn.winfxk.knickers.module.alter;
 
 import java.io.File;
 
@@ -7,15 +7,15 @@ import cn.nukkit.form.response.FormResponse;
 import cn.winfxk.knickers.form.FormBase;
 
 /**
- * 显示按钮类型的界面
+ * 修改当前界面时现实的界面
  * 
- * @Createdate 2021/08/01 14:49:30
+ * @Createdate 2021/08/01 14:55:08
  * @author Winfxk
  */
-public class ButtonType extends FormBase {
+public class AlterMenu extends FormBase {
 	private File file;
 
-	public ButtonType(Player player, FormBase upForm, File file) {
+	public AlterMenu(Player player, FormBase upForm, File file) {
 		super(player, upForm);
 		this.file = file;
 	}

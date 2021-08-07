@@ -15,17 +15,17 @@ import cn.nukkit.level.Level;
 import cn.nukkit.level.Location;
 import cn.winfxk.knickers.form.FormBase;
 import cn.winfxk.knickers.form.MakeForm;
+import cn.winfxk.knickers.form.admin.ButtonType;
 import cn.winfxk.knickers.form.admin.FoldingSet;
 import cn.winfxk.knickers.form.admin.Setting;
-import cn.winfxk.knickers.form.admin.add.ButtonType;
-import cn.winfxk.knickers.form.admin.alterbutton.AlterButton;
-import cn.winfxk.knickers.form.admin.altermenu.AlterMenu;
-import cn.winfxk.knickers.form.admin.del.DelButton;
 import cn.winfxk.knickers.form.base.SimpleForm;
 import cn.winfxk.knickers.form.more.Command;
 import cn.winfxk.knickers.form.more.tpa.TPA;
 import cn.winfxk.knickers.form.more.tpa.ToPlayerTPA;
 import cn.winfxk.knickers.module.BaseButton;
+import cn.winfxk.knickers.module.alter.AlterButton;
+import cn.winfxk.knickers.module.alter.AlterMenu;
+import cn.winfxk.knickers.module.alter.DelButton;
 import cn.winfxk.knickers.rec.SecurityPermissions;
 import cn.winfxk.knickers.tool.Config;
 import cn.winfxk.knickers.tool.Tool;
@@ -56,6 +56,7 @@ public class MakeMenu extends FormBase {
 	static {
 		MenuFile = new File(Knickers.kis.getDataFolder(), Knickers.Menus);
 	}
+	private boolean MoreButton = kis.config.getBoolean("MoreButton");
 
 	public MakeMenu(Player player, FormBase upForm, File file) {
 		super(player, upForm);
@@ -108,9 +109,15 @@ public class MakeMenu extends FormBase {
 				log.error(msg.getMessage("ButtonError", new String[] { "{Key}", "{Error}" }, new Object[] { entry.getKey(), "Data is empty" }, player));
 				continue;
 			}
+			listKey.add(entry.getKey());
+			if (MoreButton && kis.getButtons().size() > 0)
+				for (BaseButton button : kis.getButtons().values())
+					if (button.getKeys().contains(entry.getKey())) {
+						form.addButton(button.getText(this, map));
+						continue;
+					}
 			IconPath = Tool.objToString(map.get("IconPath"));
 			IconType = Tool.ObjToInt(map.get("IconType"));
-			listKey.add(entry.getKey());
 			form.addButton(msg.getText(map.get("Text")), IconType == 1, IconType == 0 ? null : IconPath);
 		}
 		if (myPlayer.isAdmin())
@@ -267,13 +274,13 @@ public class MakeMenu extends FormBase {
 					return true;
 				}
 			default:
-				if (!kis.config.getBoolean("MoreButton:") || kis.getButtons().size() <= 0)
-					return setForm(new MakeForm(player, this, getString("Tip"), getString("Offline"), true, true)).make();
+				if (!MoreButton || kis.getButtons().size() <= 0)
+					return Tip(getString("ButtonClone"));
 				Map<String, BaseButton> buttons = kis.getButtons();
 				for (BaseButton button : buttons.values())
 					if (button.getKeys().contains(Key))
 						return button.onClick(this, map);
-				return setForm(new MakeForm(player, this, getString("Tip"), getString("Offline"), true, true)).make();
+				return Tip(getString("ButtonClone"));
 			}
 		}
 	}

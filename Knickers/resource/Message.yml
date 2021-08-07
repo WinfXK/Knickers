@@ -13,8 +13,22 @@ FilteredModel: §4您无法使用这个功能！因为您已被列为§6{Filtere
 Whitelist: §6白名单
 Blacklist: §4黑名单
 Nonuselist: §f无
+Tip: 提示
 notMoney: §4您的{MoneyName}不足！
 ButtonError: '§4按钮数据错误！请检查！Key: {Key}，Error：{Error}'
+MakeButton:
+   InputButtonName: '{RandColor}请输入按钮名称'
+   InputMoney: 请输入点击将会扣除的{MoneyName}数\n若不想启用这个功能请设置为0
+   InputCommand: 请输入点击按钮后将会执行的命令
+   Permission: 使用权限
+   PlayerFiltra: §6玩家过滤模式
+   WorldFiltra: §4地图过滤模式
+   ButtonNameEmpty: §4你还没有输入按钮名称！这是一个比输入选项！！
+   MoneyError: §4输入的{MoneyName}数必须是一个大于零的纯数字！
+   TP:
+      Title: '{RandColor}新建按钮'
+      Content: '{RandColor}您正在新建一个类型为点击后传送的按钮！请设置按钮的数据。'
+      
 Form:
    notPermission: §6你没有使用这个功能的权限！该菜单使用权限为：§4{Permission}
    WorldFiltered: §4你不能在这个世界使用这个功能！
@@ -29,6 +43,14 @@ Form:
    Settings: '{RandColor}系统设置'
    AlterMenu: '{RandColor}修改界面'
    ButtonClone: §4不支持的按钮或管理员已关闭更多按钮支持。
+   SelectButton:
+      Title: '{RGBTextStart}请选择想要创建的按钮类型{RGBTextEnd}'
+      Content: '{RandColor}若需要创建第三方按钮请开启{RGBTextStart}更多按钮{RGBTextEnd}功能！'
+      newMenu: '{RandColor}新的菜单'
+      MakeTip: '{RandColor}提示弹窗'
+      MakeCmd: '{RandColor}执行命令'
+      Transfer: '{RandColor}定点传送'
+      Leap: '{RandColor}传送到玩家'
    Command:
       Error: §4命令执行错误！请联系服务器管理员！
       SecurityPermission: §4安全进程执行中！请稍后重试.
@@ -45,7 +67,7 @@ Form:
       Tip: '{RandColor}提示'
       Content: '{RandColor}请选择想要传送到的玩家！'
       OfflinePlayer: §4当前没有玩家在线！
-      ItemStyle: "{RandColor}{ByPlayer}"
+      ItemStyle: '{RandColor}{ByPlayer}'
       ToMe: §4传送目的地不能是自己!
       Accept: §6同意
       Repulse: §4拒绝

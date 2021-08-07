@@ -1,28 +1,39 @@
 package cn.winfxk.knickers.module;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+import cn.nukkit.Player;
 import cn.winfxk.knickers.MakeMenu;
 
 /**
  * @Createdate 2021/08/02 21:54:49
  * @author Winfxk
  */
-public abstract class BaseButton {
+public interface BaseButton {
+	/**
+	 * 返回按钮的文本内容
+	 * 
+	 * @param menu
+	 * @param map
+	 * @return
+	 */
+	public String getText(MakeMenu menu, Map<String, Object> map);
+
 	/**
 	 * 获取按钮的唯一标识符
 	 * 
 	 * @return
 	 */
-	public abstract String getTGA();
+	public String getTGA();
 
 	/**
 	 * 返回按钮的类型关键字
 	 * 
 	 * @return
 	 */
-	public abstract List<String> getKeys();
+	public List<String> getKeys();
 
 	/**
 	 * 返回按钮的名称<br>
@@ -30,7 +41,7 @@ public abstract class BaseButton {
 	 * 
 	 * @return
 	 */
-	public abstract String getName();
+	public String getName();
 
 	/**
 	 * 玩家点击事件
@@ -39,16 +50,14 @@ public abstract class BaseButton {
 	 * @param map  按钮的数据
 	 * @return
 	 */
-	public abstract boolean onClick(MakeMenu menu, Map<String, Object> map);
+	public boolean onClick(MakeMenu menu, Map<String, Object> map);
 
 	/**
 	 * 添加按钮时调用
 	 * 
-	 * @param menu 按钮所在的菜单界面
-	 * @param map  按钮的数据
 	 * @return
 	 */
-	public abstract boolean onAdd(MakeMenu menu, Map<String, Object> map);
+	public boolean onAdd(Player player, File file);
 
 	/**
 	 * 玩家修改按钮事件
@@ -57,7 +66,7 @@ public abstract class BaseButton {
 	 * @param map  按钮的数据
 	 * @return
 	 */
-	public abstract boolean onAlter(MakeMenu menu, Map<String, Object> map);
+	public boolean onAlter(MakeMenu menu, Map<String, Object> map);
 
 	/**
 	 * 玩家删除按钮事件
@@ -66,7 +75,5 @@ public abstract class BaseButton {
 	 * @param map  按钮的数据
 	 * @return
 	 */
-	public boolean onDel(MakeMenu menu, Map<String, Object> map) {
-		return true;
-	}
+	public boolean onDel(MakeMenu menu, Map<String, Object> map);
 }

@@ -6,11 +6,10 @@ import java.util.List;
 import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponse;
 import cn.winfxk.knickers.form.FormBase;
-import cn.winfxk.knickers.form.admin.add.ButtonType;
-import cn.winfxk.knickers.form.admin.alterbutton.AlterButton;
-import cn.winfxk.knickers.form.admin.altermenu.AlterMenu;
-import cn.winfxk.knickers.form.admin.del.DelButton;
 import cn.winfxk.knickers.form.base.SimpleForm;
+import cn.winfxk.knickers.module.alter.AlterButton;
+import cn.winfxk.knickers.module.alter.AlterMenu;
+import cn.winfxk.knickers.module.alter.DelButton;
 import cn.winfxk.knickers.tool.Config;
 
 /**

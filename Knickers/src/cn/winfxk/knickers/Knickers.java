@@ -429,7 +429,7 @@ public class Knickers extends PluginBase implements Listener {
 	 * 
 	 * @return
 	 */
-	protected Map<String, BaseButton> getButtons() {
+	public Map<String, BaseButton> getButtons() {
 		return Buttons;
 	}
 }

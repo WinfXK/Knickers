@@ -64,6 +64,51 @@ public abstract class FormBase implements Cloneable {
 	}
 
 	/**
+	 * 提示一个窗口
+	 * 
+	 * @param Content
+	 * @param ret
+	 * @return
+	 */
+	protected boolean Tip(String Content, boolean ret) {
+		Tip(Content);
+		return ret;
+	}
+
+	/**
+	 * 弹出一个提示
+	 * 
+	 * @param Title
+	 * @param Content
+	 * @return
+	 */
+	protected boolean Tip(String Content) {
+		return Tip(msg.getMessage("Tip", this), Content, true);
+	}
+
+	/**
+	 * 弹出一个提示
+	 * 
+	 * @param Title
+	 * @param Content
+	 * @return
+	 */
+	protected boolean Tip(String Title, String Content) {
+		return Tip(Title, Content, true);
+	}
+
+	/**
+	 * 弹出一个提示
+	 * 
+	 * @param Title
+	 * @param Content
+	 * @return
+	 */
+	protected boolean Tip(String Title, String Content, boolean isBack) {
+		return setForm(new MakeForm(player, this, Title, Content, isBack, true)).make();
+	}
+
+	/**
 	 * 刷新页面数据
 	 */
 	protected FormBase reload() {
@@ -98,8 +143,8 @@ public abstract class FormBase implements Cloneable {
 	 * 
 	 * @return
 	 */
-	public String getNotPermission() {
-		return msg.getMessage("权限不足", getK(), getD());
+	protected String getNotPermission() {
+		return msg.getMessage("notPermission", getK(), getD());
 	}
 
 	/**

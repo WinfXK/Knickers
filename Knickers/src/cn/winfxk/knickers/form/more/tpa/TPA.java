@@ -7,7 +7,6 @@ import java.util.List;
 import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponse;
 import cn.winfxk.knickers.form.FormBase;
-import cn.winfxk.knickers.form.MakeForm;
 import cn.winfxk.knickers.form.base.SimpleForm;
 import cn.winfxk.knickers.rec.MyPlayer;
 
@@ -31,7 +30,7 @@ public class TPA extends FormBase {
 		list = new ArrayList<>();
 		Collection<Player> players = server.getOnlinePlayers().values();
 		if (players.size() <= 1)
-			return setForm(new MakeForm(player, upForm, getString("Tip"), getString("OfflinePlayer"))).make();
+			return Tip(getString("Tip"), getString("OfflinePlayer"));
 		SimpleForm form = new SimpleForm(getID(), getTitle(), getContent());
 		for (Player p : players) {
 			if (p == null || !p.isOnline() || p.getName().equals(player.getName()))
@@ -40,7 +39,7 @@ public class TPA extends FormBase {
 			form.addButton(getString("ItemStyle", PK, new Object[] { p.getName(), MyPlayer.getMoney(p.getName()) }));
 		}
 		if (list.size() <= 0)
-			return setForm(new MakeForm(player, upForm, getString("Tip"), getString("OfflinePlayer"))).make();
+			return Tip(getString("Tip"), getString("OfflinePlayer"));
 		form.addButton(getBack());
 		form.sendPlayer(player);
 		return true;
@@ -54,9 +53,9 @@ public class TPA extends FormBase {
 		Player p = list.get(ID);
 		Object[] dd = { p == null ? getString("NullPlayer") : p.getName(), p == null ? getString("NullPlayer") : MyPlayer.getMoney(p.getName()) };
 		if (p == null || !p.isOnline())
-			return setForm(new MakeForm(player, upForm, getString("Tip"), getString("Offline", PK, dd))).make();
+			return Tip(getString("Tip"), getString("Offline", PK, dd));
 		if (p.getName().equals(player.getName()))
-			return setForm(new MakeForm(player, upForm, getString("Tip"), getString("ToMe"))).make();
+			return Tip(getString("Tip"), getString("ToMe"));
 		if (isAffirm)
 			return player.teleport(p);
 		sendMessage(getString("TPAToPlayer", PK, dd));
