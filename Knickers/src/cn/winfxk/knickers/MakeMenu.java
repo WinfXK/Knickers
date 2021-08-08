@@ -113,7 +113,7 @@ public class MakeMenu extends FormBase {
 			if (MoreButton && kis.getButtons().size() > 0)
 				for (BaseButton button : kis.getButtons().values())
 					if (button.getKeys().contains(entry.getKey())) {
-						form.addButton(button.getText(this, map));
+						button.getText(this, map, form);
 						continue;
 					}
 			IconPath = Tool.objToString(map.get("IconPath"));
@@ -207,7 +207,7 @@ public class MakeMenu extends FormBase {
 				z = Tool.objToDouble(map.get("Z"));
 				y = Tool.objToDouble(map.get("Y"));
 				string = Tool.objToString(map.get("World"));
-				level = server.getLevelByName(string);
+				level = string == null || string.isEmpty() ? player.getLevel() : server.getLevelByName(string);
 				if (level == null)
 					return sendMessage(msg.getSon(t, "LevelError", this));
 				player.teleport(new Location(x, y, z, level));

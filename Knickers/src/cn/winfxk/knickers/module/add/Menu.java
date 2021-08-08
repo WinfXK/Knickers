@@ -3,7 +3,7 @@ package cn.winfxk.knickers.module.add;
 import java.io.File;
 
 import cn.nukkit.Player;
-import cn.nukkit.form.response.FormResponse;
+import cn.winfxk.knickers.form.FormBase;
 import cn.winfxk.knickers.module.BaseMake;
 
 /**
@@ -12,18 +12,7 @@ import cn.winfxk.knickers.module.BaseMake;
  */
 public class Menu extends BaseMake {
 
-	public Menu(Player player, File file) {
-		super(player, file);
+	public Menu(Player player, File file, FormBase upForm) {
+		super(player, file, upForm);
 	}
-
-	@Override
-	public boolean MakeMain() {
-		return false;
-	}
-
-	@Override
-	public boolean disMain(FormResponse data) {
-		return false;
-	}
-
 }

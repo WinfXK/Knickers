@@ -67,16 +67,16 @@ public class ButtonType extends FormBase {
 		if (ID < listKey.size() || !kis.config.getBoolean("MoreButton") || kis.getButtons().size() <= 0)
 			switch (listKey.get(ID)) {
 			case "menu":
-				return setForm(new Menu(player, file)).make();
+				return setForm(new Menu(player, file, upForm)).make();
 			case "tp":
-				return setForm(new Tip(player, file)).make();
+				return setForm(new Tip(player, file, upForm)).make();
 			case "tpa":
-				return setForm(new TPA(player, file)).make();
+				return setForm(new TPA(player, file, upForm)).make();
 			case "cmd":
-				return setForm(new Command(player, file)).make();
+				return setForm(new Command(player, file, upForm)).make();
 			default:
-				return setForm(new Tip(player, file)).make();
+				return setForm(new Tip(player, file, upForm)).make();
 			}
-		return base.get(ID).onAdd(player, file);
+		return base.get(ID).onAdd(player, file, upForm);
 	}
 }

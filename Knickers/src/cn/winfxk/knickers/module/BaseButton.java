@@ -6,6 +6,8 @@ import java.util.Map;
 
 import cn.nukkit.Player;
 import cn.winfxk.knickers.MakeMenu;
+import cn.winfxk.knickers.form.FormBase;
+import cn.winfxk.knickers.form.base.SimpleForm;
 
 /**
  * @Createdate 2021/08/02 21:54:49
@@ -19,7 +21,7 @@ public interface BaseButton {
 	 * @param map
 	 * @return
 	 */
-	public String getText(MakeMenu menu, Map<String, Object> map);
+	public String getText(MakeMenu menu, Map<String, Object> map, SimpleForm form);
 
 	/**
 	 * 获取按钮的唯一标识符
@@ -57,7 +59,7 @@ public interface BaseButton {
 	 * 
 	 * @return
 	 */
-	public boolean onAdd(Player player, File file);
+	public boolean onAdd(Player player, File file, FormBase upForm);
 
 	/**
 	 * 玩家修改按钮事件

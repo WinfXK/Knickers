@@ -23,12 +23,32 @@ MakeButton:
    Permission: 使用权限
    PlayerFiltra: §6玩家过滤模式
    WorldFiltra: §4地图过滤模式
+   FiltreList: 请输入过滤列表，多个使用;分割，若不想使用该功能请留空本项。
    ButtonNameEmpty: §4你还没有输入按钮名称！这是一个比输入选项！！
    MoneyError: §4输入的{MoneyName}数必须是一个大于零的纯数字！
+   IconPath: 请输入按钮图标路径
+   IconType: 按钮图标类型
+   IconEmpty: 无
+   IconLocal: 本地
+   IconNet: 网络
+   IconPathEmpty: §4请输入图标路径！
+   TPA:
+      Title: '{RandColor}新建按钮'
+      Content: '{RandColor}您正在新建一个类型为点击后传送到玩家的按钮！请设置按钮的数据。'
+      InputToPlayer: §6请输入目标玩家名称；若需要选择玩家传送请留空本项.
+      isAffirm: §6传送模式
+      Sompel: 强制传送
+      Request: 普通传送
    TP:
       Title: '{RandColor}新建按钮'
       Content: '{RandColor}您正在新建一个类型为点击后传送的按钮！请设置按钮的数据。'
-      
+      X: 请输入X坐标
+      Z: 请输入Z坐标
+      Y: 请输入Y坐标
+      World: 请输入想要传送到的目标世界名
+      isInteger: §4坐标点仅支持纯数字！
+      WorldEmpty: §4无法获取设置的目标世界！
+      Succeed: 设置成功！
 Form:
    notPermission: §6你没有使用这个功能的权限！该菜单使用权限为：§4{Permission}
    WorldFiltered: §4你不能在这个世界使用这个功能！

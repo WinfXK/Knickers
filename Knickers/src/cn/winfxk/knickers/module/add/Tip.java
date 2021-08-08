@@ -3,7 +3,7 @@ package cn.winfxk.knickers.module.add;
 import java.io.File;
 
 import cn.nukkit.Player;
-import cn.nukkit.form.response.FormResponse;
+import cn.winfxk.knickers.form.FormBase;
 import cn.winfxk.knickers.module.BaseMake;
 
 /**
@@ -11,18 +11,8 @@ import cn.winfxk.knickers.module.BaseMake;
  * @author Winfxk
  */
 public class Tip extends BaseMake {
-	public Tip(Player player, File file) {
-		super(player, file);
-	}
 
-	@Override
-	public boolean MakeMain() {
-		return false;
+	public Tip(Player player, File file, FormBase upForm) {
+		super(player, file, upForm);
 	}
-
-	@Override
-	public boolean disMain(FormResponse data) {
-		return false;
-	}
-
 }
