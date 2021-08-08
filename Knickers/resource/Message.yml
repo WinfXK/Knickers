@@ -18,7 +18,7 @@ notMoney: §4您的{MoneyName}不足！
 ButtonError: '§4按钮数据错误！请检查！Key: {Key}，Error：{Error}'
 MakeButton:
    InputButtonName: '{RandColor}请输入按钮名称'
-   InputMoney: 请输入点击将会扣除的{MoneyName}数\n若不想启用这个功能请设置为0
+   InputMoney: 请输入点击将会扣除的{MoneyName}数{n}若不想启用这个功能请设置为0
    InputCommand: 请输入点击按钮后将会执行的命令
    Permission: 使用权限
    PlayerFiltra: §6玩家过滤模式
@@ -32,16 +32,49 @@ MakeButton:
    IconLocal: 本地
    IconNet: 网络
    IconPathEmpty: §4请输入图标路径！
+   Command:
+      AlterTitle: '{RandColor}修改按钮'
+      AlterContent: '{RandColor}您正在修改一个类型为点击后执行命令的按钮！请设置按钮的数据。'
+      Title: '{RandColor}新建按钮'
+      Content: '{RandColor}您正在新建一个类型为点击后执行命令的按钮！请设置按钮的数据。'
+      InputCommand: 请输入点击按钮后将会执行的命令{n}若需要玩家输入值请使用{msg}变量{n}{msg}变量可设置多个
+      Msg: 若使用了{msg}变量，请在此输入对应的提示值{n}输入的值将会在玩家输入内容时显示{n}多个可使用;分割{n}每个{msg}都应该对应一个提示内容
+      Hint: 若使用了{msg}变量，请在此输入对应的提示值{n}输入的值将会在玩家输入内容时显示{n}多个可使用;分割{n}每个{msg}都应该对应一个提示内容
+      Succeed: 设置成功！
+   Menu:
+      Title: '{RandColor}新建按钮'
+      Content: '{RandColor}您正在新建一个类型为点击后弹出新菜单的按钮！请设置按钮的数据。'
+      AlterTitle: '{RandColor}修改按钮'
+      AlterContent: '{RandColor}您正在修改一个类型为点击后弹出新菜单的按钮！请设置按钮的数据。'
+      InputTitle: 请输入窗口的标题
+      InputContent: 请输入窗口提示内容
+      SelectMenuConfig: 菜单配置文件
+      InputMenuConfig: 请输入菜单配置文件名{n}注：{n}    当这个值不为空时上方选择将不生效{n}    若输入的文件名不存在将会创建新文件。
+      InjectionRules: 注入按钮规则
+      Succeed: 设置成功！
+   Tip:
+      Title: '{RandColor}新建按钮'
+      Content: '{RandColor}您正在新建一个类型为点击后提示窗口的按钮！请设置按钮的数据。'
+      AlterTitle: '{RandColor}修改按钮'
+      AlterContent: '{RandColor}您正在修改一个类型为点击后提示窗口的按钮！请设置按钮的数据。'
+      InputTitle: 请输入窗口的标题
+      InputContent: 请输入窗口提示内容
+      InputType: Modal窗口
+      AllowBack: 允许返回到原菜单页
+      Succeed: 设置成功！
    TPA:
       Title: '{RandColor}新建按钮'
       Content: '{RandColor}您正在新建一个类型为点击后传送到玩家的按钮！请设置按钮的数据。'
+      AlterTitle: '{RandColor}修改按钮'
+      AlterContent: '{RandColor}您正在修改一个类型为点击后传送到玩家的按钮！请设置按钮的数据。'
       InputToPlayer: §6请输入目标玩家名称；若需要选择玩家传送请留空本项.
-      isAffirm: §6传送模式
-      Sompel: 强制传送
-      Request: 普通传送
+      isAffirm: §6强制传送
+      Succeed: 设置成功！
    TP:
       Title: '{RandColor}新建按钮'
       Content: '{RandColor}您正在新建一个类型为点击后传送的按钮！请设置按钮的数据。'
+      AlterTitle: '{RandColor}修改按钮'
+      AlterContent: '{RandColor}您正在修改一个类型为点击后传送的按钮！请设置按钮的数据。'
       X: 请输入X坐标
       Z: 请输入Z坐标
       Y: 请输入Y坐标

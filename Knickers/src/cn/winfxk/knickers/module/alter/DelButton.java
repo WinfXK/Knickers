@@ -12,22 +12,20 @@ import cn.winfxk.knickers.form.FormBase;
  * @Createdate 2021/08/01 14:51:02
  * @author Winfxk
  */
-public class DelButton extends FormBase {
-	private File file;
-	private Object object;
+public class DelButton extends AlterButton {
 
 	public DelButton(Player player, FormBase upForm, File file) {
-		super(player, upForm);
-		this.file = file;
+		super(player, upForm, file);
 	}
 
 	@Override
 	public boolean MakeMain() {
-		return false;
+
+		return true;
 	}
 
 	@Override
 	public boolean disMain(FormResponse data) {
-		return false;
+		return true;
 	}
 }

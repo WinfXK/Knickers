@@ -37,32 +37,6 @@ public class Check {
 		File file = Message.file;
 		PluginLogger log = kis.getLogger();
 		String lang = Tool.getLanguage();
-		if (!file.exists())
-			if (lang != null && getClass().getResource("/language/" + lang + ".yml") != null)
-				try {
-					log.info("Writing to the default language:" + lang);
-					Utils.writeFile(Message.file, Utils.readFile(getClass().getResourceAsStream("/language/" + lang + ".yml")));
-				} catch (IOException e) {
-					e.printStackTrace();
-					log.error("§4The default language could not be initialized！");
-					try {
-						Utils.writeFile(Message.file, Utils.readFile(getClass().getResourceAsStream("/resource/Message.yml")));
-					} catch (IOException e1) {
-						e1.printStackTrace();
-						log.error("§4The default language could not be initialized！");
-						kis.setEnabled(false);
-						return false;
-					}
-				}
-			else
-				try {
-					Utils.writeFile(Message.file, Utils.readFile(getClass().getResourceAsStream("/resource/Message.yml")));
-				} catch (IOException e1) {
-					e1.printStackTrace();
-					log.error("§4The default language could not be initialized！");
-					kis.setEnabled(false);
-					return false;
-				}
 		file = new File(kis.getDataFolder(), Knickers.Language);
 		if (!file.exists())
 			file.mkdirs();
@@ -102,6 +76,32 @@ public class Check {
 			log.error("Unable to load language file");
 			return false;
 		}
+		if (!file.exists())
+			if (lang != null && getClass().getResource("/language/" + lang + ".yml") != null)
+				try {
+					log.info("Writing to the default language:" + lang);
+					Utils.writeFile(Message.file, Utils.readFile(getClass().getResourceAsStream("/language/" + lang + ".yml")));
+				} catch (IOException e) {
+					e.printStackTrace();
+					log.error("§4The default language could not be initialized！");
+					try {
+						Utils.writeFile(Message.file, Utils.readFile(getClass().getResourceAsStream("/resource/Message.yml")));
+					} catch (IOException e1) {
+						e1.printStackTrace();
+						log.error("§4The default language could not be initialized！");
+						kis.setEnabled(false);
+						return false;
+					}
+				}
+			else
+				try {
+					Utils.writeFile(Message.file, Utils.readFile(getClass().getResourceAsStream("/resource/Message.yml")));
+				} catch (IOException e1) {
+					e1.printStackTrace();
+					log.error("§4The default language could not be initialized！");
+					kis.setEnabled(false);
+					return false;
+				}
 		return true;
 	}
 

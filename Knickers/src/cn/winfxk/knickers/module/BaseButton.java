@@ -21,7 +21,7 @@ public interface BaseButton {
 	 * @param map
 	 * @return
 	 */
-	public String getText(MakeMenu menu, Map<String, Object> map, SimpleForm form);
+	public String getText(FormBase menu, Map<String, Object> map, SimpleForm form);
 
 	/**
 	 * 获取按钮的唯一标识符

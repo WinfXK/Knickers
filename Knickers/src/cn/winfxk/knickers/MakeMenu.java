@@ -60,8 +60,9 @@ public class MakeMenu extends FormBase {
 
 	public MakeMenu(Player player, FormBase upForm, File file) {
 		super(player, upForm);
+		this.player = player;
 		this.file = file;
-		setK("{Player}", "{Money}", "{FilteredModel}", "{Permission}");
+		setK("{FilteredModel}", "{Permission}");
 		config = new Config(file);
 		FilteredModel = config.getInt("FilteredModel");
 		Object obj = config.get("FilteredPlayer");
@@ -83,7 +84,7 @@ public class MakeMenu extends FormBase {
 	public boolean MakeMain() {
 		listKey.clear();
 		AdminKeys.clear();
-		setD(player.getName(), myPlayer.getMoney(), FilteredModel == 0 ? Nonuselist : FilteredModel == 1 ? Blacklist : Whitelist, Permission == 0 ? All : Permission == 1 ? OP : Player);
+		setD(FilteredModel == 0 ? Nonuselist : FilteredModel == 1 ? Blacklist : Whitelist, Permission == 0 ? All : Permission == 1 ? OP : Player);
 		if (!myPlayer.isAdmin()) {
 			if ((FilteredModel == 1 && FilteredPlayer.contains(player.getName())) || (FilteredModel == 2 && !FilteredPlayer.contains(player.getName())))
 				return sendMessage(msg.getMessage("FilteredModel", this));
@@ -240,7 +241,7 @@ public class MakeMenu extends FormBase {
 				onCommand(command);
 				return setForm(new ToPlayerTPA(toPlayer, this, player)).make();
 			case "command":
-			case "cnd":
+			case "cmd":
 			case "命令":
 				if (myPlayer.SecurityPermissions)
 					return sendMessage(msg.getSun(t, "Command", "SecurityPermission", this));

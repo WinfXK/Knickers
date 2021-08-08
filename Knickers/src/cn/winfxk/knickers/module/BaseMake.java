@@ -34,11 +34,34 @@ public abstract class BaseMake extends FormBase {
 	protected CustomForm form;
 
 	/**
+	 * 修改按钮时调用
+	 * 
+	 * @param player 修改按钮的玩家对象
+	 * @param file   要修改的按钮文件对象
+	 * @param upForm 上个界面
+	 * @param Key    按钮的Key
+	 */
+	public BaseMake(Player player, File file, FormBase upForm, String Key) {
+		super(player, upForm);
+		this.file = file;
+		config = new Config(file);
+		setK("{Title}", "{ButtonCount}");
+		Object obj = config.get("Buttons");
+		Button = obj != null && obj instanceof Map ? (HashMap<String, Object>) obj : new HashMap<>();
+		obj = Button.get(Key);
+		map = obj != null && obj instanceof Map ? (HashMap<String, Object>) obj : new HashMap<>();
+		t = "MakeButton";
+		setD(msg.getText(config.get("Title")), Button.size());
+		map.put("alterPlayer", player.getName());
+		this.Key = Key;
+	}
+
+	/**
 	 * 新增按钮基础类
 	 * 
-	 * @param player
-	 * @param file
-	 * @param upForm
+	 * @param player 修改按钮的玩家对象
+	 * @param file   要修改的按钮文件对象
+	 * @param upForm 上个界面
 	 */
 	public BaseMake(Player player, File file, FormBase upForm) {
 		super(player, upForm);
@@ -50,6 +73,7 @@ public abstract class BaseMake extends FormBase {
 		t = "MakeButton";
 		setD(msg.getText(config.get("Title")), Button.size());
 		map.put("Player", player.getName());
+		map.put("Type", getName());
 	}
 
 	/**
@@ -66,29 +90,6 @@ public abstract class BaseMake extends FormBase {
 	}
 
 	/**
-	 * 保存按钮
-	 * 
-	 * @return
-	 */
-	protected boolean save() {
-		map.put("creaTime", Tool.getDate() + " " + Tool.getTime());
-		map.put("Key", Key = Key == null ? getKey() : Key);
-		map.put("Money", Money);
-		map.put("Command", Command);
-		map.put("Text", ButtonName);
-		map.put("FilteredModel", PlayerFilteredModel);
-		map.put("FilteredPlayer", PlayerFiltered);
-		map.put("LevelFilteredModel", LevelFilteredModel);
-		map.put("LevelList", WorldFiltered);
-		map.put("Permission", Permission);
-		map.put("IconType", IconType);
-		map.put("IconPath", IconPath);
-		Button.put(Key, map);
-		config.set("Buttons", Button);
-		return config.save();
-	}
-
-	/**
 	 * 粗处理
 	 */
 	@Override
@@ -99,6 +100,7 @@ public abstract class BaseMake extends FormBase {
 		if (ButtonName == null || ButtonName.isEmpty())
 			return Tip(getWarning("ButtonNameEmpty"), false);
 		s = d.getInputResponse(2);
+		s = s == null || s.isEmpty() ? "0" : s;
 		if (!Tool.isInteger(s))
 			return Tip(getWarning("MoneyError"), false);
 		Command = d.getInputResponse(3);
@@ -124,20 +126,57 @@ public abstract class BaseMake extends FormBase {
 	 * @return
 	 */
 	protected CustomForm getForm() {
-		form = new CustomForm(getID(), getTitle());
-		form.addLabel(getContent());
-		form.addInput(InputName(), "", InputName());
-		form.addInput(InputMoney(), "", InputMoney());
-		form.addInput(InputCommand(), "", InputCommand());
-		form.addStepSlider(getPermission(), getPermissions());
-		form.addStepSlider(getPlayerFiltra(), getFiltras());
-		form.addInput(getFiltreList(), "", getFiltreList());
-		form.addStepSlider(getWorldFiltras(), getFiltras());
-		form.addInput(getFiltreList(), "", getFiltreList());
-		form.addStepSlider(getIconType(), getIconTypes());
-		form.addInput(InputIconPath(), "", InputIconPath());
+		form = new CustomForm(getID(), Key == null ? getTitle() : getString("AlterTitle"));
+		form.addLabel(Key == null ? getContent() : getString("AlterContent"));
+		form.addInput(InputName(), Key == null ? "" : map.get("Text"), InputName());
+		form.addInput(InputMoney(), Key == null ? 0 : map.get("Money"), InputMoney());
+		form.addInput(InputCommand(), Key == null ? "" : map.get("Command"), InputCommand());
+		form.addStepSlider(getPermission(), getPermissions(), Key == null ? 0 : Tool.ObjToInt(map.get("Permission")));
+		form.addStepSlider(getPlayerFiltra(), getFiltras(), Key == null ? 0 : Tool.ObjToInt(map.get("FilteredModel")));
+		form.addInput(getFiltreList(), Key == null ? "" : getFiltreList(map.get("FilteredPlayer")), getFiltreList());
+		form.addStepSlider(getWorldFiltras(), getFiltras(), Key == null ? 0 : Tool.ObjToInt(map.get("LevelFilteredModel")));
+		form.addInput(getFiltreList(), Key == null ? "" : getFiltreList(map.get("LevelList")), getFiltreList());
+		form.addStepSlider(getIconType(), getIconTypes(), Tool.ObjToInt(map.get("IconType")));
+		form.addInput(InputIconPath(), map.get("IconPath"), InputIconPath());
 		location = form.getElements().size() - 1;
 		return form;
+	}
+
+	/**
+	 * 吧字符数组转换为字符串
+	 * 
+	 * @param obj
+	 * @return
+	 */
+	protected String getFiltreList(Object obj) {
+		List<String> list = obj != null && obj instanceof List ? (ArrayList<String>) obj : new ArrayList<>();
+		String string = "";
+		for (String s : list)
+			string = string + (string.isEmpty() ? s : ";" + s);
+		return string;
+	}
+
+	/**
+	 * 保存按钮
+	 * 
+	 * @return
+	 */
+	protected boolean save() {
+		map.put(Key == null ? "creaTime" : "alterTime", Tool.getDate() + " " + Tool.getTime());
+		map.put("Key", Key = Key == null ? getKey() : Key);
+		map.put("Money", Money);
+		map.put("Command", Command);
+		map.put("Text", ButtonName);
+		map.put("FilteredModel", PlayerFilteredModel);
+		map.put("FilteredPlayer", PlayerFiltered);
+		map.put("LevelFilteredModel", LevelFilteredModel);
+		map.put("LevelList", WorldFiltered);
+		map.put("Permission", Permission);
+		map.put("IconType", IconType);
+		map.put("IconPath", IconPath);
+		Button.put(Key, map);
+		config.set("Buttons", Button);
+		return config.save();
 	}
 
 	/**
