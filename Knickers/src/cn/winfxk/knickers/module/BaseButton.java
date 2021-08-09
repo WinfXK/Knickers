@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import cn.nukkit.Player;
-import cn.winfxk.knickers.MakeMenu;
 import cn.winfxk.knickers.form.FormBase;
 import cn.winfxk.knickers.form.base.SimpleForm;
 
@@ -52,7 +51,7 @@ public interface BaseButton {
 	 * @param map  按钮的数据
 	 * @return
 	 */
-	public boolean onClick(MakeMenu menu, Map<String, Object> map);
+	public boolean onClick(FormBase menu, Map<String, Object> map);
 
 	/**
 	 * 添加按钮时调用
@@ -68,7 +67,7 @@ public interface BaseButton {
 	 * @param map  按钮的数据
 	 * @return
 	 */
-	public boolean onAlter(MakeMenu menu, Map<String, Object> map);
+	public boolean onAlter(FormBase menu, Map<String, Object> map);
 
 	/**
 	 * 玩家删除按钮事件
@@ -77,5 +76,5 @@ public interface BaseButton {
 	 * @param map  按钮的数据
 	 * @return
 	 */
-	public boolean onDel(MakeMenu menu, Map<String, Object> map);
+	public boolean onDel(FormBase menu, Map<String, Object> map);
 }

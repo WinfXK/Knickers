@@ -8,6 +8,7 @@ lang: chs
 给工具: §9先给了你一个快捷工具！快去使用吧~
 Close: §4关闭
 Back: §6返回
+Confirm: 确定
 notPermission: §4你没有权限执行这个操作！
 FilteredModel: §4您无法使用这个功能！因为您已被列为§6{FilteredModel}§4过滤列表！
 Whitelist: §6白名单
@@ -29,9 +30,14 @@ MakeButton:
    IconPath: 请输入按钮图标路径
    IconType: 按钮图标类型
    IconEmpty: 无
+   Confirm: 同菜单文件一起删除
    IconLocal: 本地
    IconNet: 网络
    IconPathEmpty: §4请输入图标路径！
+   AlterNotButton: §4无法获取到按钮类型！
+   DelTitle: 警告
+   DelContent: §4你确定要删除这个按钮吗？{n}{ContentData}
+   DelSucceed: 删除成功！
    Command:
       AlterTitle: '{RandColor}修改按钮'
       AlterContent: '{RandColor}您正在修改一个类型为点击后执行命令的按钮！请设置按钮的数据。'
