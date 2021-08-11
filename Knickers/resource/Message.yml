@@ -38,6 +38,12 @@ MakeButton:
    DelTitle: 警告
    DelContent: §4你确定要删除这个按钮吗？{n}{ContentData}
    DelSucceed: 删除成功！
+   AlterMenu:
+      Title: 修改->{Title}
+      Content: "当前菜单拥有按钮{Buttons}个，若需修改按钮请在该菜单内点击{AlterButton}"
+      setTitle: 菜单标题
+      setContent: 菜单文本
+      Succeed: 修改成功！
    Command:
       AlterTitle: '{RandColor}修改按钮'
       AlterContent: '{RandColor}您正在修改一个类型为点击后执行命令的按钮！请设置按钮的数据。'
@@ -102,6 +108,27 @@ Form:
    Settings: '{RandColor}系统设置'
    AlterMenu: '{RandColor}修改界面'
    ButtonClone: §4不支持的按钮或管理员已关闭更多按钮支持。
+   Setting:
+      Title: '{RGBTextStart}系统设置{RGBTextEnd}'
+      Content: '{RGBTextStart}以下是系统关键设置，请根据需要自行修改.{n}部分设置需要重启才能生效.{n}部分设置错误可能导致异常{n}若出现不良异常删除配置文件“Config.yml”即可恢复默认状态。{RGBTextEnd}'
+      InputMoneyName: 货币名称
+      SelectEconomy: 货币API
+      DiscardTool: 允许丢弃工具
+      Tool: 快捷工具物品
+      EternalTool: 快捷工具检测
+      EternalToolTime: 检测时间(单位：秒)
+      PalmRejection: 屏蔽双击时间(单位：毫秒)
+      EventCancelled: 撤销因快捷工具产生的部分事件
+      FoldingSet: 折叠管理员按钮
+      SecurityPermission: 延迟撤销OP命令权限的时间
+      AcceptTPAWait: 传送延迟(单位：秒)
+      MoreButton: 更多按钮{n}若您通过其它插件添加了新的按钮这需要启动该项才会启用，但这也意味着更多的性能损耗。
+      MoneyNameError: 请输入正确的货币名称！这个值不能为空。
+      EternalToolTimeError: 正确的快捷工具检测时间只能为大于零的纯整数。
+      PalmRejectionError: 正确的屏蔽双击检测时间应为大于零的纯整数！
+      SecurityPermissionError: 正确的撤销OP权限时间应为大于零的纯整数!
+      AcceptTPAWaitError: 正确的传送等待时间应为大于等于零的纯整数！
+      Succeed: 设置成功！
    SelectButton:
       Title: '{RGBTextStart}请选择想要创建的按钮类型{RGBTextEnd}'
       Content: '{RandColor}若需要创建第三方按钮请开启{RGBTextStart}更多按钮{RGBTextEnd}功能！'

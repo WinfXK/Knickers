@@ -218,7 +218,7 @@ public class MakeMenu extends FormBase {
 			case "菜单":
 			case "打开":
 			case "ui":
-				string = Tool.objToString("Config");
+				string = Tool.objToString(map.get("Config"));
 				if (string == null || string.isEmpty())
 					return sendMessage(msg.getSun(t, "Menu", "菜单不存在", this));
 				File file = new File(MenuFile, string);
