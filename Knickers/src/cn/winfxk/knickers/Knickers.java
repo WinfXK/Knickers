@@ -27,6 +27,8 @@ import cn.nukkit.item.enchantment.Enchantment;
 import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Utils;
+import cn.winfxk.knickers.cmd.AdminCommand;
+import cn.winfxk.knickers.cmd.MainCommand;
 import cn.winfxk.knickers.form.FormBase;
 import cn.winfxk.knickers.module.BaseButton;
 import cn.winfxk.knickers.money.EconomyAPI;
@@ -49,11 +51,11 @@ public class Knickers extends PluginBase implements Listener {
 	/**
 	 * 各名称
 	 */
-	public static final String ConfigName = "Config.yml", MsgConfigName = "Message.yml", MainMenuConfigName = "Main.yml", Menus = "Menus", Language = "Language", ItemList = "ItemList.yml";
+	public static final String ConfigName = "Config.yml", MsgConfigName = "Message.yml", MainMenuConfigName = "Main.yml", Menus = "Menus", Language = "Language", ItemList = "ItemList.yml", Command = "Command.yml";
 	/**
 	 * 需要检查本地文件是否存在的文件，不存在及生成默认文件
 	 */
-	public static final String[] Exist = { ConfigName, MsgConfigName, MainMenuConfigName, ItemList };
+	public static final String[] Exist = { ConfigName, MsgConfigName, MainMenuConfigName, ItemList, Command };
 	/**
 	 * 需要判断文件格式是否错误，错误的话生成默认数据<Exist的下步>
 	 */
@@ -139,6 +141,8 @@ public class Knickers extends PluginBase implements Listener {
 		itemlist = new ItemList();
 		Main = new File(getDataFolder(), MainMenuConfigName);
 		getServer().getPluginManager().registerEvents(this, this);
+		getServer().getCommandMap().register(getName() + " MainCommand", new MainCommand());
+		getServer().getCommandMap().register(getName() + " MainCommand", new AdminCommand());
 		getLogger().info(message.getMessage("插件启动", "{loadTime}", (float) Duration.between(loadTime, Instant.now()).toMillis() + "ms"));
 	}
 

@@ -17,6 +17,18 @@ Nonuselist: §f无
 Tip: 提示
 notMoney: §4您的{MoneyName}不足！
 ButtonError: '§4按钮数据错误！请检查！Key: {Key}，Error：{Error}'
+Command:
+   NotPlayer: 请在游戏内执行此命令！
+   MainCommand:
+      Description: 菜单插件主命令
+      Help: 获取相关命令使用方法
+      Tool: 获取一个快捷工具
+      Main: 打开菜单主页
+      Open: 打开某个菜单
+      Files: 要打开的菜单配置文件名称
+      HoldTool: 你已经有一个工具了！
+      NotInputMenuName: §4你还没有输入要打开的菜单的配置文件名称！
+      NotMenuFile: §4找不到输入的配置文件
 MakeButton:
    InputButtonName: '{RandColor}请输入按钮名称'
    InputMoney: 请输入点击将会扣除的{MoneyName}数{n}若不想启用这个功能请设置为0

@@ -64,10 +64,8 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	private static final String randString = "-+abcdefghijklmnopqrstuvwxyz_";
 	private static final SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss");
 	private static final SimpleDateFormat data = new SimpleDateFormat("yyyy-MM-dd");
-	private final static char[] digits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', 'z', 'A', 'B', 'C', 'D', 'E',
-			'F', 'G', 'H', 'I', 'J', 'K', 'L', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-			'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
-			'V', 'W', 'X', 'Y', 'Z', '+', '/' };
+	private final static char[] digits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
+			'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '+', '/' };
 
 	/**
 	 * 读取包内文件
@@ -97,10 +95,11 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	 * @param command
 	 * @return
 	 */
-	public static String getCommandHelp(Command command) {
+	public static String getCommandHelp(Command... commands) {
 		String string = "";
-		for (Map.Entry<String, CommandParameter[]> entry : command.getCommandParameters().entrySet())
-			string += getCommandHelp(command, entry.getValue(), entry.getKey()) + "\n";
+		for (Command command : commands)
+			for (Map.Entry<String, CommandParameter[]> entry : command.getCommandParameters().entrySet())
+				string += getCommandHelp(command, entry.getValue(), entry.getKey()) + "\n";
 		return string;
 	}
 
@@ -130,9 +129,7 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 					for (String s : cs.enumData.getValues())
 						if (String_length(s) < String_length(zy))
 							zy = s;
-				string += i == 0 ? zy
-						: "§6 " + (cp[i].type.equals(CommandParamType.RAWTEXT) ? cp[i].enumData.getValues().get(0)
-								: cp[i].name);
+				string += i == 0 ? zy : "§6 " + (cp[i].type.equals(CommandParamType.RAWTEXT) ? cp[i].enumData.getValues().get(0) : cp[i].name);
 			}
 			string += "§f： §9" + Key;
 		}
@@ -201,8 +198,7 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 			return;
 		BlockEntity blockEntity = block.getLevel().getBlockEntity(block);
 		BlockEntitySign sign = blockEntity instanceof BlockEntitySign ? (BlockEntitySign) blockEntity
-				: new BlockEntitySign(block.getLevel().getChunk(block.getFloorX() >> 4, block.getFloorZ() >> 4),
-						BlockEntity.getDefaultCompound(block, BlockEntity.SIGN));
+				: new BlockEntitySign(block.getLevel().getChunk(block.getFloorX() >> 4, block.getFloorZ() >> 4), BlockEntity.getDefaultCompound(block, BlockEntity.SIGN));
 		String[] Tile = { " ", " ", " ", " " };
 		for (int i = 0; i < list.length; i++) {
 			Tile[i] = list[i] == null ? "" : list[i];
@@ -260,8 +256,7 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 		Map<Integer, Item> Contents = new HashMap<>();
 		for (Integer i : list.keySet()) {
 			Map<String, Object> map = list.get(i);
-			Item item = new Item((int) map.get("ID"), (int) map.get("Damage"), (int) map.get("Count"),
-					(String) map.get("Name"));
+			Item item = new Item((int) map.get("ID"), (int) map.get("Damage"), (int) map.get("Count"), (String) map.get("Name"));
 			item.setCompoundTag((byte[]) map.get("Nbt"));
 			Contents.put(i, item);
 		}
@@ -643,8 +638,7 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 		time = time % 3600;
 		int i = (int) (time / 60);
 		double s = time % 60;
-		return (y > 0 ? y + "年" : "") + (d > 0 ? d + "天" : "") + (h > 0 ? h + "小时" : "") + (i > 0 ? i + "分钟" : "")
-				+ (s > 0 ? Double2(s, 1) + "秒" : "");
+		return (y > 0 ? y + "年" : "") + (d > 0 ? d + "天" : "") + (h > 0 ? h + "小时" : "") + (i > 0 ? i + "分钟" : "") + (s > 0 ? Double2(s, 1) + "秒" : "");
 	}
 
 	/**
@@ -1144,8 +1138,7 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	 * @throws NoSuchAlgorithmException
 	 * @throws IOException
 	 */
-	public static String getHttps(String requestUrl)
-			throws KeyManagementException, UnsupportedEncodingException, NoSuchAlgorithmException, IOException {
+	public static String getHttps(String requestUrl) throws KeyManagementException, UnsupportedEncodingException, NoSuchAlgorithmException, IOException {
 		return getHttps(requestUrl, "POST", null);
 	}
 
@@ -1160,8 +1153,7 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	 * @throws NoSuchAlgorithmException
 	 * @throws IOException
 	 */
-	public static String getHttps(String requestUrl, String outputStr)
-			throws KeyManagementException, UnsupportedEncodingException, NoSuchAlgorithmException, IOException {
+	public static String getHttps(String requestUrl, String outputStr) throws KeyManagementException, UnsupportedEncodingException, NoSuchAlgorithmException, IOException {
 		return getHttps(requestUrl, "POST", outputStr);
 	}
 
@@ -1177,8 +1169,7 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	 * @throws KeyManagementException
 	 * @throws NoSuchAlgorithmException
 	 */
-	public static String getHttps(String requestUrl, String requestMethod, String outputStr)
-			throws UnsupportedEncodingException, IOException, KeyManagementException, NoSuchAlgorithmException {
+	public static String getHttps(String requestUrl, String requestMethod, String outputStr) throws UnsupportedEncodingException, IOException, KeyManagementException, NoSuchAlgorithmException {
 		StringBuffer buffer = null;
 		SSLContext sslContext = SSLContext.getInstance("SSL");
 		TrustManager[] tm = { new Tool() };
@@ -1216,8 +1207,7 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	public static String delHtmlString(String htmlStr) {
 		if (htmlStr == null || htmlStr.isEmpty())
 			return htmlStr;
-		htmlStr = htmlStr.replace("<p>", "\r\n\t").replace("<span>", "\r\n\t").replace("<br>", "\r\n").replace("</br>",
-				"\r\n");
+		htmlStr = htmlStr.replace("<p>", "\r\n\t").replace("<span>", "\r\n\t").replace("<br>", "\r\n").replace("</br>", "\r\n");
 		Pattern p_script = Pattern.compile("<script[^>]*?>[\\s\\S]*?<\\/script>", Pattern.CASE_INSENSITIVE);
 		Matcher m_script = p_script.matcher(htmlStr);
 		htmlStr = m_script.replaceAll("");

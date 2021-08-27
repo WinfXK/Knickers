@@ -82,7 +82,7 @@ public class Setting extends FormBase {
 			return Tip(getString("AcceptTPAWaitError"));
 		boolean MoreButton = d.getToggleResponse(12);
 		config.set("MoneyName", MoneyName);
-		config.set("MoneyAPI", MoneyApi);
+		config.set("MoneyAPI", MoneyApi.getEconomyName());
 		config.set("DiscardTool", DiscardTool);
 		config.set("Tool", tool);
 		config.set("EternalTool", Period.EternalTool = EternalTool);

@@ -31,9 +31,10 @@ public class Period extends Thread {
 				for (Player p : server.getOnlinePlayers().values()) {
 					if (!kis.MyPlayers.containsKey(p.getName()))
 						kis.MyPlayers.put(p.getName(), new MyPlayer(p));
-					if (!kis.isFastTool(p))
+					if (!kis.isFastTool(p)) {
 						p.getInventory().addItem(kis.getFastTool());
-					p.sendMessage(kis.message.getMessage("给工具", p));
+						p.sendMessage(kis.message.getMessage("给工具", p));
+					}
 				}
 			}
 			try {

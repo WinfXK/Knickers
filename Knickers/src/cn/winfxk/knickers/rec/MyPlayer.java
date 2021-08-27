@@ -37,6 +37,17 @@ public class MyPlayer {
 	}
 
 	/**
+	 * 显示一个界面
+	 * 
+	 * @param form
+	 * @return
+	 */
+	public boolean show(FormBase form) {
+		this.form = form;
+		return this.form.MakeMain();
+	}
+
+	/**
 	 * 返回玩家拥有的钱
 	 * 
 	 * @return
