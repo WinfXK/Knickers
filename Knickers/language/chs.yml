@@ -1,0 +1,210 @@
+lang: chs
+#玩家会收到的快捷工具的名称
+快捷工具名称: §e§l§n快§b§l§n捷§9§l§n菜§4§l§n单
+#这个是快捷工具的Lore，我也不知道改怎么翻译
+快捷工具Lore: '{RGBTextStart}据说长得帅的人用这个点击地面都能打开一个菜单.....{n}你丑吗？{RGBTextEnd}'
+拒绝丢弃Tool: §4你不能丢弃你的大宝贝！
+插件启动: '{RGBTextStart}{PluginName}启动(耗时: {loadTime})...{RGBTextEnd}        §6欢迎{RGBTextStart}使用{PluginName}{RGBTextEnd}§f(*￣︶￣)'
+给工具: §9先给了你一个快捷工具！快去使用吧~
+Close: §4关闭
+Back: §6返回
+Confirm: 确定
+notPermission: §4你没有权限执行这个操作！
+FilteredModel: §4您无法使用这个功能！因为您已被列为§6{FilteredModel}§4过滤列表！
+Whitelist: §6白名单
+Blacklist: §4黑名单
+Nonuselist: §f无
+Tip: 提示
+notMoney: §4您的{MoneyName}不足！
+ButtonError: '§4按钮数据错误！请检查！Key: {Key}，Error：{Error}'
+FormError: 处理回调数据出现异常！错误日志：{Error}
+Command:
+   NotPlayer: 请在游戏内执行此命令！
+   AdminCommand:
+      Lang: 切换插件语言
+      LangItem: §f<§d{ID}§f>§b--§d->§4Language:§9 {Language}
+      DefaultLanguage: (默认)
+      LangDescription: §6使用‘/{CMD} lang 语言ID’来设置一个语言为系统语言。
+      LangIDError: §4要设置的语言ID应为大于零的纯整数!
+      NotLangID: §4不存在的语言ID
+      SetLangError: §4设置语言时出现错误！错误日志：{Error}
+      SetLangOK: §6成功将语言设置为：{Language}，部分语言可能需要重启才能生效！
+      Help: 获取相关命令使用方法
+      Admin: 开启或关闭插件白名单功能
+      InputPlayerName: 要设置/取消白名单的玩家名称
+      Description: 菜单插件控制台命令
+      Switch: '{RandColor}特殊权限已{Status}'
+      Open: §6开启
+      Close: §4关闭
+      AdminSwitch: §8{ByPlayer}§5的高级管理员权限已{Status}
+   MainCommand:
+      Description: 菜单插件主命令
+      Help: 获取相关命令使用方法
+      Tool: 获取一个快捷工具
+      Main: 打开菜单主页
+      Open: 打开某个菜单
+      Files: 文件名
+      HoldTool: 你已经有一个工具了！
+      NotInputMenuName: §4你还没有输入要打开的菜单的配置文件名称！
+      NotMenuFile: §4找不到输入的配置文件
+      NotButtonKey: §4不存在的按钮Key
+      Click: 按钮Key
+      EmptyButton: 该菜单没有按钮！
+      ButtonError: 按钮的数据错误！
+MakeButton:
+   InputButtonName: '{RandColor}请输入按钮名称'
+   InputMoney: 请输入点击将会扣除的{MoneyName}数{n}若不想启用这个功能请设置为0
+   InputCommand: 请输入点击按钮后将会执行的命令
+   Permission: 使用权限
+   PlayerFiltra: §6玩家过滤模式
+   WorldFiltra: §4地图过滤模式
+   FiltreList: 请输入过滤列表，多个使用;分割，若不想使用该功能请留空本项。
+   ButtonNameEmpty: §4你还没有输入按钮名称！这是一个比输入选项！！
+   MoneyError: §4输入的{MoneyName}数必须是一个大于零的纯数字！
+   IconPath: 请输入按钮图标路径
+   IconType: 按钮图标类型
+   IconEmpty: 无
+   Confirm: 同菜单文件一起删除
+   IconLocal: 本地
+   IconNet: 网络
+   IconPathEmpty: §4请输入图标路径！
+   AlterNotButton: §4无法获取到按钮类型！
+   DelTitle: 警告
+   DelContent: §4你确定要删除这个按钮吗？{n}{ContentData}
+   DelSucceed: 删除成功！
+   AlterMenu:
+      Title: 修改->{Title}
+      Content: 当前菜单拥有按钮{Buttons}个，若需修改按钮请在该菜单内点击{AlterButton}
+      setTitle: 菜单标题
+      setContent: 菜单文本
+      Succeed: 修改成功！
+   Command:
+      AlterTitle: '{RandColor}修改按钮'
+      AlterContent: '{RandColor}您正在修改一个类型为点击后执行命令的按钮！请设置按钮的数据。'
+      Title: '{RandColor}新建按钮'
+      Content: '{RandColor}您正在新建一个类型为点击后执行命令的按钮！请设置按钮的数据。'
+      InputCommand: 请输入点击按钮后将会执行的命令{n}若需要玩家输入值请使用{msg}变量{n}{msg}变量可设置多个
+      Msg: 若使用了{msg}变量，请在此输入对应的提示值{n}输入的值将会在玩家输入内容时显示{n}多个可使用;分割{n}每个{msg}都应该对应一个提示内容
+      Hint: 若使用了{msg}变量，请在此输入对应的提示值{n}输入的值将会在玩家输入内容时显示{n}多个可使用;分割{n}每个{msg}都应该对应一个提示内容
+      Succeed: 设置成功！
+   Menu:
+      Title: '{RandColor}新建按钮'
+      Content: '{RandColor}您正在新建一个类型为点击后弹出新菜单的按钮！请设置按钮的数据。'
+      AlterTitle: '{RandColor}修改按钮'
+      AlterContent: '{RandColor}您正在修改一个类型为点击后弹出新菜单的按钮！请设置按钮的数据。'
+      InputTitle: 请输入窗口的标题
+      InputContent: 请输入窗口提示内容
+      SelectMenuConfig: 菜单配置文件
+      InputMenuConfig: 请输入菜单配置文件名{n}注：{n}    当这个值不为空时上方选择将不生效{n}    若输入的文件名不存在将会创建新文件。
+      InjectionRules: 注入按钮规则
+      Succeed: 设置成功！
+   Tip:
+      Title: '{RandColor}新建按钮'
+      Content: '{RandColor}您正在新建一个类型为点击后提示窗口的按钮！请设置按钮的数据。'
+      AlterTitle: '{RandColor}修改按钮'
+      AlterContent: '{RandColor}您正在修改一个类型为点击后提示窗口的按钮！请设置按钮的数据。'
+      InputTitle: 请输入窗口的标题
+      InputContent: 请输入窗口提示内容
+      InputType: Modal窗口
+      AllowBack: 允许返回到原菜单页
+      Succeed: 设置成功！
+   TPA:
+      Title: '{RandColor}新建按钮'
+      Content: '{RandColor}您正在新建一个类型为点击后传送到玩家的按钮！请设置按钮的数据。'
+      AlterTitle: '{RandColor}修改按钮'
+      AlterContent: '{RandColor}您正在修改一个类型为点击后传送到玩家的按钮！请设置按钮的数据。'
+      InputToPlayer: §6请输入目标玩家名称；若需要选择玩家传送请留空本项.
+      isAffirm: §6强制传送
+      Succeed: 设置成功！
+   TP:
+      Title: '{RandColor}新建按钮'
+      Content: '{RandColor}您正在新建一个类型为点击后传送的按钮！请设置按钮的数据。'
+      AlterTitle: '{RandColor}修改按钮'
+      AlterContent: '{RandColor}您正在修改一个类型为点击后传送的按钮！请设置按钮的数据。'
+      X: 请输入X坐标
+      Z: 请输入Z坐标
+      Y: 请输入Y坐标
+      World: 请输入想要传送到的目标世界名
+      isInteger: §4坐标点仅支持纯数字！
+      WorldEmpty: §4无法获取设置的目标世界！
+      Succeed: 设置成功！
+Form:
+   notPermission: §6你没有使用这个功能的权限！该菜单使用权限为：§4{Permission}
+   WorldFiltered: §4你不能在这个世界使用这个功能！
+   LevelError: §4无法加载目标世界！
+   OP: §e管理员
+   Player: §7玩家
+   All: §6所有用户
+   FoldingSet: '{RandColor}更多选项'
+   AddButton: '{RandColor}添加按钮'
+   DelButton: '{RandColor}删除按钮'
+   AlterButton: '{RandColor}修改按钮'
+   Settings: '{RandColor}系统设置'
+   AlterMenu: '{RandColor}修改界面'
+   ButtonClone: §4不支持的按钮或管理员已关闭更多按钮支持。
+   Setting:
+      Title: '{RGBTextStart}系统设置{RGBTextEnd}'
+      Content: '{RGBTextStart}以下是系统关键设置，请根据需要自行修改.{n}部分设置需要重启才能生效.{n}部分设置错误可能导致异常{n}若出现不良异常删除配置文件“Config.yml”即可恢复默认状态。{RGBTextEnd}'
+      InputMoneyName: 货币名称
+      SelectEconomy: 货币API
+      DiscardTool: 允许丢弃工具
+      Tool: 快捷工具物品
+      EternalTool: 快捷工具检测
+      EternalToolTime: 检测时间(单位：秒)
+      PalmRejection: 屏蔽双击时间(单位：毫秒)
+      EventCancelled: 撤销因快捷工具产生的部分事件
+      FoldingSet: 折叠管理员按钮
+      UpdateTimeError: 循环检测更新间隔的数值仅支持大于等于零的纯整数！
+      SecurityPermission: 延迟撤销OP命令权限的时间
+      AcceptTPAWait: 传送延迟(单位：秒)
+      MoreButton: 更多按钮{n}若您通过其它插件添加了新的按钮这需要启动该项才会启用，但这也意味着更多的性能损耗。
+      MoneyNameError: 请输入正确的货币名称！这个值不能为空。
+      EternalToolTimeError: 正确的快捷工具检测时间只能为大于零的纯整数。
+      PalmRejectionError: 正确的屏蔽双击检测时间应为大于零的纯整数！
+      SecurityPermissionError: 正确的撤销OP权限时间应为大于零的纯整数!
+      AcceptTPAWaitError: 正确的传送等待时间应为大于等于零的纯整数！
+      Update: 自动更新
+      CycleUpdate: 循环检测更新
+      UpdateTime: 循环检查更新间隔
+      Succeed: 设置成功！
+   SelectButton:
+      Title: '{RGBTextStart}请选择想要创建的按钮类型{RGBTextEnd}'
+      Content: '{RandColor}若需要创建第三方按钮请开启{RGBTextStart}更多按钮{RGBTextEnd}功能！'
+      newMenu: '{RandColor}新的菜单'
+      MakeTip: '{RandColor}提示弹窗'
+      MakeCmd: '{RandColor}执行命令'
+      Transfer: '{RandColor}定点传送'
+      Leap: '{RandColor}传送到玩家'
+   Command:
+      Error: §4命令执行错误！请联系服务器管理员！
+      SecurityPermission: §4安全进程执行中！请稍后重试.
+      Tip: '{RandColor}提示'
+      CommandNull: §4需要执行的命令不能为空！
+      MsgNull: §4所有Msg相关变量数据均不能为空或数据不匹配!
+      InputNull: §4所有输入数据均不允许为空！
+   Menu:
+      菜单不存在: §4菜单文件不存在！
+   TPA:
+      Offline: §4玩家{ToPlayer}不在线！
+      Title: '{RandColor}传送到玩家'
+      NullPlayer: §4未知玩家
+      Tip: '{RandColor}提示'
+      Content: '{RandColor}请选择想要传送到的玩家！'
+      OfflinePlayer: §4当前没有玩家在线！
+      ItemStyle: '{RandColor}{ByPlayer}'
+      ToMe: §4传送目的地不能是自己!
+      Accept: §6同意
+      Repulse: §4拒绝
+      AcceptMsg: §6{Player}同意了您的传送请求！传送将在{Countdown}后执行。
+      RepulseMsg: §4{Player}拒绝了您的传送请求！
+      TPA请求内容: §6{ByPlayer}§8请求传送到您所在的地方！是否同意该请求？
+      TPAToPlayer: §6已向{ByPlayer}申请传送！请等待确认。
+   Tip:
+      Exit: §4退出
+Update:
+   Updateing: §6检查更新中....
+   UpdateError: §4更新出现错误！错误信息：{Error}
+   LinkError: §4无法连接至服务器！
+   NotUpdate: §6暂无推荐版本！
+   Update: §e发现新版本！{n}名称：{Name}->{newName}{n}版本：{Version}->{newVersion}{n}大小：{Size}->{newSize}{n}下载地址：{Download}{n}更新介绍：{UpdateMessage}
+   NotMessage: §4没有获取到更新信息！

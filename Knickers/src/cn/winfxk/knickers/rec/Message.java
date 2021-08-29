@@ -1,6 +1,7 @@
 package cn.winfxk.knickers.rec;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -8,9 +9,11 @@ import java.util.Map;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
-import cn.nukkit.utils.Config;
+import cn.nukkit.utils.Utils;
+import cn.winfxk.knickers.Check;
 import cn.winfxk.knickers.Knickers;
 import cn.winfxk.knickers.form.FormBase;
+import cn.winfxk.knickers.tool.Config;
 import cn.winfxk.knickers.tool.Tool;
 
 /**
@@ -30,10 +33,31 @@ public class Message {
 
 	public Message(Knickers knickers) {
 		kis = knickers;
-		config = new Config(file);
 		time = new SimpleDateFormat("HH:mm:ss");
 		date = new SimpleDateFormat("yyyy-MM-dd");
+		load();
+	}
+
+	/**
+	 * 初始化
+	 */
+	public void load() {
+		config = new Config(file);
 		kis.getLogger().info("§6Loading language: §e" + config.get("lang"));
+	}
+
+	/**
+	 * 重新写入语言文件内容
+	 * 
+	 * @param Content 要写入的内容
+	 * @return
+	 * @throws IOException
+	 */
+	public synchronized boolean reload(String Content) throws IOException {
+		Map<String, Object> map = Check.check.Matc(Config.yaml.loadAs(Tool.getResource("Message.yml"), Map.class), Config.yaml.loadAs(Content, Map.class));
+		Utils.writeFile(file, Config.yaml.dump(map));
+		config = new Config(file);
+		return true;
 	}
 
 	/**
@@ -155,8 +179,7 @@ public class Message {
 			return null;
 		object = map.get(Son);
 		if (object != null && object instanceof Map)
-			return getText(((Map<String, Object>) object).get(Sun), new String[] { Key }, new Object[] { Data },
-					player);
+			return getText(((Map<String, Object>) object).get(Sun), new String[] { Key }, new Object[] { Data }, player);
 		return null;
 	}
 
@@ -419,12 +442,10 @@ public class Message {
 				text += Tool.getRandColor() + s;
 		}
 		int index, lastindex;
-		while (text.contains(ColorStart) && text.contains(ColorEnd)
-				&& text.indexOf(ColorStart) < text.lastIndexOf(ColorEnd)) {
+		while (text.contains(ColorStart) && text.contains(ColorEnd) && text.indexOf(ColorStart) < text.lastIndexOf(ColorEnd)) {
 			index = text.indexOf(ColorStart) + 1;
 			lastindex = text.indexOf(ColorEnd, index);
-			text = (index > 0 ? text.substring(0, index - 1) : "")
-					+ Tool.getColorFont(Tool.cutString(text, ColorStart, ColorEnd)) + text.substring(lastindex + 12);
+			text = (index > 0 ? text.substring(0, index - 1) : "") + Tool.getColorFont(Tool.cutString(text, ColorStart, ColorEnd)) + text.substring(lastindex + 12);
 		}
 		return text;
 	}
@@ -459,12 +480,10 @@ public class Message {
 				text += Tool.getRandColor() + s;
 		}
 		int index, lastindex;
-		while (text.contains(ColorStart) && text.contains(ColorEnd)
-				&& text.indexOf(ColorStart) < text.lastIndexOf(ColorEnd)) {
+		while (text.contains(ColorStart) && text.contains(ColorEnd) && text.indexOf(ColorStart) < text.lastIndexOf(ColorEnd)) {
 			index = text.indexOf(ColorStart) + 1;
 			lastindex = text.indexOf(ColorEnd, index);
-			text = (index > 0 ? text.substring(0, index - 1) : "")
-					+ Tool.getColorFont(Tool.cutString(text, ColorStart, ColorEnd)) + text.substring(lastindex + 12);
+			text = (index > 0 ? text.substring(0, index - 1) : "") + Tool.getColorFont(Tool.cutString(text, ColorStart, ColorEnd)) + text.substring(lastindex + 12);
 		}
 		return text;
 	}
@@ -475,7 +494,6 @@ public class Message {
 	 * @return
 	 */
 	public String[] getData() {
-		return new String[] { "\n", Server.getInstance().getName(), kis.getName(), kis.getMoneyName(),
-				time.format(new Date()), date.format(new Date()) };
+		return new String[] { "\n", Server.getInstance().getName(), kis.getName(), kis.getMoneyName(), time.format(new Date()), date.format(new Date()) };
 	}
 }

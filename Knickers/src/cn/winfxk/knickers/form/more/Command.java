@@ -73,7 +73,17 @@ public class Command extends FormBase {
 		case "console":
 		case "c":
 		case "控制台":
-			return server.dispatchCommand(new ConsoleCommandSender(), C);
+			if (C.contains("{m}")) {
+				String[] cmds = C.split("\\{m\\}");
+				for (String s : cmds)
+					if (s != null && !s.isEmpty())
+						try {
+							server.dispatchCommand(new ConsoleCommandSender(), s);
+						} catch (Exception e) {
+						}
+			} else
+				return server.dispatchCommand(new ConsoleCommandSender(), C);
+			return true;
 		case "op":
 		case "admin":
 		case "管理员":
@@ -82,7 +92,16 @@ public class Command extends FormBase {
 			myPlayer.SecurityPermissions = true;
 			player.setOp(true);
 			try {
-				server.dispatchCommand(player, C);
+				if (C.contains("{m}")) {
+					String[] cmds = C.split("\\{m\\}");
+					for (String s : cmds)
+						if (s != null && !s.isEmpty())
+							try {
+								server.dispatchCommand(player, s);
+							} catch (Exception e) {
+							}
+				} else
+					return server.dispatchCommand(player, C);
 			} catch (Exception e) {
 				return sendMessage(msg.getSun(t, "Command", "Error", this));
 			} finally {
@@ -90,7 +109,16 @@ public class Command extends FormBase {
 			}
 			return true;
 		default:
-			server.dispatchCommand(player, C);
+			if (C.contains("{m}")) {
+				String[] cmds = C.split("\\{m\\}");
+				for (String s : cmds)
+					if (s != null && !s.isEmpty())
+						try {
+							server.dispatchCommand(player, s);
+						} catch (Exception e) {
+						}
+			} else
+				return server.dispatchCommand(player, C);
 			return true;
 		}
 	}

@@ -52,10 +52,7 @@ public class MakeMenu extends FormBase {
 	public String Whitelist, Blacklist, Nonuselist, OP, Player, All;
 	public boolean FoldingSet;
 	public Map<String, Object> Buttons;
-	public static final File MenuFile;
-	static {
-		MenuFile = new File(Knickers.kis.getDataFolder(), Knickers.Menus);
-	}
+	public static final File MenuFile = new File(Knickers.kis.getDataFolder(), Knickers.Menus);
 	private boolean MoreButton = kis.config.getBoolean("MoreButton");
 
 	public MakeMenu(Player player, FormBase upForm, File file) {
@@ -78,13 +75,13 @@ public class MakeMenu extends FormBase {
 		LevelFilteredModel = Tool.ObjToInt(config.get("LevelFilteredModel"));
 		obj = config.get("LevelList");
 		LevelList = obj != null && obj instanceof List ? (ArrayList<String>) obj : new ArrayList<>();
+		setD(FilteredModel == 0 ? Nonuselist : FilteredModel == 1 ? Blacklist : Whitelist, Permission == 0 ? All : Permission == 1 ? OP : Player);
 	}
 
 	@Override
 	public boolean MakeMain() {
 		listKey.clear();
 		AdminKeys.clear();
-		setD(FilteredModel == 0 ? Nonuselist : FilteredModel == 1 ? Blacklist : Whitelist, Permission == 0 ? All : Permission == 1 ? OP : Player);
 		if (!myPlayer.isAdmin()) {
 			if ((FilteredModel == 1 && FilteredPlayer.contains(player.getName())) || (FilteredModel == 2 && !FilteredPlayer.contains(player.getName())))
 				return sendMessage(msg.getMessage("FilteredModel", this));
@@ -151,10 +148,6 @@ public class MakeMenu extends FormBase {
 	public boolean disMain(FormResponse data) {
 		FormResponseSimple d = getSimple(data);
 		int ID = d.getClickedButtonId();
-		Object obj;
-		String command, string;
-		Level level;
-		double x, y, z;
 		if (ID >= listKey.size()) {
 			switch (AdminKeys.get(ID - listKey.size())) {
 			case "fa":
@@ -173,117 +166,141 @@ public class MakeMenu extends FormBase {
 				return isBack();
 			}
 		} else {
-			Map<String, Object> map = (Map<String, Object>) Buttons.get(listKey.get(ID));
-			if (!myPlayer.isAdmin()) {
-				int FilteredModel = Tool.ObjToInt(map.get("FilteredModel"));
-				obj = map.get("FilteredPlayer");
-				List<String> FilteredPlayer = obj != null && obj instanceof List ? (ArrayList<String>) obj : new ArrayList<>();
-				if ((FilteredModel == 1 && FilteredPlayer.contains(player.getName())) || (FilteredModel == 2 && !FilteredPlayer.contains(player.getName())))
-					return sendMessage(msg.getMessage("FilteredModel", this));
-				int Permission = Tool.ObjToInt(map.get("Permission"));
-				if ((Permission == 1 && !player.isOp()) || (Permission == 2 && player.isOp()))
-					return sendMessage(msg.getSon(t, "notPermission", this));
-				int LevelFilteredModel = Tool.ObjToInt(map.get("LevelFilteredModel"));
-				obj = map.get("LevelList");
-				List<String> LevelList = obj != null && obj instanceof List ? (ArrayList<String>) obj : new ArrayList<>();
-				if ((LevelFilteredModel == 1 && LevelList.contains(player.getLevel().getFolderName())) || (LevelFilteredModel == 2 && !LevelList.contains(player.getLevel().getFolderName())))
-					return sendMessage(msg.getSon(t, "WorldFiltered", this));
-				double Money = Tool.objToDouble(map.get("Money"));
-				if (Money != 0)
-					if (myPlayer.getMoney() < Money)
-						return sendMessage(msg.getMessage("notMoney", this));
-				kis.getEconomy().reduceMoney(player, Money);
-			}
-			command = msg.getText(Tool.objToString(map.get("Command")), this);
-			String Key = Tool.objToString(map.get("Type"), "Tip").toLowerCase();
-			switch (Key) {
-			case "tip":
-			case "提示":
-			case "弹窗":
-				onCommand(command);
-				return setForm(new MakeForm(player, this, map)).make();
-			case "tp":
-			case "传送":
-				x = Tool.objToDouble(map.get("X"));
-				z = Tool.objToDouble(map.get("Z"));
-				y = Tool.objToDouble(map.get("Y"));
-				string = Tool.objToString(map.get("World"));
-				level = string == null || string.isEmpty() ? player.getLevel() : server.getLevelByName(string);
-				if (level == null)
-					return sendMessage(msg.getSon(t, "LevelError", this));
-				player.teleport(new Location(x, y, z, level));
-				return onCommand(command);
-			case "open":
-			case "menu":
-			case "菜单":
-			case "打开":
-			case "ui":
-				string = Tool.objToString(map.get("Config"));
-				if (string == null || string.isEmpty())
-					return sendMessage(msg.getSun(t, "Menu", "菜单不存在", this));
-				File file = new File(MenuFile, string);
-				if (!file.exists() || file.isDirectory())
-					return sendMessage(msg.getSun(t, "Menu", "菜单不存在", this));
-				onCommand(command);
-				return setForm(new MakeMenu(player, this, file)).make();
-			case "tpa":
-			case "传送玩家":
-			case "传送到玩家":
-				string = Tool.objToString(map.get("toPlayer"));
-				boolean isAffirm = Tool.ObjToBool(map.get("isAffirm"));
-				if (string == null)
-					return onCommand(command) && setForm(new TPA(player, this, isAffirm)).make();
-				Player toPlayer = server.getPlayer(string);
-				if (toPlayer == null || !toPlayer.isOnline())
-					return sendMessage(msg.getSun(t, "TPA", "Offline", Tool.Arrays(new String[] { "{ToPlayer}" }, getK()), Tool.Arrays(new Object[] { string }, getD())));
-				if (isAffirm)
-					return player.teleport(toPlayer) && onCommand(command);
-				onCommand(command);
-				return setForm(new ToPlayerTPA(toPlayer, this, player)).make();
-			case "command":
-			case "cmd":
-			case "命令":
-				if (myPlayer.SecurityPermissions)
-					return sendMessage(msg.getSun(t, "Command", "SecurityPermission", this));
-				if (command == null || command.isEmpty())
-					return sendMessage(msg.getSun(t, "Command", "Error", this));
-				if (command.contains("{msg}"))
-					return setForm(new Command(player, this, map)).make();
-				string = Tool.objToString(map.get("Commander"), "Player");
-				switch (string.toLowerCase()) {
-				case "console":
-				case "c":
-				case "控制台":
-					return server.dispatchCommand(new ConsoleCommandSender(), command);
-				case "op":
-				case "admin":
-				case "管理员":
-					if (player.isOp())
-						return server.dispatchCommand(player, command);
-					myPlayer.SecurityPermissions = true;
-					player.setOp(true);
-					try {
-						server.dispatchCommand(player, command);
-					} catch (Exception e) {
-						return sendMessage(msg.getSun(t, "Command", "Error", this));
-					} finally {
-						new SecurityPermissions(myPlayer).start();
-					}
-					return true;
-				default:
-					server.dispatchCommand(player, command);
-					return true;
-				}
-			default:
-				if (!MoreButton || kis.getButtons().size() <= 0)
-					return Tip(getString("ButtonClone"));
-				Map<String, BaseButton> buttons = kis.getButtons();
-				for (BaseButton button : buttons.values())
-					if (button.getKeys().contains(Key))
-						return button.onClick(this, map);
-				return Tip(getString("ButtonClone"));
-			}
+			return onClick((Map<String, Object>) Buttons.get(listKey.get(ID)));
 		}
+	}
+
+	public boolean onClick(Map<String, Object> map) {
+		Object obj;
+		String command, string;
+		Level level;
+		double x, y, z;
+		if (!myPlayer.isAdmin()) {
+			int FilteredModel = Tool.ObjToInt(map.get("FilteredModel"));
+			obj = map.get("FilteredPlayer");
+			List<String> FilteredPlayer = obj != null && obj instanceof List ? (ArrayList<String>) obj : new ArrayList<>();
+			if ((FilteredModel == 1 && FilteredPlayer.contains(player.getName())) || (FilteredModel == 2 && !FilteredPlayer.contains(player.getName())))
+				return sendMessage(msg.getMessage("FilteredModel", this));
+			int Permission = Tool.ObjToInt(map.get("Permission"));
+			if ((Permission == 1 && !player.isOp()) || (Permission == 2 && player.isOp()))
+				return sendMessage(msg.getSon(t, "notPermission", this));
+			int LevelFilteredModel = Tool.ObjToInt(map.get("LevelFilteredModel"));
+			obj = map.get("LevelList");
+			List<String> LevelList = obj != null && obj instanceof List ? (ArrayList<String>) obj : new ArrayList<>();
+			if ((LevelFilteredModel == 1 && LevelList.contains(player.getLevel().getFolderName())) || (LevelFilteredModel == 2 && !LevelList.contains(player.getLevel().getFolderName())))
+				return sendMessage(msg.getSon(t, "WorldFiltered", this));
+			double Money = Tool.objToDouble(map.get("Money"));
+			if (Money != 0)
+				if (myPlayer.getMoney() < Money)
+					return sendMessage(msg.getMessage("notMoney", this));
+			kis.getEconomy().reduceMoney(player, Money);
+		}
+		command = msg.getText(Tool.objToString(map.get("Command")), this);
+		String Key = Tool.objToString(map.get("Type"), "Tip").toLowerCase();
+		switch (Key) {
+		case "tip":
+		case "提示":
+		case "弹窗":
+			onCommand(command);
+			return setForm(new MakeForm(player, this, map)).make();
+		case "tp":
+		case "传送":
+			x = Tool.objToDouble(map.get("X"));
+			z = Tool.objToDouble(map.get("Z"));
+			y = Tool.objToDouble(map.get("Y"));
+			string = Tool.objToString(map.get("World"));
+			level = string == null || string.isEmpty() ? player.getLevel() : server.getLevelByName(string);
+			if (level == null)
+				return sendMessage(msg.getSon(t, "LevelError", this));
+			player.teleport(new Location(x, y, z, level));
+			return onCommand(command);
+		case "open":
+		case "menu":
+		case "菜单":
+		case "打开":
+		case "ui":
+			string = Tool.objToString(map.get("Config"));
+			if (string == null || string.isEmpty())
+				return sendMessage(msg.getSun(t, "Menu", "菜单不存在", this));
+			File file = new File(MenuFile, string);
+			if (!file.exists() || file.isDirectory())
+				return sendMessage(msg.getSun(t, "Menu", "菜单不存在", this));
+			onCommand(command);
+			return setForm(new MakeMenu(player, this, file)).make();
+		case "tpa":
+		case "传送玩家":
+		case "传送到玩家":
+			string = Tool.objToString(map.get("toPlayer"));
+			boolean isAffirm = Tool.ObjToBool(map.get("isAffirm"));
+			if (string == null)
+				return onCommand(command) && setForm(new TPA(player, this, isAffirm)).make();
+			Player toPlayer = server.getPlayer(string);
+			if (toPlayer == null || !toPlayer.isOnline())
+				return sendMessage(msg.getSun(t, "TPA", "Offline", Tool.Arrays(new String[] { "{ToPlayer}" }, getK()), Tool.Arrays(new Object[] { string }, getD())));
+			if (isAffirm)
+				return player.teleport(toPlayer) && onCommand(command);
+			onCommand(command);
+			return setForm(new ToPlayerTPA(toPlayer, this, player)).make();
+		case "command":
+		case "cmd":
+		case "命令":
+			if (myPlayer.SecurityPermissions)
+				return sendMessage(msg.getSun(t, "Command", "SecurityPermission", this));
+			if (command == null || command.isEmpty())
+				return sendMessage(msg.getSun(t, "Command", "Error", this));
+			if (command.contains("{msg}"))
+				return setForm(new Command(player, this, map)).make();
+			string = Tool.objToString(map.get("Commander"), "Player");
+			switch (string.toLowerCase()) {
+			case "console":
+			case "c":
+			case "控制台":
+				if (command.contains("{m}")) {
+					String[] cmds = command.split("\\{m\\}");
+					for (String s : cmds)
+						if (s != null && !s.isEmpty())
+							try {
+								server.dispatchCommand(new ConsoleCommandSender(), s);
+							} catch (Exception e) {
+							}
+				} else
+					return server.dispatchCommand(new ConsoleCommandSender(), command);
+				return true;
+			case "op":
+			case "admin":
+			case "管理员":
+				if (player.isOp())
+					return onCommand(command);
+				myPlayer.SecurityPermissions = true;
+				player.setOp(true);
+				try {
+					if (command.contains("{m}")) {
+						String[] cmds = command.split("\\{m\\}");
+						for (String s : cmds)
+							if (s != null && !s.isEmpty())
+								server.dispatchCommand(player, s);
+					} else
+						return server.dispatchCommand(player, command);
+				} catch (Exception e) {
+					return sendMessage(msg.getSun(t, "Command", "Error", this));
+				} finally {
+					new SecurityPermissions(myPlayer).start();
+				}
+				return true;
+			default:
+				server.dispatchCommand(player, command);
+				return true;
+			}
+		default:
+			if (!MoreButton || kis.getButtons().size() <= 0)
+				return Tip(getString("ButtonClone"));
+			Map<String, BaseButton> buttons = kis.getButtons();
+			for (BaseButton button : buttons.values())
+				if (button.getKeys().contains(Key))
+					return button.onClick(this, map);
+			return Tip(getString("ButtonClone"));
+		}
+
 	}
 
 	/**
@@ -296,9 +313,25 @@ public class MakeMenu extends FormBase {
 		return upForm == null || !Tool.ObjToBool(config.get("isBack")) ? (myPlayer.form = null) == null : setForm(upForm).make();
 	}
 
+	/**
+	 * 命令执行接口
+	 * 
+	 * @param Command
+	 * @return
+	 */
 	private boolean onCommand(String Command) {
 		if (Command == null || Command.isEmpty())
 			return false;
-		return server.dispatchCommand(player, Command);
+		if (Command.contains("{m}")) {
+			String[] cmds = Command.split("\\{m\\}");
+			for (String string : cmds)
+				if (string != null && !string.isEmpty())
+					try {
+						server.dispatchCommand(player, string);
+					} catch (Exception e) {
+					}
+		} else
+			return server.dispatchCommand(player, Command);
+		return true;
 	}
 }

@@ -18,8 +18,8 @@ public class MyPlayer {
 	private static Knickers kis = Knickers.kis;
 	public int ID;
 	public Instant instant;
-	private static boolean Whitelist;
-	private static List<String> Whitelists;
+	public transient static boolean Whitelist;
+	private transient static List<String> Whitelists;
 	public transient boolean SecurityPermissions;
 	static {
 		Whitelist = Knickers.kis.config.getBoolean("Whitelist");
@@ -79,6 +79,37 @@ public class MyPlayer {
 
 	public Player getPlayer() {
 		return player;
+	}
+
+	public static List<String> getWhitelists() {
+		return new ArrayList<>(Whitelists);
+	}
+
+	/**
+	 * 判断一个玩家在不在白名单里面
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public static boolean isWhitelist(String name) {
+		return Whitelists.contains(name);
+	}
+
+	/**
+	 * 设置管理员权限
+	 * 
+	 * @param name
+	 * @param isAdmin
+	 * @return
+	 */
+	public static boolean setAdmin(String name, boolean isAdmin) {
+		if (isAdmin) {
+			if (!Whitelists.contains(name))
+				Whitelists.add(name);
+		} else
+			Whitelists.remove(name);
+		kis.config.set("Whitelists", Whitelists);
+		return kis.config.save();
 	}
 
 	/**

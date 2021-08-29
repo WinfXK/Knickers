@@ -22,3 +22,9 @@ SecurityPermission: 1000
 AcceptTPAWait: 3
 #如果你使用插件添加了按钮，请关闭这个选项！否则可能会占用部分不必要的性能
 MoreButton: false
+#是否检测更新
+Update: true
+#是否循环检测更新
+CycleUpdate: true
+#循环检查更新的间隔（单位： 秒）
+UpdateTime: 604800

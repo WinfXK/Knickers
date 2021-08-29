@@ -48,6 +48,9 @@ public class Setting extends FormBase {
 		form.addInput(getString("SecurityPermission"), config.getInt("SecurityPermission"), getString("SecurityPermission"));
 		form.addInput(getString("AcceptTPAWait"), config.getInt("AcceptTPAWait"), getString("AcceptTPAWait"));
 		form.addToggle(getString("MoreButton"), config.getBoolean("MoreButton"));
+		form.addToggle(getString("Update"), config.getBoolean("Update"));
+		form.addToggle(getString("CycleUpdate"), config.getBoolean("CycleUpdate"));
+		form.addInput(getString("UpdateTime"), config.getInt("UpdateTime"), getString("UpdateTime"));
 		form.sendPlayer(player);
 		return true;
 	}
@@ -81,6 +84,12 @@ public class Setting extends FormBase {
 		if (string == null || string.isEmpty() || !Tool.isInteger(string) || AcceptTPAWait < 0)
 			return Tip(getString("AcceptTPAWaitError"));
 		boolean MoreButton = d.getToggleResponse(12);
+		boolean Update = d.getToggleResponse(13);
+		boolean CycleUpdate = d.getToggleResponse(14);
+		string = d.getInputResponse(15);
+		int UpdateTime = Tool.ObjToInt(string);
+		if (string == null || string.isEmpty() || !Tool.isInteger(string) || UpdateTime < 0)
+			return Tip(getString("UpdateTimeError"));
 		config.set("MoneyName", MoneyName);
 		config.set("MoneyAPI", MoneyApi.getEconomyName());
 		config.set("DiscardTool", DiscardTool);
@@ -93,6 +102,9 @@ public class Setting extends FormBase {
 		config.set("SecurityPermission", SecurityPermission);
 		config.set("AcceptTPAWait", AcceptTPAWait);
 		config.set("MoreButton", MoreButton);
+		config.set("Update", Update);
+		config.set("CycleUpdate", CycleUpdate);
+		config.set("UpdateTime", cn.winfxk.knickers.tool.Update.CycleTime = UpdateTime);
 		config.save();
 		sendMessage(getString("Succeed"));
 		return isBack();

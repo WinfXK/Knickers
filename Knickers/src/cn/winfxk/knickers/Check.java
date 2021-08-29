@@ -23,9 +23,11 @@ import cn.winfxk.knickers.tool.Tool;
 public class Check {
 	private Knickers kis;
 	private int index = 0;
+	public static Check check;
 
 	public Check(Knickers kis) {
 		this.kis = kis;
+		check = this;
 	}
 
 	/**
@@ -37,7 +39,7 @@ public class Check {
 		File file = Message.file;
 		PluginLogger log = kis.getLogger();
 		String lang = Tool.getLanguage();
-		file = new File(kis.getDataFolder(), Knickers.Language);
+		file = kis.LanguageFile;
 		if (!file.exists())
 			file.mkdirs();
 		try {
@@ -109,6 +111,7 @@ public class Check {
 	 * 检查文件是否与默认的格式有错误
 	 */
 	public int start() {
+		Message();
 		Config config;
 		Map<String, Object> map;
 		for (String string : Knickers.Meta) {
@@ -132,13 +135,13 @@ public class Check {
 	 * @param data
 	 * @return
 	 */
-	private Map<String, Object> Matc(Map<String, Object> root, Map<String, Object> data) {
+	public Map<String, Object> Matc(Map<String, Object> root, Map<String, Object> data) {
 		if (root == null)
 			return data;
 		String Key;
 		Object obj, obj2;
 		for (Map.Entry<String, Object> entry : root.entrySet()) {
-			Key = entry.getKey();
+			Key = Tool.objToString(entry.getKey());
 			obj = entry.getValue();
 			if (!data.containsKey(Key)) {
 				data.put(Key, obj);

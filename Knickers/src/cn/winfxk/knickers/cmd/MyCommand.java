@@ -26,7 +26,8 @@ public abstract class MyCommand extends Command implements FilenameFilter {
 	protected static final String CommandMsgKey = "Command";
 
 	public MyCommand(String Key) {
-		super(kis.getName().toLowerCase(), msg.getSon(Key, "Description"), "/" + kis.getName().toLowerCase() + " help", getCommandKey(Key));
+		super(kis.getName().toLowerCase(), msg.getSun(CommandMsgKey, Key, "Description"), "/" + kis.getName().toLowerCase() + " help", getCommandKey(Key));
+		CommandKey = Key;
 	}
 
 	public static String[] getCommandKey(String Key) {

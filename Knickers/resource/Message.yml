@@ -17,18 +17,40 @@ Nonuselist: §f无
 Tip: 提示
 notMoney: §4您的{MoneyName}不足！
 ButtonError: '§4按钮数据错误！请检查！Key: {Key}，Error：{Error}'
+FormError: 处理回调数据出现异常！错误日志：{Error}
 Command:
    NotPlayer: 请在游戏内执行此命令！
+   AdminCommand:
+      Lang: 切换插件语言
+      LangItem: §f<§d{ID}§f>§b--§d->§4Language:§9 {Language}
+      DefaultLanguage: (默认)
+      LangDescription: §6使用‘/{CMD} lang 语言ID’来设置一个语言为系统语言。
+      LangIDError: §4要设置的语言ID应为大于零的纯整数!
+      NotLangID: §4不存在的语言ID
+      SetLangError: §4设置语言时出现错误！错误日志：{Error}
+      SetLangOK: §6成功将语言设置为：{Language}，部分语言可能需要重启才能生效！
+      Help: 获取相关命令使用方法
+      Admin: 开启或关闭插件白名单功能
+      InputPlayerName: 要设置/取消白名单的玩家名称
+      Description: 菜单插件控制台命令
+      Switch: '{RandColor}特殊权限已{Status}'
+      Open: §6开启
+      Close: §4关闭
+      AdminSwitch: §8{ByPlayer}§5的高级管理员权限已{Status}
    MainCommand:
       Description: 菜单插件主命令
       Help: 获取相关命令使用方法
       Tool: 获取一个快捷工具
       Main: 打开菜单主页
       Open: 打开某个菜单
-      Files: 要打开的菜单配置文件名称
+      Files: 文件名
       HoldTool: 你已经有一个工具了！
       NotInputMenuName: §4你还没有输入要打开的菜单的配置文件名称！
       NotMenuFile: §4找不到输入的配置文件
+      NotButtonKey: §4不存在的按钮Key
+      Click: 按钮Key
+      EmptyButton: 该菜单没有按钮！
+      ButtonError: 按钮的数据错误！
 MakeButton:
    InputButtonName: '{RandColor}请输入按钮名称'
    InputMoney: 请输入点击将会扣除的{MoneyName}数{n}若不想启用这个功能请设置为0
@@ -52,7 +74,7 @@ MakeButton:
    DelSucceed: 删除成功！
    AlterMenu:
       Title: 修改->{Title}
-      Content: "当前菜单拥有按钮{Buttons}个，若需修改按钮请在该菜单内点击{AlterButton}"
+      Content: 当前菜单拥有按钮{Buttons}个，若需修改按钮请在该菜单内点击{AlterButton}
       setTitle: 菜单标题
       setContent: 菜单文本
       Succeed: 修改成功！
@@ -132,6 +154,7 @@ Form:
       PalmRejection: 屏蔽双击时间(单位：毫秒)
       EventCancelled: 撤销因快捷工具产生的部分事件
       FoldingSet: 折叠管理员按钮
+      UpdateTimeError: 循环检测更新间隔的数值仅支持大于等于零的纯整数！
       SecurityPermission: 延迟撤销OP命令权限的时间
       AcceptTPAWait: 传送延迟(单位：秒)
       MoreButton: 更多按钮{n}若您通过其它插件添加了新的按钮这需要启动该项才会启用，但这也意味着更多的性能损耗。
@@ -140,6 +163,9 @@ Form:
       PalmRejectionError: 正确的屏蔽双击检测时间应为大于零的纯整数！
       SecurityPermissionError: 正确的撤销OP权限时间应为大于零的纯整数!
       AcceptTPAWaitError: 正确的传送等待时间应为大于等于零的纯整数！
+      Update: 自动更新
+      CycleUpdate: 循环检测更新
+      UpdateTime: 循环检查更新间隔
       Succeed: 设置成功！
    SelectButton:
       Title: '{RGBTextStart}请选择想要创建的按钮类型{RGBTextEnd}'
@@ -175,3 +201,10 @@ Form:
       TPAToPlayer: §6已向{ByPlayer}申请传送！请等待确认。
    Tip:
       Exit: §4退出
+Update:
+   Updateing: §6检查更新中....
+   UpdateError: §4更新出现错误！错误信息：{Error}
+   LinkError: §4无法连接至服务器！
+   NotUpdate: §6暂无推荐版本！
+   Update: §e发现新版本！{n}名称：{Name}->{newName}{n}版本：{Version}->{newVersion}{n}大小：{Size}->{newSize}{n}下载地址：{Download}{n}更新介绍：{UpdateMessage}
+   NotMessage: §4没有获取到更新信息！

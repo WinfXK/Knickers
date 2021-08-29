@@ -1,0 +1,210 @@
+lang: eng
+#The name of the shortcut tool that the player will receive
+快捷工具名称: §4§l§nF§a§l§na§9§l§ns§2§l§nt§7§l§nT§3§l§no§1§l§no§b§l§nl
+#This is Lore for express tools
+快捷工具Lore: '{RGBTextStart}It is said that attractive people can tap the ground with this to open a menu.....{n}So.....Are you ugly?{RGBTextEnd}'
+拒绝丢弃Tool: §4You can't throw this tool away!
+插件启动: '{RGBTextStart}{PluginName} launch(waiting time: {loadTime})...{RGBTextEnd}        {RGBTextStart}Welcome to {PluginName}{RGBTextEnd}§f(*￣︶￣)'
+给工具: §9Give you a quick tool! Use it
+Close: §4Close
+Back: §6Back
+Confirm: Confirm
+notPermission: §4You don't have permission to do this!
+FilteredModel: §4You cannot use this feature!Because you are already on the §6{FilteredModel}§4 filter list!
+Whitelist: §6white list
+Blacklist: §4blacklist 
+Nonuselist: §fNono
+Tip: Tip
+notMoney: §4You don't have enough{MoneyName}!
+ButtonError: '§4Button data error! Please check the！Key: {Key}，Error：{Error}'
+FormError: Error handling callback data! The error log：{Error}
+Command:
+   NotPlayer: Please execute this command in the game！
+   AdminCommand:
+      Lang: Switching the plug-in language
+      LangItem: §f<§d{ID}§f>§b--§d->§4Language:§9 {Language}
+      DefaultLanguage: (Default)
+      LangDescription: §6Use '/{CMD} lang LangID' to set a language as the system language.
+      LangIDError: §4The LangID to set should be a pure integer greater than zero!
+      NotLangID: §4The LangXID does not exist
+      SetLangError: '§4Error setting language! Error log: {Error}'
+      SetLangOK: '§6Successfully set the Language to: {Language}, some languages may need to be restarted to take effect!'
+      Help: Obtain the command usage method
+      Admin: Enable or disable the plug-in whitelist function
+      InputPlayerName: The name of the player to set/unwhitelist
+      Description: Menu plug-in console command
+      Switch: '{RandColor}Special privileges{Status}'
+      Open: §6Enabled
+      Close: §4Disabled
+      AdminSwitch: §8{ByPlayer}§5Advanced administrator privileges for {Status}
+   MainCommand:
+      Description: Menu plug-in main command
+      Help: Obtain the command usage method
+      Tool: Get a FastTool
+      Main: Open menu home page
+      Open: Open a menu
+      Files: filename
+      HoldTool: You already have a FastTool!
+      NotInputMenuName: §4You haven't entered the name of the configuration file for the menu you want to open!
+      NotMenuFile: §4The entered configuration file could not be found
+      NotButtonKey: §4Button Key does not exist
+      Click: Button Key
+      EmptyButton: This menu has no buttons!
+      ButtonError: Button data error!
+MakeButton:
+   InputButtonName: '{RandColor}Please enter a button name'
+   InputMoney: Please enter the {MoneyName}{n} that will be deducted if you click on it set to 0 if you do not want this feature enabled
+   InputCommand: Please enter the command that will be executed when the button is clicked
+   Permission: permission
+   PlayerFiltra: §6Player filtering mode
+   WorldFiltra: §4Level filtering mode
+   FiltreList: Please enter filter list, multiple use;Split, please leave this item blank if you do not want to use this feature.
+   ButtonNameEmpty: §4You haven't entered a button name yet! This is a better option than input!!
+   MoneyError: §4The input {MoneyName} must be a pure number greater than zero!
+   IconPath: Please enter the button icon path
+   IconType: Button icon type
+   IconEmpty: Nono
+   Confirm: Delete with menu file
+   IconLocal: Local
+   IconNet: Network
+   IconPathEmpty: §4Please enter icon path!
+   AlterNotButton: §4Unable to get button type!
+   DelTitle: Warning
+   DelContent: §4Are you sure you want to delete this button? {n} The following is the button configuration data{n}{ContentData}
+   DelSucceed: successfully delete
+   AlterMenu:
+      Title: modification->{Title}
+      Content: The current menu has {Buttons}. If you need to modify the Buttons, click {AlterButton} in the menu.
+      setTitle: Menu title
+      setContent: Menu Content
+      Succeed: modify successfully
+   Command:
+      AlterTitle: '{RandColor}modify button'
+      AlterContent: '{RandColor}You are modifying a button of type execute command!Please set the data of the button.'
+      Title: '{RandColor}The new button'
+      Content: '{RandColor}You are creating a button of type execute command!Please set the data of the button.'
+      InputCommand: Please input the command that will be executed after clicking the button {n} If you need the player to input the value please use the {msg} variable {n}{msg} variable can be set to multiple
+      Msg: If the {msg} variable is used, please enter the corresponding prompt value {n} here. The input value will display {n} multiple available when the player enters the content.Split {n} each {msg} should correspond to a prompt content
+      Hint: If the {msg} variable is used, please enter the corresponding prompt value {n} here. The input value will display {n} multiple available when the player enters the content.Split {n} each {msg} should correspond to a prompt content
+      Succeed: successfully set
+   Menu:
+      Title: '{RandColor}The new button'
+      Content: '{RandColor}You are creating a button of type pop-up menu!Please set the data of the button.'
+      AlterTitle: '{RandColor}The modify button'
+      AlterContent: '{RandColor}You are modifying a button of type pop-up menu!Please set the data of the button.'
+      InputTitle: Please enter the title of the window
+      InputContent: Please enter the prompt content
+      SelectMenuConfig: Menu configuration file
+      InputMenuConfig: 'Please enter menu Configuration file name {n} Note: {n} If this value is not empty, the upper selection will not take effect {n} If the entered file name does not exist, a new file will be created.'
+      InjectionRules: Injection button rule
+      Succeed: successfully set
+   Tip:
+      Title: '{RandColor}The new button'
+      Content: '{RandColor}You are creating a button of type prompt window!Please set the data of the button.'
+      AlterTitle: '{RandColor}The modify button'
+      AlterContent: '{RandColor}You are modifying a button of type after click prompt window!Please set the data of the button.'
+      InputTitle: Please enter the title of the window
+      InputContent: Please enter the prompt content
+      InputType: Modal window
+      AllowBack: Allows you to return to the original menu page
+      Succeed: successfully set
+   TPA:
+      Title: '{RandColor}The new button'
+      Content: '{RandColor}You are creating a button of type upload to the player!Please set the data of the button.'
+      AlterTitle: '{RandColor}The modify button'
+      AlterContent: '{RandColor}You are modifying a button of type upload to the player!Please set the data of the button.'
+      InputToPlayer: §6Please enter the name of target player;Please leave this item blank if you need to select player teleport.
+      isAffirm: §6Force transfer
+      Succeed: successfully set
+   TP:
+      Title: '{RandColor}The new button'
+      Content: '{RandColor}You are creating a button of type click send!Please set the data of the button.'
+      AlterTitle: '{RandColor}The modify button'
+      AlterContent: '{RandColor}You are modifying a button of type click send!Please set the data of the button.'
+      X: Please enter the X coordinate
+      Z: Please enter the Z coordinate
+      Y: Please enter the Y coordinate
+      World: Please enter the name of the destination world you want to send to
+      isInteger: §4Coordinate points support only pure numbers!
+      WorldEmpty: §4Unable to get set target world!
+      Succeed: successfully set
+Form:
+   notPermission: '§6You dont have permission to use this feature!This menu has the following permissions: §4{Permission}'
+   WorldFiltered: §4You can't use this feature in this world!
+   LevelError: §4Unable to load target world!
+   OP: §eAdmin
+   Player: §7Player
+   All: §6All
+   FoldingSet: '{RandColor}More options'
+   AddButton: '{RandColor}Add button'
+   DelButton: '{RandColor}Delete button'
+   AlterButton: '{RandColor}Alter Button'
+   Settings: '{RandColor}Settings'
+   AlterMenu: '{RandColor}Alter Menu'
+   ButtonClone: §4Unsupported buttons or more button support has been turned off by the administrator.
+   Setting:
+      Title: '{RGBTextStart}system settings{RGBTextEnd}'
+      Content: '{RGBTextStart}You can modify the following key system Settings as required: {n} Some Settings need to be restarted for the Settings to take effect {n} Some incorrect Settings may Cause Exceptions {n} Delete the "Config. yml" file to restore the default Settings.{RGBTextEnd}'
+      InputMoneyName: name of Economy
+      SelectEconomy: Economy API
+      DiscardTool: Allow discarding tools
+      Tool: FastTool items
+      EternalTool: FastTool detection
+      EternalToolTime: Detection time (second)
+      PalmRejection: Shielding double-click time (ms)
+      EventCancelled: Undo some events generated by the FastTool
+      FoldingSet: Collapse administrator button
+      UpdateTimeError: The value of the cyclic detection update interval only supports pure integers greater than or equal to zero!
+      SecurityPermission: Delay revoking OP command permissions
+      AcceptTPAWait: Transmission delay (in seconds)
+      MoreButton: More buttons {n} If you add new buttons through other plug-ins this will require starting the item, but it also means more performance loss.
+      MoneyNameError: Please enter the correct currency name! This value cannot be null.
+      EternalToolTimeError: The correct shortcut tool detection time can only be a pure integer greater than zero.
+      PalmRejectionError: The correct shielding double-click detection time should be a pure integer greater than zero!
+      SecurityPermissionError: The correct time to revoke OP permissions should be a pure integer greater than zero!
+      AcceptTPAWaitError: The correct transmission wait time should be a pure integer greater than or equal to zero!
+      Update: auto update 
+      CycleUpdate: Cyclic detection update
+      UpdateTime: Check the update interval periodically
+      Succeed: successfully set
+   SelectButton:
+      Title: '{RGBTextStart}Select the type of button you want to create{RGBTextEnd}'
+      Content: '{RandColor}To create a third-party button, enable{RGBTextStart}More button{RGBTextEnd}功能！'
+      newMenu: '{RandColor}New menu'
+      MakeTip: '{RandColor}Prompt pop-up'
+      MakeCmd: '{RandColor}executive command'
+      Transfer: '{RandColor}Fixed transfer'
+      Leap: '{RandColor}Teleport to the player'
+   Command:
+      Error: §4Command execution error! Please contact the server administrator!
+      SecurityPermission: §4Security process in progress! Please try again later.
+      Tip: '{RandColor}Tip'
+      CommandNull: §4The command to be executed cannot be empty!
+      MsgNull: §4All Msg related variable data cannot be empty or data mismatch!
+      InputNull: §4All input data is not allowed to be empty!
+   Menu:
+      菜单不存在: §4Menu file does not exist!
+   TPA:
+      Offline: §4{ToPlayer} is not online!
+      Title: '{RandColor}Teleport to the player'
+      NullPlayer: §4Unknown players
+      Tip: '{RandColor}Tip'
+      Content: '{RandColor}Please select the player you want to send to!'
+      OfflinePlayer: §4No players are currently online!
+      ItemStyle: '{RandColor}{ByPlayer}'
+      ToMe: §4The destination cannot be you!
+      Accept: §6Accept
+      Repulse: §4Repulse
+      AcceptMsg: §6{Player} has approved your transfer request!The transfer will take place after {Countdown}.
+      RepulseMsg: §4{Player} has rejected your transfer request!
+      TPA请求内容: §6{ByPlayer}§8 Request transfer to your location!Do you agree to this request?
+      TPAToPlayer: §6Requested transfer from {ByPlayer}! Please wait for confirmation.
+   Tip:
+      Exit: §4Exi
+Update:
+   Updateing: §6Check for updates at....
+   UpdateError: '§4Update error! Error message: {Error}'
+   LinkError: §4Unable to connect to server!
+   NotUpdate: §6No recommended version yet!
+   Update: '§eDiscover the new version!{n} Name: {Name}->{newName}{n} Version: {Version}->{newVersion}{n} Size: {Size}->{newSize}{n} Download address: {Download}{n}Update content:{UpdateMessage}'
+   NotMessage: §4No updates!

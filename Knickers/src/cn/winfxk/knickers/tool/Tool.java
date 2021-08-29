@@ -66,6 +66,35 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	private static final SimpleDateFormat data = new SimpleDateFormat("yyyy-MM-dd");
 	private final static char[] digits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
 			'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '+', '/' };
+	private static final String[] FileSizeUnit = { "B", "KB", "MB", "GB", "TB", "PB", "EB" };
+
+	/**
+	 * 返回文件大小
+	 * 
+	 * @param file 要获取大小的文件对象
+	 * @return
+	 */
+	public static String getSize(File file) {
+		return getSize(file.length());
+	}
+
+	/**
+	 * 获取文件大小
+	 * 
+	 * @param size
+	 * @return
+	 */
+	public static String getSize(long size) {
+		if (size < 1024)
+			return size + "B";
+		int index = 1;
+		float Size = size / (float) 1024;
+		while (Size > 1024) {
+			index++;
+			Size /= 1024;
+		}
+		return Tool.Double2(Size) + FileSizeUnit[index > FileSizeUnit.length - 1 ? FileSizeUnit.length - 1 : index];
+	}
 
 	/**
 	 * 读取包内文件
@@ -120,16 +149,16 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 			string += "§f/" + cmd + " §b";
 			for (int i = 0; i < cp.length; i++) {
 				cs = cp[i];
-				if (cs.type.equals(CommandParamType.RAWTEXT))
+				if (cs.type.equals(CommandParamType.RAWTEXT) && cs.enumData != null && cs.enumData.getValues() != null) {
 					zy = cs.enumData.getValues().get(0);
-				else {
+				} else {
 					zy = cs.name;
 				}
 				if (cs.enumData != null)
 					for (String s : cs.enumData.getValues())
 						if (String_length(s) < String_length(zy))
 							zy = s;
-				string += i == 0 ? zy : "§6 " + (cp[i].type.equals(CommandParamType.RAWTEXT) ? cp[i].enumData.getValues().get(0) : cp[i].name);
+				string += i == 0 ? zy : "§6 " + (cp[i].type.equals(CommandParamType.RAWTEXT) ? (cs.enumData != null && cs.enumData.getValues() != null) ? cp[i].enumData.getValues().get(0) : cs.name : cp[i].name);
 			}
 			string += "§f： §9" + Key;
 		}

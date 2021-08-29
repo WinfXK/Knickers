@@ -2,16 +2,13 @@ name: Knickers
 main: cn.winfxk.knickers.Knickers
 api:
 - 1.0.0
-version: 2.2-Beta-a
+version: 2.2-Beta
 website: http://Winfxk.cn
 description: Interesting menu
 author: Winfxk
 loadbefore:
 - EconomyAPI
 permissions:
-   Knickers.Command.Admin:
-      description: Admin Command
-      default: op
    Knickers.Command.Player:
       description: Player Command
       default: true

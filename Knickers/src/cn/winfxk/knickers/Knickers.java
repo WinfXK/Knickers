@@ -38,6 +38,7 @@ import cn.winfxk.knickers.rec.MyPlayer;
 import cn.winfxk.knickers.tool.Config;
 import cn.winfxk.knickers.tool.ItemList;
 import cn.winfxk.knickers.tool.Tool;
+import cn.winfxk.knickers.tool.Update;
 
 /**
  * @Createdate 2021/07/28 22:14:50
@@ -63,6 +64,7 @@ public class Knickers extends PluginBase implements Listener {
 	public static final String[] Dirs = { Menus, Language };
 	public Config config;
 	public static Knickers kis;
+	public File LanguageFile;
 	/**
 	 * 插件支持的经济列表
 	 */
@@ -120,6 +122,7 @@ public class Knickers extends PluginBase implements Listener {
 	@Override
 	public void onEnable() {
 		loadTime = Instant.now();
+		LanguageFile = new File(getDataFolder(), Language);
 		Check check = new Check(this);
 		check.Message();
 		Exist();
@@ -143,6 +146,7 @@ public class Knickers extends PluginBase implements Listener {
 		getServer().getPluginManager().registerEvents(this, this);
 		getServer().getCommandMap().register(getName() + " MainCommand", new MainCommand());
 		getServer().getCommandMap().register(getName() + " MainCommand", new AdminCommand());
+		new Update(config.getBoolean("Update"), config.getBoolean("CycleUpdate"), config.getInt("UpdateTime"), false, this, message).start();
 		getLogger().info(message.getMessage("插件启动", "{loadTime}", (float) Duration.between(loadTime, Instant.now()).toMillis() + "ms"));
 	}
 
@@ -383,7 +387,7 @@ public class Knickers extends PluginBase implements Listener {
 			e2.printStackTrace();
 			if (myPlayer.form != null)
 				myPlayer.form.onError(e2);
-			player.sendMessage(message.getMessage("数据处理错误", new String[] { "{Player}", "{Money}", "{Error}" }, new Object[] { player.getName(), MyPlayer.getMoney(player.getName()), e2.getMessage() }));
+			player.sendMessage(message.getMessage("FormError", new String[] { "{Player}", "{Money}", "{Error}" }, new Object[] { player.getName(), MyPlayer.getMoney(player.getName()), e2.toString() }));
 		}
 	}
 

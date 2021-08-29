@@ -7,7 +7,6 @@ import cn.nukkit.form.response.FormResponse;
 import cn.winfxk.knickers.MakeMenu;
 import cn.winfxk.knickers.form.FormBase;
 import cn.winfxk.knickers.form.base.SimpleForm;
-import cn.winfxk.knickers.module.alter.DelButton.Data;
 import cn.winfxk.knickers.tool.Format;
 import cn.winfxk.knickers.tool.Tool;
 
@@ -22,6 +21,7 @@ public class ConfirmDeletion extends FormBase {
 		super(player, upForm);
 		setD(new Format<>(data.map).getString());
 		setK("{ContentData}");
+		this.data=data;
 	}
 
 	@Override
