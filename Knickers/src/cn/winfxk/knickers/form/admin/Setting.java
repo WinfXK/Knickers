@@ -51,6 +51,8 @@ public class Setting extends FormBase {
 		form.addToggle(getString("Update"), config.getBoolean("Update"));
 		form.addToggle(getString("CycleUpdate"), config.getBoolean("CycleUpdate"));
 		form.addInput(getString("UpdateTime"), config.getInt("UpdateTime"), getString("UpdateTime"));
+		form.addToggle(getString("PositionLock"), config.getBoolean("PositionLock"));
+		form.addSlider(getString("Position"), 0, player.getInventory().getSize(), 1, config.getInt("Position"));
 		form.sendPlayer(player);
 		return true;
 	}
@@ -90,6 +92,8 @@ public class Setting extends FormBase {
 		int UpdateTime = Tool.ObjToInt(string);
 		if (string == null || string.isEmpty() || !Tool.isInteger(string) || UpdateTime < 0)
 			return Tip(getString("UpdateTimeError"));
+		boolean PositionLock = d.getToggleResponse(16);
+		int Position = Tool.ObjToInt(d.getSliderResponse(17));
 		config.set("MoneyName", MoneyName);
 		config.set("MoneyAPI", MoneyApi.getEconomyName());
 		config.set("DiscardTool", DiscardTool);
@@ -105,6 +109,8 @@ public class Setting extends FormBase {
 		config.set("Update", Update);
 		config.set("CycleUpdate", CycleUpdate);
 		config.set("UpdateTime", cn.winfxk.knickers.tool.Update.CycleTime = UpdateTime);
+		config.set("PositionLock", PositionLock);
+		config.set("Position", Position);
 		config.save();
 		sendMessage(getString("Succeed"));
 		return isBack();

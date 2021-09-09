@@ -28,3 +28,7 @@ Update: true
 CycleUpdate: true
 #循环检查更新的间隔（单位： 秒）
 UpdateTime: 604800
+#是否开启快捷工具背包位置锁定
+PositionLock: false
+#若开启了位置锁定，快捷工具会出现的位置
+Position: 0

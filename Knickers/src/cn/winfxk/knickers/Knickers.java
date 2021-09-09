@@ -11,6 +11,7 @@ import cn.nukkit.Player;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.BlockBreakEvent;
+import cn.nukkit.event.inventory.InventoryClickEvent;
 import cn.nukkit.event.player.PlayerDropItemEvent;
 import cn.nukkit.event.player.PlayerFormRespondedEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
@@ -22,6 +23,7 @@ import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.form.response.FormResponseModal;
 import cn.nukkit.form.response.FormResponseSimple;
 import cn.nukkit.inventory.Inventory;
+import cn.nukkit.inventory.PlayerInventory;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.enchantment.Enchantment;
 import cn.nukkit.nbt.tag.CompoundTag;
@@ -148,6 +150,68 @@ public class Knickers extends PluginBase implements Listener {
 		getServer().getCommandMap().register(getName() + " MainCommand", new AdminCommand());
 		new Update(config.getBoolean("Update"), config.getBoolean("CycleUpdate"), config.getInt("UpdateTime"), false, this, message).start();
 		getLogger().info(message.getMessage("插件启动", "{loadTime}", (float) Duration.between(loadTime, Instant.now()).toMillis() + "ms"));
+	}
+
+	@EventHandler
+	public void onInventoryClick(InventoryClickEvent e) {
+		Player player = e.getPlayer();
+		Item item = e.getSourceItem();
+		if (player == null || item == null || item.getId() == 0)
+			return;
+		if (e.getInventory() != player.getInventory()) {
+			if (isFastTool(item)) {
+				e.setCancelled();
+				Inventory inv = e.getInventory();
+				for (Map.Entry<Integer, Item> entry : inv.getContents().entrySet())
+					if (isFastTool(entry.getValue()))
+						inv.setItem(entry.getKey(), Item.get(0));
+				PlayerInventory inventory = player.getInventory();
+				e.setCancelled();
+				int FastIndex = 0;
+				for (Map.Entry<Integer, Item> entry : inventory.getContents().entrySet())
+					if (isFastTool(entry.getValue())) {
+						FastIndex = entry.getKey();
+						inventory.setItem(entry.getKey(), Item.get(0));
+					}
+				inventory.addItem(inventory.getItem(FastIndex));
+				inventory.setItem(config.getInt("Position"), getFastTool());
+			}
+			return;
+		}
+		PlayerInventory inventory = player.getInventory();
+		if (config.getInt("Position") == e.getSlot() && isFastTool(item)) {
+			e.setCancelled();
+			for (Map.Entry<Integer, Item> entry : inventory.getContents().entrySet())
+				if (isFastTool(entry.getValue()) && entry.getKey() != e.getSlot())
+					inventory.setItem(entry.getKey(), Item.get(0));
+			return;
+		}
+		if (config.getInt("Position") == e.getSlot()) {
+			e.setCancelled();
+			int FastIndex = 0;
+			for (Map.Entry<Integer, Item> entry : inventory.getContents().entrySet())
+				if (isFastTool(entry.getValue())) {
+					FastIndex = entry.getKey();
+					inventory.setItem(entry.getKey(), Item.get(0));
+				}
+			inventory.addItem(inventory.getItem(FastIndex));
+			inventory.setItem(config.getInt("Position"), getFastTool());
+			return;
+		}
+		Item item2 = inventory.getItem(e.getSlot());
+		if (isFastTool(item2)) {
+			Item item3 = inventory.getItem(config.getInt("Position"));
+			e.setCancelled();
+			for (Map.Entry<Integer, Item> entry : inventory.getContents().entrySet())
+				if (isFastTool(entry.getValue()))
+					inventory.setItem(entry.getKey(), Item.get(0));
+			if (inventory.isFull())
+				player.getLevel().dropItem(player, item3);
+			else
+				inventory.addItem(item3);
+			inventory.setItem(config.getInt("Position"), getFastTool());
+		}
+		return;
 	}
 
 	@Override

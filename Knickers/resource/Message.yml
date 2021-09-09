@@ -166,6 +166,8 @@ Form:
       Update: 自动更新
       CycleUpdate: 循环检测更新
       UpdateTime: 循环检查更新间隔
+      PositionLock: 启用快捷工具位置锁定
+      Position: 快捷工具锁定位置
       Succeed: 设置成功！
    SelectButton:
       Title: '{RGBTextStart}请选择想要创建的按钮类型{RGBTextEnd}'

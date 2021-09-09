@@ -166,6 +166,8 @@ Form:
       Update: auto update 
       CycleUpdate: Cyclic detection update
       UpdateTime: Check the update interval periodically
+      PositionLock: Enable FastTool location lock
+      Position: FastTool lock position
       Succeed: successfully set
    SelectButton:
       Title: '{RGBTextStart}Select the type of button you want to create{RGBTextEnd}'

@@ -20,9 +20,9 @@ import cn.winfxk.knickers.tool.Tool;
  */
 public class Menu extends BaseMake implements FileFilter {
 	private static final File MenuDir = new File(Knickers.kis.getDataFolder(), Knickers.Menus);
-	private List<File> MenuFiles;
+	private List<File> MenuFiles = new ArrayList<>();
+	private List<String> list = new ArrayList<>();
 	private Config c;
-	private List<String> list;
 
 	public Menu(Player player, File file, FormBase upForm, String Key) {
 		super(player, file, upForm, Key);
@@ -31,14 +31,14 @@ public class Menu extends BaseMake implements FileFilter {
 
 	public Menu(Player player, File file, FormBase upForm) {
 		super(player, file, upForm);
-		MenuFiles = new ArrayList<>();
 	}
 
 	@Override
 	public boolean MakeMain() {
 		if (!super.MakeMain())
 			return false;
-		MenuFiles.clear();
+		(list = (list == null ? new ArrayList<>() : list)).clear();
+		(MenuFiles = (MenuFiles == null ? new ArrayList<>() : MenuFiles)).clear();
 		form.addInput(getString("InputTitle"), Key == null ? msg.config.get("Tip") : c.get("Title"), getString("InputTitle"));
 		form.addInput(getString("InputContent"), Key == null ? "" : c.get("Content"), getString("InputContent"));
 		form.addDropdown(getString("SelectMenuConfig"), getMenus(), list.indexOf(map.get("Config")));
