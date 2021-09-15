@@ -74,7 +74,6 @@ public class Check {
 			}
 			localJarFile.close();
 		} catch (IOException e2) {
-			e2.printStackTrace();
 			log.error("Unable to load language file");
 			return false;
 		}

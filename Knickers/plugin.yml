@@ -2,7 +2,7 @@ name: Knickers
 main: cn.winfxk.knickers.Knickers
 api:
 - 1.0.0
-version: 2.2.1
+version: 2.2.2
 website: http://Winfxk.cn
 description: Interesting menu
 author: Winfxk

@@ -37,6 +37,7 @@ import cn.winfxk.knickers.tool.Tool;
  * @author Winfxk
  */
 public class MakeMenu extends FormBase {
+	private long lastModified;
 	public Player player;
 	public File file;
 	public Config config;
@@ -48,6 +49,7 @@ public class MakeMenu extends FormBase {
 			 * 使用该菜单的权限
 			 */
 			Permission;
+	boolean isload = false;
 	public List<String> FilteredPlayer, AdminKeys = new ArrayList<>(), LevelList;
 	public String Whitelist, Blacklist, Nonuselist, OP, Player, All;
 	public boolean FoldingSet;
@@ -59,6 +61,13 @@ public class MakeMenu extends FormBase {
 		super(player, upForm);
 		this.player = player;
 		this.file = file;
+	}
+
+	private void Loader() {
+		if (isload && file.lastModified() == lastModified)
+			return;
+		isload = true;
+		lastModified = file.lastModified();
 		setK("{FilteredModel}", "{Permission}");
 		config = new Config(file);
 		FilteredModel = config.getInt("FilteredModel");
@@ -76,10 +85,12 @@ public class MakeMenu extends FormBase {
 		obj = config.get("LevelList");
 		LevelList = obj != null && obj instanceof List ? (ArrayList<String>) obj : new ArrayList<>();
 		setD(FilteredModel == 0 ? Nonuselist : FilteredModel == 1 ? Blacklist : Whitelist, Permission == 0 ? All : Permission == 1 ? OP : Player);
+
 	}
 
 	@Override
 	public boolean MakeMain() {
+		Loader();
 		listKey.clear();
 		AdminKeys.clear();
 		if (!myPlayer.isAdmin()) {
@@ -165,9 +176,8 @@ public class MakeMenu extends FormBase {
 			default:
 				return isBack();
 			}
-		} else {
+		} else
 			return onClick((Map<String, Object>) Buttons.get(listKey.get(ID)));
-		}
 	}
 
 	public boolean onClick(Map<String, Object> map) {
@@ -175,6 +185,7 @@ public class MakeMenu extends FormBase {
 		String command, string;
 		Level level;
 		double x, y, z;
+		String[] cmds;
 		if (!myPlayer.isAdmin()) {
 			int FilteredModel = Tool.ObjToInt(map.get("FilteredModel"));
 			obj = map.get("FilteredPlayer");
@@ -202,7 +213,8 @@ public class MakeMenu extends FormBase {
 		case "提示":
 		case "弹窗":
 			onCommand(command);
-			return setForm(new MakeForm(player, this, map)).make();
+			return setForm(new MakeForm(player, this, msg.getText(map.get("Title"), this), msg.getText(map.get("Content"), this), Tool.ObjToBool(map.get("isBack")),
+					!Tool.objToString(map.get("TipType")).toLowerCase().equals("simple"))).make();
 		case "tp":
 		case "传送":
 			x = Tool.objToDouble(map.get("X"));
@@ -255,16 +267,13 @@ public class MakeMenu extends FormBase {
 			case "console":
 			case "c":
 			case "控制台":
-				if (command.contains("{m}")) {
-					String[] cmds = command.split("\\{m\\}");
-					for (String s : cmds)
-						if (s != null && !s.isEmpty())
-							try {
-								server.dispatchCommand(new ConsoleCommandSender(), s);
-							} catch (Exception e) {
-							}
-				} else
-					return server.dispatchCommand(new ConsoleCommandSender(), command);
+				cmds = command.split("\\{m\\}");
+				for (String s : cmds)
+					if (s != null && !s.isEmpty())
+						try {
+							server.dispatchCommand(new ConsoleCommandSender(), s);
+						} catch (Exception e) {
+						}
 				return true;
 			case "op":
 			case "admin":
@@ -274,13 +283,10 @@ public class MakeMenu extends FormBase {
 				myPlayer.SecurityPermissions = true;
 				player.setOp(true);
 				try {
-					if (command.contains("{m}")) {
-						String[] cmds = command.split("\\{m\\}");
-						for (String s : cmds)
-							if (s != null && !s.isEmpty())
-								server.dispatchCommand(player, s);
-					} else
-						return server.dispatchCommand(player, command);
+					cmds = command.split("\\{m\\}");
+					for (String s : cmds)
+						if (s != null && !s.isEmpty())
+							server.dispatchCommand(player, s);
 				} catch (Exception e) {
 					return sendMessage(msg.getSun(t, "Command", "Error", this));
 				} finally {
@@ -288,7 +294,13 @@ public class MakeMenu extends FormBase {
 				}
 				return true;
 			default:
-				server.dispatchCommand(player, command);
+				cmds = command.split("\\{m\\}");
+				for (String s : cmds)
+					if (s != null && !s.isEmpty())
+						try {
+							server.dispatchCommand(player, s);
+						} catch (Exception e) {
+						}
 				return true;
 			}
 		default:
@@ -310,7 +322,17 @@ public class MakeMenu extends FormBase {
 	 */
 	@Override
 	protected boolean isBack() {
-		return upForm == null || !Tool.ObjToBool(config.get("isBack")) ? (myPlayer.form = null) == null : setForm(upForm).make();
+		return upForm == null || Tool.ObjToBool(config.get("isBack")) ? (myPlayer.form = null) == null : setForm(upForm).make();
+	}
+
+	/**
+	 * 返回按钮的内容
+	 * 
+	 * @return
+	 */
+	@Override
+	protected String getBack() {
+		return msg.getMessage(upForm != null && !Tool.ObjToBool(config.get("isBack")) ? "Back" : "Close", this);
 	}
 
 	/**
@@ -322,16 +344,13 @@ public class MakeMenu extends FormBase {
 	private boolean onCommand(String Command) {
 		if (Command == null || Command.isEmpty())
 			return false;
-		if (Command.contains("{m}")) {
-			String[] cmds = Command.split("\\{m\\}");
-			for (String string : cmds)
-				if (string != null && !string.isEmpty())
-					try {
-						server.dispatchCommand(player, string);
-					} catch (Exception e) {
-					}
-		} else
-			return server.dispatchCommand(player, Command);
+		String[] cmds = Command.split("\\{m\\}");
+		for (String string : cmds)
+			if (string != null && !string.isEmpty())
+				try {
+					server.dispatchCommand(player, string);
+				} catch (Exception e) {
+				}
 		return true;
 	}
 }

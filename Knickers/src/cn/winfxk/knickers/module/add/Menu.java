@@ -37,13 +37,14 @@ public class Menu extends BaseMake implements FileFilter {
 	public boolean MakeMain() {
 		if (!super.MakeMain())
 			return false;
-		(list = (list == null ? new ArrayList<>() : list)).clear();
-		(MenuFiles = (MenuFiles == null ? new ArrayList<>() : MenuFiles)).clear();
+		list.clear();
+		MenuFiles.clear();
 		form.addInput(getString("InputTitle"), Key == null ? msg.config.get("Tip") : c.get("Title"), getString("InputTitle"));
 		form.addInput(getString("InputContent"), Key == null ? "" : c.get("Content"), getString("InputContent"));
 		form.addDropdown(getString("SelectMenuConfig"), getMenus(), list.indexOf(map.get("Config")));
 		form.addInput(getString("InputMenuConfig"), "", getString("InputMenuConfig"));
 		form.addToggle(getString("InjectionRules"));
+		form.addToggle(getString("BanBack"), false);
 		form.sendPlayer(player);
 		return true;
 	}
@@ -59,6 +60,7 @@ public class Menu extends BaseMake implements FileFilter {
 		if (MenuName != null && !MenuName.isEmpty())
 			MenuConfig = new File(MenuDir, MenuName);
 		boolean InjectionRules = d.getToggleResponse(location + 5);
+		boolean isBack = d.getToggleResponse(location + 6);
 		map.put("Config", MenuConfig.getName());
 		save();
 		if (!MenuConfig.exists() || InjectionRules) {
@@ -75,6 +77,7 @@ public class Menu extends BaseMake implements FileFilter {
 				c.set("Permission", Permission);
 			}
 			c.set("Buttons", new HashMap<>());
+			c.set("isBack", isBack);
 			c.save();
 		}
 		sendMessage(getString("Succeed"));
@@ -87,11 +90,10 @@ public class Menu extends BaseMake implements FileFilter {
 	 * @return
 	 */
 	protected List<String> getMenus() {
-		list = new ArrayList<>();
 		File[] Files = MenuDir.listFiles(this);
 		for (File f : Files) {
 			MenuFiles.add(f);
-			list.add(file.getName());
+			list.add(f.getName());
 		}
 		if (list.size() <= 0) {
 			MenuFiles.add(new File(MenuDir, "Main.yml"));

@@ -92,7 +92,7 @@ public class Update extends Thread {
 			}
 			if (Tool.ObjToBool(data.get("Update"))) {
 				log.info(msg.getSon(MsgKey, "Update", Key, new Object[] { plugin.getName(), data.get("Name"), plugin.getDescription().getVersion(), data.get("Version"), Tool.getSize(file),
-						Tool.getSize(Tool.objToLong(data.get("Size"))), data.get("Download"), data.get("UpdateMessage") }));
+						Tool.getSize(Tool.objToLong(data.get("Size"))), data.get("Download"), msg.getText(data.get("UpdateMessage")) }));
 				return;
 			}
 			log.info(msg.getSon(MsgKey, "NotUpdate"));

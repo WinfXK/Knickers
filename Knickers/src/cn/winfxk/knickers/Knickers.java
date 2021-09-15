@@ -154,64 +154,32 @@ public class Knickers extends PluginBase implements Listener {
 
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent e) {
+		if (!config.getBoolean("PositionLock"))
+			return;
 		Player player = e.getPlayer();
 		Item item = e.getSourceItem();
-		if (player == null || item == null || item.getId() == 0)
+		if (!isFastTool(item))
 			return;
-		if (e.getInventory() != player.getInventory()) {
-			if (isFastTool(item)) {
-				e.setCancelled();
-				Inventory inv = e.getInventory();
-				for (Map.Entry<Integer, Item> entry : inv.getContents().entrySet())
-					if (isFastTool(entry.getValue()))
-						inv.setItem(entry.getKey(), Item.get(0));
-				PlayerInventory inventory = player.getInventory();
-				e.setCancelled();
-				int FastIndex = 0;
-				for (Map.Entry<Integer, Item> entry : inventory.getContents().entrySet())
-					if (isFastTool(entry.getValue())) {
-						FastIndex = entry.getKey();
-						inventory.setItem(entry.getKey(), Item.get(0));
-					}
-				inventory.addItem(inventory.getItem(FastIndex));
-				inventory.setItem(config.getInt("Position"), getFastTool());
-			}
-			return;
-		}
+		e.setCancelled();
+		int Position = config.getInt("Position");
 		PlayerInventory inventory = player.getInventory();
-		if (config.getInt("Position") == e.getSlot() && isFastTool(item)) {
-			e.setCancelled();
-			for (Map.Entry<Integer, Item> entry : inventory.getContents().entrySet())
-				if (isFastTool(entry.getValue()) && entry.getKey() != e.getSlot())
-					inventory.setItem(entry.getKey(), Item.get(0));
+		boolean isOK = false;
+		for (Map.Entry<Integer, Item> entry : inventory.getContents().entrySet())
+			if (isFastTool(entry.getValue())) {
+				inventory.setItem(entry.getKey(), new Item(0));
+				isOK = true;
+			}
+		if (!isOK)
 			return;
+		Item item2 = inventory.getItem(Position);
+		if (item2 != null && item2.getId() != 0) {
+			if (inventory.isFull()) {
+				player.getLevel().dropItem(player, item2);
+				player.sendMessage(message.getMessage("FastToolDropItem", player));
+			} else
+				inventory.addItem(item2);
 		}
-		if (config.getInt("Position") == e.getSlot()) {
-			e.setCancelled();
-			int FastIndex = 0;
-			for (Map.Entry<Integer, Item> entry : inventory.getContents().entrySet())
-				if (isFastTool(entry.getValue())) {
-					FastIndex = entry.getKey();
-					inventory.setItem(entry.getKey(), Item.get(0));
-				}
-			inventory.addItem(inventory.getItem(FastIndex));
-			inventory.setItem(config.getInt("Position"), getFastTool());
-			return;
-		}
-		Item item2 = inventory.getItem(e.getSlot());
-		if (isFastTool(item2)) {
-			Item item3 = inventory.getItem(config.getInt("Position"));
-			e.setCancelled();
-			for (Map.Entry<Integer, Item> entry : inventory.getContents().entrySet())
-				if (isFastTool(entry.getValue()))
-					inventory.setItem(entry.getKey(), Item.get(0));
-			if (inventory.isFull())
-				player.getLevel().dropItem(player, item3);
-			else
-				inventory.addItem(item3);
-			inventory.setItem(config.getInt("Position"), getFastTool());
-		}
-		return;
+		inventory.setItem(Position, getFastTool());
 	}
 
 	@Override

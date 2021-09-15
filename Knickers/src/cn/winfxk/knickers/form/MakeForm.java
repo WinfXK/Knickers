@@ -1,7 +1,5 @@
 package cn.winfxk.knickers.form;
 
-import java.util.Map;
-
 import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponse;
 import cn.winfxk.knickers.Knickers;
@@ -36,20 +34,6 @@ public class MakeForm extends FormBase {
 		Back = isBack ? msg.getMessage("Back", this) : msg.getSun(t, "Tip", "Exit", this);
 		Close = msg.getMessage("Close", this);
 		this.isModal = isModal;
-	}
-
-	public MakeForm(Player player, Map<String, Object> map) {
-		this(player, null, map);
-	}
-
-	public MakeForm(Player player, FormBase upForm, Map<String, Object> map) {
-		super(player, upForm);
-		isBack = Tool.ObjToBool(map.get("isBack"));
-		Title = msg.getText(map.get("Title"), this);
-		Content = msg.getText(map.get("Content"), this);
-		Back = isBack ? msg.getMessage("Back", this) : msg.getSun(t, "Tip", "Exit", this);
-		Close = msg.getMessage("Close", this);
-		isModal = !Tool.objToString(map.get("TipType")).toLowerCase().equals("simple");
 	}
 
 	/**

@@ -18,8 +18,12 @@ Tip: 提示
 notMoney: §4您的{MoneyName}不足！
 ButtonError: '§4按钮数据错误！请检查！Key: {Key}，Error：{Error}'
 FormError: 处理回调数据出现异常！错误日志：{Error}
+FastToolDropItem: §4您的背包已满！为了给您一个§e§l§n快§b§l§n捷§9§l§n菜§4§l§n单§r§4，系统已经为您丢弃了一个物品！请注意拾取。
 Command:
    NotPlayer: 请在游戏内执行此命令！
+   FormCommand:
+      Title: 请输入对应的参数
+      Content: 请按要求输入对应的参数，这些参数可能会让您的命令变得与众不同~
    AdminCommand:
       Lang: 切换插件语言
       LangItem: §f<§d{ID}§f>§b--§d->§4Language:§9 {Language}
@@ -98,6 +102,7 @@ MakeButton:
       InputMenuConfig: 请输入菜单配置文件名{n}注：{n}    当这个值不为空时上方选择将不生效{n}    若输入的文件名不存在将会创建新文件。
       InjectionRules: 注入按钮规则
       Succeed: 设置成功！
+      BanBack: §4禁止返回到上级菜单
    Tip:
       Title: '{RandColor}新建按钮'
       Content: '{RandColor}您正在新建一个类型为点击后提示窗口的按钮！请设置按钮的数据。'

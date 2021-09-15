@@ -46,6 +46,7 @@ public class AlterMenu extends FormBase {
 		form.addInput(getFiltreList(), getFiltreList(config.get("FilteredPlayer")), getFiltreList());
 		form.addStepSlider(getWorldFiltras(), getFiltras(), Tool.ObjToInt(config.get("LevelFilteredModel")));
 		form.addInput(getFiltreList(), getFiltreList(config.get("LevelList")), getFiltreList());
+		form.addToggle(getString("BanBack"), Tool.ObjToBool(config.get("isBack")));
 		form.sendPlayer(player);
 		return true;
 	}
@@ -60,6 +61,7 @@ public class AlterMenu extends FormBase {
 		List<String> FilteredPlayer = getList(d.getInputResponse(5));
 		int LevelFilteredModel = d.getStepSliderResponse(6).getElementID();
 		List<String> LevelList = getList(d.getInputResponse(7));
+		boolean isBack = d.getToggleResponse(8);
 		config.set("Title", Title == null ? "" : Title);
 		config.set("Content", Content == null ? "" : Content);
 		config.set("Permission", Permission);
@@ -69,8 +71,9 @@ public class AlterMenu extends FormBase {
 		config.set("LevelList", LevelList);
 		config.set("alterPlayer", player.getName());
 		config.set("alterTime", Tool.getDate() + " " + Tool.getTime());
+		config.set("isBack", isBack);
 		config.save();
-		sendMessage(getString("Succeed: 设置成功！"));
+		sendMessage(getString("Succeed"));
 		return isBack();
 	}
 

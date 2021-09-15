@@ -56,6 +56,7 @@ public class ButtonType extends FormBase {
 				base.add(button);
 				form.addButton(button.getName());
 			}
+		listKey.add("back");
 		form.addButton(getBack());
 		form.sendPlayer(player);
 		return true;
@@ -74,8 +75,10 @@ public class ButtonType extends FormBase {
 				return setForm(new TPA(player, file, upForm)).make();
 			case "cmd":
 				return setForm(new Command(player, file, upForm)).make();
-			default:
+			case "tip":
 				return setForm(new Tip(player, file, upForm)).make();
+			default:
+				return isBack();
 			}
 		return base.get(ID).onAdd(player, file, upForm);
 	}

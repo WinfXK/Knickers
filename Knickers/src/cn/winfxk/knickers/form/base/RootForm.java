@@ -87,6 +87,11 @@ public abstract class RootForm {
 		return ID;
 	}
 
+	@Override
+	public String toString() {
+		return getClass() + "\nID: " + ID + "\nJsonData: " + getFormWindow().getJSONData();
+	}
+
 	/**
 	 * 将表单发送给指定玩家列表
 	 *

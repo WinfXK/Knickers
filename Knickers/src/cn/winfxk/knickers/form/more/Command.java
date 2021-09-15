@@ -12,7 +12,6 @@ import cn.winfxk.knickers.form.FormBase;
 import cn.winfxk.knickers.form.MakeForm;
 import cn.winfxk.knickers.form.base.CustomForm;
 import cn.winfxk.knickers.rec.SecurityPermissions;
-import cn.winfxk.knickers.tool.MyMap;
 import cn.winfxk.knickers.tool.Tool;
 
 /**
@@ -20,7 +19,6 @@ import cn.winfxk.knickers.tool.Tool;
  * @author Winfxk
  */
 public class Command extends FormBase {
-	private Map<String, Object> map;
 	private String Command;
 	private List<String> Hint, Msg;
 	private String[] CMD;
@@ -29,7 +27,6 @@ public class Command extends FormBase {
 
 	public Command(Player player, FormBase upForm, Map<String, Object> map) {
 		super(player, upForm);
-		this.map = map;
 		Command = Tool.objToString(map.get("Command"));
 		Command = Command == null ? "" : Command;
 		Object obj = map.get("Hint");
@@ -45,44 +42,46 @@ public class Command extends FormBase {
 	@Override
 	public boolean MakeMain() {
 		if (Command == null || Command.isEmpty())
-			return setForm(new MakeForm(player, upForm, MyMap.make("isBack", (Object) true).add("Title", getString("Tip")).add("Content", getString("CommandNull")))).make();
+			return setForm(new MakeForm(player, upForm, getString("Tip"), getString("CommandNull"))).make();
 		CMD = msg.getText(Command, this).split("\\{msg\\}");
-		if (Hint == null || Msg == null || CMD.length != Hint.size() || Hint.size() <= 0 || Hint.size() != Msg.size() || Msg.size() <= 0)
-			return setForm(new MakeForm(player, upForm, MyMap.make("isBack", (Object) true).add("Title", getString("Tip")).add("Content", getString("MsgNull")))).make();
-		CustomForm form = new CustomForm(getID(), msg.getText(map.get("Title"), this));
+		if (Hint == null || Msg == null || CMD.length <= 0)
+			return setForm(new MakeForm(player, upForm, getString("Tip"), getString("MsgNull"))).make();
+		CustomForm form = new CustomForm(getID(), getTitle());
 		form.addLabel(getContent());
-		for (int i = 0; i < Hint.size() && i < Msg.size(); i++)
+		for (int i = 0; i < CMD.length; i++) {
+			if (i >= Msg.size() || i >= Hint.size())
+				break;
 			form.addInput(msg.getText(Msg.get(i), this), "", msg.getText(Hint.get(i)));
+		}
 		form.sendPlayer(player);
 		return true;
 	}
 
 	@Override
 	public boolean disMain(FormResponse data) {
-		String C = CMD[0];
+		String C = "";
 		FormResponseCustom d = getCustom(data);
 		String string;
-		for (int i = 0; i < Hint.size() && i < Msg.size(); i++) {
+		for (int i = 0; i < CMD.length - 1; i++) {
+			if (i >= Msg.size() || i >= Hint.size())
+				break;
 			string = d.getInputResponse(i + 1);
 			if (!isEmpty && string == null || string.isEmpty())
-				return setForm(new MakeForm(player, upForm, MyMap.make("isBack", (Object) true).add("Title", getString("Tip")).add("Content", getString("InputNull")))).make();
-			C += string;
+				return setForm(new MakeForm(player, upForm, getString("Tip"), getString("InputNull"), true, true)).make();
+			C = (C.isEmpty() ? CMD[0] : C) + string + CMD[i + 1];
 		}
-		C += CMD[CMD.length - 1];
+		String[] cmds;
 		switch (Permission.toLowerCase()) {
 		case "console":
 		case "c":
 		case "控制台":
-			if (C.contains("{m}")) {
-				String[] cmds = C.split("\\{m\\}");
-				for (String s : cmds)
-					if (s != null && !s.isEmpty())
-						try {
-							server.dispatchCommand(new ConsoleCommandSender(), s);
-						} catch (Exception e) {
-						}
-			} else
-				return server.dispatchCommand(new ConsoleCommandSender(), C);
+			cmds = C.split("\\{m\\}");
+			for (String s : cmds)
+				if (s != null && !s.isEmpty())
+					try {
+						server.dispatchCommand(new ConsoleCommandSender(), s);
+					} catch (Exception e) {
+					}
 			return true;
 		case "op":
 		case "admin":
@@ -92,16 +91,13 @@ public class Command extends FormBase {
 			myPlayer.SecurityPermissions = true;
 			player.setOp(true);
 			try {
-				if (C.contains("{m}")) {
-					String[] cmds = C.split("\\{m\\}");
-					for (String s : cmds)
-						if (s != null && !s.isEmpty())
-							try {
-								server.dispatchCommand(player, s);
-							} catch (Exception e) {
-							}
-				} else
-					return server.dispatchCommand(player, C);
+				cmds = C.split("\\{m\\}");
+				for (String s : cmds)
+					if (s != null && !s.isEmpty())
+						try {
+							server.dispatchCommand(player, s);
+						} catch (Exception e) {
+						}
 			} catch (Exception e) {
 				return sendMessage(msg.getSun(t, "Command", "Error", this));
 			} finally {
@@ -109,27 +105,24 @@ public class Command extends FormBase {
 			}
 			return true;
 		default:
-			if (C.contains("{m}")) {
-				String[] cmds = C.split("\\{m\\}");
-				for (String s : cmds)
-					if (s != null && !s.isEmpty())
-						try {
-							server.dispatchCommand(player, s);
-						} catch (Exception e) {
-						}
-			} else
-				return server.dispatchCommand(player, C);
+			cmds = C.split("\\{m\\}");
+			for (String s : cmds)
+				if (s != null && !s.isEmpty())
+					try {
+						server.dispatchCommand(player, s);
+					} catch (Exception e) {
+					}
 			return true;
 		}
 	}
 
 	@Override
 	protected String getTitle() {
-		return msg.getText(map.get("Title"), this);
+		return msg.getSun("Command", "FormCommand", "Title", this);
 	}
 
 	@Override
 	protected String getContent() {
-		return msg.getText(map.get("Content"), this);
+		return msg.getSun("Command", "FormCommand", "Content", this);
 	}
 }
