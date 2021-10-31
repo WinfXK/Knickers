@@ -1,4 +1,4 @@
-<h1>Knickers - 多功能菜单 <img src="/upload/2021/10/cab9209b064dc692-7ed937be93bb457197ef468a38ef19a5.png" height="64" width="64" align="left"></img></h1>
+<h1>Knickers - 多功能菜单 <img src="http://winfxk.cn:8090//upload/2021/10/cab9209b064dc692-7ed937be93bb457197ef468a38ef19a5.png" height="64" width="64" align="left"></img></h1>
 <br>
 
 ## Knickers 是什么?
@@ -81,4 +81,4 @@ Knickers 该如何使用？
 > 希望你喜欢我的作品，同时也能支持一下。
 > 当然，有钱捧个钱场（下方支付宝捐助），没钱捧个人场，谢谢各位。
 
-<img src="/upload/2021/10/Money_Alipay-3bd04dc85d5a420a84861fee45dd5afc.jpg" height="250" width="250" align="top"> 
+<img src="http://winfxk.cn:8090//upload/2021/10/Money_Alipay-3bd04dc85d5a420a84861fee45dd5afc.jpg" height="250" width="250" align="top"> 
