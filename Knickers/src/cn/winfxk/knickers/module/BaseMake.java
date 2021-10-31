@@ -28,10 +28,12 @@ public abstract class BaseMake extends FormBase {
 	protected Map<String, Object> map = new HashMap<>(), Button;
 	protected String Command, ButtonName, IconPath;
 	protected double Money;
-	protected List<String> PlayerFiltered, WorldFiltered;
+	protected List<String> PlayerFiltered, WorldFiltered, Levellimit;
 	protected int PlayerFilteredModel, Permission, LevelFilteredModel, location, IconType;
 	protected FormResponseCustom d;
 	protected CustomForm form;
+	public static final String[] LevellimitKey = { "<", ">", "=" };
+	protected boolean Openlevel;
 
 	/**
 	 * 修改按钮时调用
@@ -113,6 +115,8 @@ public abstract class BaseMake extends FormBase {
 		IconType = d.getStepSliderResponse(9).getElementID();
 		IconPath = d.getInputResponse(10);
 		IconPath = IconPath.isEmpty() ? null : IconPath;
+		Openlevel = d.getToggleResponse(11);
+		Levellimit = getLevellimit(d.getInputResponse(12));
 		if (IconType != 0 && IconPath == null)
 			return Tip(getWarning("IconPathEmpty"), false);
 		if (IconType == 1)
@@ -138,8 +142,52 @@ public abstract class BaseMake extends FormBase {
 		form.addInput(getFiltreList(), Key == null ? "" : getFiltreList(map.get("LevelList")), getFiltreList());
 		form.addStepSlider(getIconType(), getIconTypes(), Tool.ObjToInt(map.get("IconType")));
 		form.addInput(InputIconPath(), map.get("IconPath"), InputIconPath());
+		form.addToggle(getOpenlevel(), Key == null ? false : Tool.ObjToBool(map.get("Openlevel")));
+		form.addInput(getLevellimitString(), Key == null ? "" : getLevellimit(map.get("Levellimit")), getLevellimitString());
 		location = form.getElements().size() - 1;
 		return form;
+	}
+
+	/**
+	 * 将已经存储的等级区间序列化
+	 * 
+	 * @param obj
+	 * @return
+	 */
+	protected String getLevellimit(Object obj) {
+		ArrayList<String> list = obj != null && obj instanceof List ? (ArrayList<String>) obj : new ArrayList<>();
+		String string = "";
+		for (String s : list)
+			string += (string.isEmpty() ? "" : ";") + s;
+		return string;
+	}
+
+	/**
+	 * 将已经存储的等级区间序列化
+	 * 
+	 * @param obj
+	 * @return
+	 */
+	protected ArrayList<String> getLevellimit(String string) {
+		ArrayList<String> list = new ArrayList<>();
+		if (string == null || string.isEmpty())
+			return list;
+		String[] strings = string.split(";");
+		for (String s : strings) {
+			if (!Tool.isInteger(s.substring(1)))
+				continue;
+			list.add(s);
+		}
+		return list;
+	}
+
+	/**
+	 * 返回提示等级限制区间的文本
+	 * 
+	 * @return
+	 */
+	protected String getLevellimitString() {
+		return msg.getSon(t, "Levellimit", this);
 	}
 
 	/**
@@ -154,6 +202,15 @@ public abstract class BaseMake extends FormBase {
 		for (String s : list)
 			string = string + (string.isEmpty() ? s : ";" + s);
 		return string;
+	}
+
+	/**
+	 * 返回是否开启等级限制的文本
+	 * 
+	 * @return
+	 */
+	protected String getOpenlevel() {
+		return msg.getSon(t, "Openlevel", this);
 	}
 
 	/**
@@ -174,6 +231,8 @@ public abstract class BaseMake extends FormBase {
 		map.put("Permission", Permission);
 		map.put("IconType", IconType);
 		map.put("IconPath", IconPath);
+		map.put("Openlevel", Openlevel);
+		map.put("Levellimit", Levellimit);
 		Button.put(Key, map);
 		config.set("Buttons", Button);
 		return config.save();

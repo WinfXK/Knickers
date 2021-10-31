@@ -358,7 +358,7 @@ public class Knickers extends PluginBase implements Listener {
 	 * @return
 	 */
 	public boolean isFastTool(Item item) {
-		if (FastTool == null || FastTool.isEmpty())
+		if (item == null || FastTool == null || FastTool.isEmpty())
 			return false;
 		if ((item.getId() + ":" + item.getDamage()).equals(FastTool)) {
 			CompoundTag tag = item.getNamedTag();

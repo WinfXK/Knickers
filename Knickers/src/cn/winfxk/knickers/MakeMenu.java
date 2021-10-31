@@ -57,12 +57,22 @@ public class MakeMenu extends FormBase {
 	public static final File MenuFile = new File(Knickers.kis.getDataFolder(), Knickers.Menus);
 	private boolean MoreButton = kis.config.getBoolean("MoreButton");
 
+	/**
+	 * 根据菜单的文件对象创建一个菜单页面
+	 * 
+	 * @param player 需要显示菜单的玩家
+	 * @param upForm 上一个界面
+	 * @param file   菜单的配置文件
+	 */
 	public MakeMenu(Player player, FormBase upForm, File file) {
 		super(player, upForm);
 		this.player = player;
 		this.file = file;
 	}
 
+	/**
+	 * 加载菜单数据
+	 */
 	private void Loader() {
 		if (isload && file.lastModified() == lastModified)
 			return;
@@ -88,6 +98,9 @@ public class MakeMenu extends FormBase {
 
 	}
 
+	/**
+	 * 构建菜单界面
+	 */
 	@Override
 	public boolean MakeMain() {
 		Loader();
@@ -155,6 +168,9 @@ public class MakeMenu extends FormBase {
 		return true;
 	}
 
+	/**
+	 * 处理菜单响应的结果
+	 */
 	@Override
 	public boolean disMain(FormResponse data) {
 		FormResponseSimple d = getSimple(data);
@@ -180,6 +196,73 @@ public class MakeMenu extends FormBase {
 			return onClick((Map<String, Object>) Buttons.get(listKey.get(ID)));
 	}
 
+	/**
+	 * 检查玩家是否在等级限制范围内
+	 * 
+	 * @param map 按钮的数据
+	 * @return
+	 */
+	public boolean isLevellimit(Map<String, Object> map) {
+		Object obj = map.get("Levellimit");
+		return isLevellimit(obj != null && obj instanceof List ? (ArrayList<String>) obj : new ArrayList<>(), Tool.objToString(map.get("Key")));
+	}
+
+	/**
+	 * 检查玩家是否在等级限制范围内
+	 * 
+	 * @param list 等级限制范围
+	 * @return
+	 */
+	public boolean isLevellimit(List<String> list, String Key) {
+		if (list == null || list.size() <= 0) {
+			log.warning(msg.getSon(t, "LevellimitWarning", new String[] { "{File}", "{Key}" }, new Object[] { file.getName(), Key }, player));
+			return true;
+		}
+		double Exp;
+		for (String s : list) {
+			Exp = Tool.objToDouble(s.substring(1));
+			switch (s.substring(0, 1)) {
+			case "<":
+				if (Exp > player.getExperienceLevel())
+					return true;
+				break;
+			case ">":
+				if (Exp < player.getExperienceLevel())
+					return true;
+				break;
+			case "=":
+			default:
+				if (Exp == player.getExperienceLevel())
+					return true;
+				break;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * 将等级限制序列变成显示给万家康的文本
+	 * 
+	 * @param Msg  回复的消息(已解析)
+	 * @param list 等级列表
+	 * @return
+	 */
+	protected String getLevellimit(String Msg, List<String> list) {
+		String string = "";
+		String ss;
+		for (String s : list) {
+			ss = s.substring(0, 1);
+			string += (string.isEmpty() ? "" : "\n") + (ss.equals("<") ? "小于" : ss.equals(">") ? "大于" : "等于") + Tool.objToDouble(s.substring(1));
+		}
+		return Msg.replace("{Levellimit}", string);
+	}
+
+	/**
+	 * 处理按钮被点击的事件
+	 * 
+	 * @param map
+	 * @return
+	 */
 	public boolean onClick(Map<String, Object> map) {
 		Object obj;
 		String command, string;
@@ -200,6 +283,11 @@ public class MakeMenu extends FormBase {
 			List<String> LevelList = obj != null && obj instanceof List ? (ArrayList<String>) obj : new ArrayList<>();
 			if ((LevelFilteredModel == 1 && LevelList.contains(player.getLevel().getFolderName())) || (LevelFilteredModel == 2 && !LevelList.contains(player.getLevel().getFolderName())))
 				return sendMessage(msg.getSon(t, "WorldFiltered", this));
+			boolean Openlevel = Tool.ObjToBool(map.get("Openlevel"));
+			obj = map.get("Levellimit");
+			List<String> Levellimit = obj != null && obj instanceof List ? (ArrayList<String>) obj : new ArrayList<>();
+			if (Openlevel && !isLevellimit(map))
+				return sendMessage(getLevellimit(msg.getSon(t, "NoLevellimit", this), Levellimit));
 			double Money = Tool.objToDouble(map.get("Money"));
 			if (Money != 0)
 				if (myPlayer.getMoney() < Money)

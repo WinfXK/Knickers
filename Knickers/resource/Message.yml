@@ -72,6 +72,8 @@ MakeButton:
    IconLocal: 本地
    IconNet: 网络
    IconPathEmpty: §4请输入图标路径！
+   Openlevel: 等级限制
+   Levellimit: '请输入等级限制{n}注：支持动态区间，具体写法参照以下{n}低于等级时：<Level{n}高于等级时: >Level{n}等于等级时：Level{n}多个区间可用;分割{n}每个区间仅且支持一个出现在开头的符号！{n}此项不会对你输入的内容进行检测！如果您输入了错误的内容则不会生效也不会提示！请按照要求格式填写。'
    AlterNotButton: §4无法获取到按钮类型！
    DelTitle: 警告
    DelContent: §4你确定要删除这个按钮吗？{n}{ContentData}
@@ -140,6 +142,11 @@ Form:
    OP: §e管理员
    Player: §7玩家
    All: §6所有用户
+   LevellimitWarning: §4一个按钮已经开启了等级限制，但是没有检索到任何等级限制条件！请检查。{n}File：{File}{n}Key：{Key}{n}触发玩家：{Player}
+   NoLevellimit: §4您不能使用这个按钮！这个按钮需要特定的等级才能使用！{n}{Levellimit}
+   Levelhige: 等级大于{Level}级
+   Levellow: 等级小于{Level}级
+   Levelequal: 等级等于{Level}级
    FoldingSet: '{RandColor}更多选项'
    AddButton: '{RandColor}添加按钮'
    DelButton: '{RandColor}删除按钮'
